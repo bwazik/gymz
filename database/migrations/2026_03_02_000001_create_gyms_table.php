@@ -13,6 +13,7 @@ return new class extends Migration
             $table->foreignId('city_id')->constrained()->cascadeOnDelete();
             $table->string('name');
             $table->boolean('is_active')->default(true);
+            $table->string('logo_path')->nullable();
             $table->timestamps();
         });
     }

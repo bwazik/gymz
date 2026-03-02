@@ -19,7 +19,8 @@ use Illuminate\Notifications\Notifiable;
  *
  * @property int $id
  * @property string $name
- * @property string $email
+ * @property string|null $email
+ * @property string|null $phone
  * @property bool $is_admin
  * @property \Illuminate\Support\Carbon|null $email_verified_at
  * @property string $password
@@ -53,6 +54,7 @@ class User extends Authenticatable implements FilamentUser
     protected $fillable = [
         'name',
         'email',
+        'phone',
         'password',
         'is_admin',
         'gender',

@@ -14,6 +14,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @property int $city_id
  * @property string $name
  * @property bool $is_active
+ * @property string|null $logo_path
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  *
@@ -28,6 +29,7 @@ class Gym extends Model
         'city_id',
         'name',
         'is_active',
+        'logo_path'
     ];
 
     protected $casts = [
