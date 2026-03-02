@@ -7,12 +7,14 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 /**
+ * App\Models\City
+ *
  * @property int $id
  * @property string $name
  * @property bool $is_active
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
- * 
+ *
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Gym> $gyms
  */
 class City extends Model

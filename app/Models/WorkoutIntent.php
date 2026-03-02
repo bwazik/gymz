@@ -12,6 +12,8 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 
 /**
+ * App\Models\WorkoutIntent
+ *
  * @property int $id
  * @property int $user_id
  * @property int $gym_id
@@ -23,7 +25,7 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
  * @property \Illuminate\Support\Carbon|null $deleted_at
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
- * 
+ *
  * @property-read \App\Models\User $user
  * @property-read \App\Models\Gym $gym
  * @property-read \App\Models\WorkoutTarget $workoutTarget

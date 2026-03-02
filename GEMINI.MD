@@ -30,8 +30,8 @@ GymZ is a PWA (Progressive Web App) fitness companion platform designed to conne
 * **Context Restoration:** You MUST read this `GEMINI.MD` file at the start of every session or terminal restart to understand the project's boundaries, tech stack, and logic.
 
 ## 6. Git & Workflow Automation (Strict Rules for CLI)
-* **Version Control Mandate:** Upon successfully implementing and verifying a new feature, fix, or refactor based on user instructions, you MUST automatically handle the Git workflow using the terminal:
-    1. Create/Checkout a descriptive branch (e.g., `feature/add-glutes-system`).
-    2. Stage all changes: `git add .`
-    3. Commit using Conventional Commits formatting: `git commit -m "feat: added glutes gamification system"`
-    4. Push the changes: `git push origin <branch-name>`
+* **Version Control Mandate:** Upon successfully implementing a feature or fix, handle Git automations directly on the **CURRENT BRANCH**.
+    1. DO NOT create new branches automatically. Stay on the current branch (e.g., `main`).
+    2. Stage changes: `git add .`
+    3. Commit using Conventional Commits: `git commit -m "feat: description"`
+    4. Push to origin: `git push`

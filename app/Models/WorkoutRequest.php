@@ -9,13 +9,15 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 /**
+ * App\Models\WorkoutRequest
+ *
  * @property int $id
  * @property int $intent_id
  * @property int $sender_id
  * @property \App\Enums\RequestStatus $status
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
- * 
+ *
  * @property-read \App\Models\WorkoutIntent $workoutIntent
  * @property-read \App\Models\User $sender
  */

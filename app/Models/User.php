@@ -5,6 +5,8 @@ namespace App\Models;
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use App\Enums\Gender;
 use App\Enums\UserLevel;
+use Filament\Models\Contracts\FilamentUser;
+use Filament\Panel;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -13,9 +15,12 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
 /**
+ * App\Models\User
+ *
  * @property int $id
  * @property string $name
  * @property string $email
+ * @property bool $is_admin
  * @property \Illuminate\Support\Carbon|null $email_verified_at
  * @property string $password
  * @property \App\Enums\Gender|null $gender
@@ -35,7 +40,7 @@ use Illuminate\Notifications\Notifiable;
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\WorkoutSession> $workoutSessionsAsUserB
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\GlutesTransaction> $glutesTransactions
  */
-class User extends Authenticatable
+class User extends Authenticatable implements FilamentUser
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
     use HasFactory, Notifiable, SoftDeletes;
@@ -49,6 +54,7 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'is_admin',
         'gender',
         'dob',
         'level',
@@ -77,6 +83,7 @@ class User extends Authenticatable
         return [
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
+            'is_admin' => 'boolean',
             'gender' => Gender::class,
             'dob' => 'date',
             'level' => UserLevel::class,
@@ -130,5 +137,10 @@ class User extends Authenticatable
     public function scopeFemales(Builder $query): Builder
     {
         return $query->where('gender', Gender::Female);
+    }
+
+    public function canAccessPanel(Panel $panel): bool
+    {
+        return $this->is_admin;
     }
 }
