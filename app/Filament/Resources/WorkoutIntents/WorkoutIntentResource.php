@@ -26,7 +26,19 @@ class WorkoutIntentResource extends Resource
 {
     protected static ?string $model = WorkoutIntent::class;
 
-    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
+    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedCalendarDays;
+
+    protected static ?int $navigationSort = 2;
+
+    public static function getModelLabel(): string
+    {
+        return 'نية التمرين';
+    }
+
+    public static function getPluralModelLabel(): string
+    {
+        return 'نوايا التمارين (Intents)';
+    }
 
     public static function form(Schema $schema): Schema
     {

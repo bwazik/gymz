@@ -17,7 +17,19 @@ class GlutesTransactionResource extends Resource
 {
     protected static ?string $model = GlutesTransaction::class;
 
-    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
+    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedBanknotes;
+
+    protected static ?int $navigationSort = 4;
+
+    public static function getModelLabel(): string
+    {
+        return 'معاملة النقاط';
+    }
+
+    public static function getPluralModelLabel(): string
+    {
+        return 'معاملات النقاط (Glutes)';
+    }
 
     public static function canCreate(): bool
     {

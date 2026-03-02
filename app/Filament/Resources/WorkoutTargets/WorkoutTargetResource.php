@@ -21,7 +21,19 @@ class WorkoutTargetResource extends Resource
 {
     protected static ?string $model = WorkoutTarget::class;
 
-    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
+    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedViewfinderCircle;
+
+    protected static ?int $navigationSort = 6;
+
+    public static function getModelLabel(): string
+    {
+        return 'الهدف العضلي';
+    }
+
+    public static function getPluralModelLabel(): string
+    {
+        return 'الأهداف العضلية';
+    }
 
     protected static ?string $recordTitleAttribute = 'name';
 

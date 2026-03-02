@@ -19,7 +19,19 @@ class GymResource extends Resource
 {
     protected static ?string $model = Gym::class;
 
-    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
+    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedBuildingStorefront;
+
+    protected static ?int $navigationSort = 7;
+
+    public static function getModelLabel(): string
+    {
+        return 'الصالات الرياضية';
+    }
+
+    public static function getPluralModelLabel(): string
+    {
+        return 'الصالات الرياضية (Gyms)';
+    }
 
     protected static ?string $recordTitleAttribute = 'name';
 

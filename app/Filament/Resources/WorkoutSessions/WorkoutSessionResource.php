@@ -25,7 +25,19 @@ class WorkoutSessionResource extends Resource
 {
     protected static ?string $model = WorkoutSession::class;
 
-    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
+    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedCheckBadge;
+
+    protected static ?int $navigationSort = 3;
+
+    public static function getModelLabel(): string
+    {
+        return 'جلسة التمرين';
+    }
+
+    public static function getPluralModelLabel(): string
+    {
+        return 'جلسات التمارين المكتملة';
+    }
 
     public static function form(Schema $schema): Schema
     {

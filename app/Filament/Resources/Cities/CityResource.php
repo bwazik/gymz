@@ -24,9 +24,19 @@ class CityResource extends Resource
 {
     protected static ?string $model = City::class;
 
-    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
+    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedMapPin;
 
-    protected static ?int $navigationSort = 1;
+    protected static ?int $navigationSort = 8;
+
+    public static function getModelLabel(): string
+    {
+        return 'المدينة';
+    }
+
+    public static function getPluralModelLabel(): string
+    {
+        return 'المدن';
+    }
 
     protected static ?string $recordTitleAttribute = 'name';
 
