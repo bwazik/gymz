@@ -7,16 +7,15 @@ use App\Filament\Resources\Users\Pages\EditUser;
 use App\Filament\Resources\Users\Pages\ListUsers;
 use App\Filament\Resources\Users\Pages\ViewUser;
 use App\Filament\Resources\Users\Schemas\UserForm;
-use App\Filament\Resources\Users\Schemas\UserInfolist;
 use App\Filament\Resources\Users\Tables\UsersTable;
+use App\Filament\Resources\Users\RelationManagers\WorkoutSessionsRelationManager;
+use App\Filament\Resources\Users\RelationManagers\GlutesTransactionsRelationManager;
 use App\Models\User;
 use BackedEnum;
 use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class UserResource extends Resource
 {
@@ -24,16 +23,9 @@ class UserResource extends Resource
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
 
-    protected static ?string $recordTitleAttribute = 'name';
-
     public static function form(Schema $schema): Schema
     {
         return UserForm::configure($schema);
-    }
-
-    public static function infolist(Schema $schema): Schema
-    {
-        return UserInfolist::configure($schema);
     }
 
     public static function table(Table $table): Table
@@ -44,7 +36,8 @@ class UserResource extends Resource
     public static function getRelations(): array
     {
         return [
-            //
+            WorkoutSessionsRelationManager::class,
+            GlutesTransactionsRelationManager::class,
         ];
     }
 
@@ -56,13 +49,5 @@ class UserResource extends Resource
             'view' => ViewUser::route('/{record}'),
             'edit' => EditUser::route('/{record}/edit'),
         ];
-    }
-
-    public static function getRecordRouteBindingEloquentQuery(): Builder
-    {
-        return parent::getRecordRouteBindingEloquentQuery()
-            ->withoutGlobalScopes([
-                SoftDeletingScope::class,
-            ]);
     }
 }

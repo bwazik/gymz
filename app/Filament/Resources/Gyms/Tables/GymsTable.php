@@ -7,6 +7,7 @@ use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
 use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Columns\ImageColumn;
 use Filament\Tables\Table;
 
 class GymsTable
@@ -15,22 +16,18 @@ class GymsTable
     {
         return $table
             ->columns([
-                TextColumn::make('city.name')
-                    ->searchable(),
+                ImageColumn::make('logo_path'),
                 TextColumn::make('name')
-                    ->searchable(),
+                    ->searchable()
+                    ->sortable(),
+                TextColumn::make('city.name')
+                    ->searchable()
+                    ->sortable(),
+                TextColumn::make('gender_policy')
+                    ->searchable()
+                    ->sortable(),
                 IconColumn::make('is_active')
                     ->boolean(),
-                TextColumn::make('logo_path')
-                    ->searchable(),
-                TextColumn::make('created_at')
-                    ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
-                TextColumn::make('updated_at')
-                    ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
                 //

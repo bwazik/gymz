@@ -4,10 +4,8 @@ namespace App\Filament\Resources\Users\Schemas;
 
 use App\Enums\Gender;
 use App\Enums\UserLevel;
-use Filament\Forms\Components\DatePicker;
-use Filament\Forms\Components\DateTimePicker;
-use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Select;
+use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
 use Filament\Schemas\Schema;
@@ -19,25 +17,21 @@ class UserForm
         return $schema
             ->components([
                 TextInput::make('name')
-                    ->required(),
+                    ->required()
+                    ->maxLength(255),
                 TextInput::make('email')
-                    ->label('Email address')
-                    ->email(),
-                Toggle::make('is_admin')
-                    ->required(),
+                    ->email()
+                    ->maxLength(255),
                 TextInput::make('phone')
-                    ->tel(),
-                DateTimePicker::make('email_verified_at'),
-                TextInput::make('password')
-                    ->password()
-                    ->required(),
+                    ->tel()
+                    ->maxLength(255),
+                Textarea::make('bio')
+                    ->maxLength(65535),
                 Select::make('gender')
                     ->options(Gender::class),
-                DatePicker::make('dob'),
                 Select::make('level')
                     ->options(UserLevel::class)
-                    ->required()
-                    ->default(0),
+                    ->required(),
                 TextInput::make('glutes_balance')
                     ->required()
                     ->numeric()
@@ -46,8 +40,8 @@ class UserForm
                     ->required()
                     ->numeric()
                     ->default(100),
-                FileUpload::make('image_path')
-                    ->image(),
+                Toggle::make('is_admin')
+                    ->required(),
             ]);
     }
 }

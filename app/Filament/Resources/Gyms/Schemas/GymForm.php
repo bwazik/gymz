@@ -5,6 +5,7 @@ namespace App\Filament\Resources\Gyms\Schemas;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
+use Filament\Forms\Components\FileUpload;
 use Filament\Schemas\Schema;
 
 class GymForm
@@ -17,10 +18,15 @@ class GymForm
                     ->relationship('city', 'name')
                     ->required(),
                 TextInput::make('name')
-                    ->required(),
+                    ->required()
+                    ->maxLength(255),
+                TextInput::make('address')
+                    ->maxLength(255),
+                FileUpload::make('logo_path')
+                    ->image()
+                    ->directory('gym-logos'),
                 Toggle::make('is_active')
-                    ->required(),
-                TextInput::make('logo_path'),
+                    ->default(true),
             ]);
     }
 }

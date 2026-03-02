@@ -7,6 +7,7 @@ use App\Filament\Resources\Gyms\Pages\EditGym;
 use App\Filament\Resources\Gyms\Pages\ListGyms;
 use App\Filament\Resources\Gyms\Schemas\GymForm;
 use App\Filament\Resources\Gyms\Tables\GymsTable;
+use App\Filament\Resources\Gyms\RelationManagers\WorkoutIntentsRelationManager;
 use App\Models\Gym;
 use BackedEnum;
 use Filament\Resources\Resource;
@@ -35,7 +36,7 @@ class GymResource extends Resource
     public static function getRelations(): array
     {
         return [
-            //
+            WorkoutIntentsRelationManager::class,
         ];
     }
 
