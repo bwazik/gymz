@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Enums\RequestStatus;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -32,6 +33,12 @@ class WorkoutRequest extends Model
         'status' => RequestStatus::class,
     ];
 
+    /*
+    |--------------------------------------------------------------------------
+    | Relations
+    |--------------------------------------------------------------------------
+    */
+
     public function workoutIntent(): BelongsTo
     {
         return $this->belongsTo(WorkoutIntent::class, 'intent_id');
@@ -40,5 +47,16 @@ class WorkoutRequest extends Model
     public function sender(): BelongsTo
     {
         return $this->belongsTo(User::class, 'sender_id');
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | Scopes & Methods
+    |--------------------------------------------------------------------------
+    */
+
+    public function scopePending(Builder $query): Builder
+    {
+        return $query->where('status', RequestStatus::Pending);
     }
 }

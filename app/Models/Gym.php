@@ -32,6 +32,12 @@ class Gym extends Model
         'is_active' => 'boolean',
     ];
 
+    /*
+    |--------------------------------------------------------------------------
+    | Relations
+    |--------------------------------------------------------------------------
+    */
+
     public function city(): BelongsTo
     {
         return $this->belongsTo(City::class);
@@ -41,4 +47,10 @@ class Gym extends Model
     {
         return $this->hasMany(WorkoutIntent::class);
     }
+
+    /*
+    |--------------------------------------------------------------------------
+    | Scopes & Methods
+    |--------------------------------------------------------------------------
+    */
 }

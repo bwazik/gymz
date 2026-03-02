@@ -26,6 +26,12 @@ class WorkoutTarget extends Model
         'name',
     ];
 
+    /*
+    |--------------------------------------------------------------------------
+    | Relations
+    |--------------------------------------------------------------------------
+    */
+
     public function workoutCategory(): BelongsTo
     {
         return $this->belongsTo(WorkoutCategory::class);
@@ -35,4 +41,10 @@ class WorkoutTarget extends Model
     {
         return $this->hasMany(WorkoutIntent::class);
     }
+
+    /*
+    |--------------------------------------------------------------------------
+    | Scopes & Methods
+    |--------------------------------------------------------------------------
+    */
 }

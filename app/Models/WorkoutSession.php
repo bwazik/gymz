@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Enums\SessionStatus;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -42,6 +43,12 @@ class WorkoutSession extends Model
         'status' => SessionStatus::class,
     ];
 
+    /*
+    |--------------------------------------------------------------------------
+    | Relations
+    |--------------------------------------------------------------------------
+    */
+
     public function workoutIntent(): BelongsTo
     {
         return $this->belongsTo(WorkoutIntent::class, 'intent_id');
@@ -55,5 +62,26 @@ class WorkoutSession extends Model
     public function userB(): BelongsTo
     {
         return $this->belongsTo(User::class, 'user_b_id');
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | Scopes & Methods
+    |--------------------------------------------------------------------------
+    */
+
+    public function scopeScheduled(Builder $query): Builder
+    {
+        return $query->where('status', SessionStatus::Scheduled);
+    }
+
+    public function scopeInProgress(Builder $query): Builder
+    {
+        return $query->where('status', SessionStatus::InProgress);
+    }
+
+    public function isActive(): bool
+    {
+        return $this->status === SessionStatus::Scheduled || $this->status === SessionStatus::InProgress;
     }
 }

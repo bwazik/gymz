@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Enums\IntentStatus;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -49,6 +50,12 @@ class WorkoutIntent extends Model
         'status' => IntentStatus::class,
     ];
 
+    /*
+    |--------------------------------------------------------------------------
+    | Relations
+    |--------------------------------------------------------------------------
+    */
+
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
@@ -72,5 +79,26 @@ class WorkoutIntent extends Model
     public function workoutSession(): HasOne
     {
         return $this->hasOne(WorkoutSession::class, 'intent_id');
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | Scopes & Methods
+    |--------------------------------------------------------------------------
+    */
+
+    public function scopeUpcoming(Builder $query): Builder
+    {
+        return $query->whereBetween('start_time', [now(), now()->addHours(24)]);
+    }
+
+    public function scopeActive(Builder $query): Builder
+    {
+        return $query->where('status', IntentStatus::Active);
+    }
+
+    public function scopeWithGuestPass(Builder $query): Builder
+    {
+        return $query->where('has_invitation', true);
     }
 }

@@ -5,6 +5,7 @@ namespace App\Models;
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use App\Enums\Gender;
 use App\Enums\UserLevel;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -84,6 +85,12 @@ class User extends Authenticatable
         ];
     }
 
+    /*
+    |--------------------------------------------------------------------------
+    | Relations
+    |--------------------------------------------------------------------------
+    */
+
     public function workoutIntents(): HasMany
     {
         return $this->hasMany(WorkoutIntent::class);
@@ -107,5 +114,21 @@ class User extends Authenticatable
     public function glutesTransactions(): HasMany
     {
         return $this->hasMany(GlutesTransaction::class);
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | Scopes & Methods
+    |--------------------------------------------------------------------------
+    */
+
+    public function scopeMales(Builder $query): Builder
+    {
+        return $query->where('gender', Gender::Male);
+    }
+
+    public function scopeFemales(Builder $query): Builder
+    {
+        return $query->where('gender', Gender::Female);
     }
 }
