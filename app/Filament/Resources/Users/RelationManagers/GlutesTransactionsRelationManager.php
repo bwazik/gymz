@@ -6,10 +6,16 @@ use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Schemas\Schema;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Model;
 
 class GlutesTransactionsRelationManager extends RelationManager
 {
     protected static string $relationship = 'glutesTransactions';
+
+    public static function getTitle(Model $ownerRecord, string $pageClass): string
+    {
+        return __('تحويلات الجلوتس');
+    }
 
     public function isReadOnly(): bool
     {
@@ -39,7 +45,7 @@ class GlutesTransactionsRelationManager extends RelationManager
                     ->searchable(),
                 TextColumn::make('created_at')
                     ->label(__('تاريخ الإضافة'))
-                    ->dateTime()
+                    ->isoDateTime()
                     ->sortable(),
             ])
             ->filters([

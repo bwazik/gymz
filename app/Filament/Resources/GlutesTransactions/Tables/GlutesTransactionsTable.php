@@ -2,9 +2,6 @@
 
 namespace App\Filament\Resources\GlutesTransactions\Tables;
 
-use Filament\Actions\BulkActionGroup;
-use Filament\Actions\DeleteBulkAction;
-use Filament\Actions\EditAction;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 
@@ -15,22 +12,27 @@ class GlutesTransactionsTable
         return $table
             ->columns([
                 TextColumn::make('user.name')
+                    ->label(__('المستخدم'))
                     ->searchable(),
                 TextColumn::make('type')
+                    ->label(__('النوع'))
                     ->badge()
-                    ->numeric()
                     ->sortable(),
                 TextColumn::make('amount')
+                    ->label(__('المبلغ'))
                     ->numeric()
                     ->sortable(),
                 TextColumn::make('description')
+                    ->label(__('الوصف'))
                     ->searchable(),
                 TextColumn::make('created_at')
-                    ->dateTime()
+                    ->label(__('تاريخ الإضافة'))
+                    ->isoDateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
                 TextColumn::make('updated_at')
-                    ->dateTime()
+                    ->label(__('تاريخ التعديل'))
+                    ->isoDateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
@@ -38,12 +40,10 @@ class GlutesTransactionsTable
                 //
             ])
             ->recordActions([
-                EditAction::make(),
+                //
             ])
             ->toolbarActions([
-                BulkActionGroup::make([
-                    DeleteBulkAction::make(),
-                ]),
+                //
             ]);
     }
 }

@@ -1,33 +1,35 @@
 <?php
 
-namespace App\Filament\Resources\WorkoutIntents\RelationManagers;
+namespace App\Filament\Resources\Users\RelationManagers;
 
-use App\Enums\SessionStatus;
-use Filament\Actions\BulkActionGroup;
-use Filament\Actions\CreateAction;
-use Filament\Actions\DeleteAction;
-use Filament\Actions\DeleteBulkAction;
-use Filament\Actions\EditAction;
-use Filament\Actions\ForceDeleteAction;
-use Filament\Actions\ForceDeleteBulkAction;
-use Filament\Actions\RestoreAction;
-use Filament\Actions\RestoreBulkAction;
 use Filament\Resources\RelationManagers\RelationManager;
+use Filament\Schemas\Schema;
 use Filament\Tables\Columns\TextColumn;
-use Filament\Tables\Filters\SelectFilter;
-use Filament\Tables\Filters\TrashedFilter;
 use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
 
-class WorkoutSessionRelationManager extends RelationManager
+class WorkoutSessionsAsUserBRelationManager extends RelationManager
 {
-    protected static string $relationship = 'workoutSession';
+    protected static string $relationship = 'workoutSessionsAsUserB';
 
     public static function getTitle(Model $ownerRecord, string $pageClass): string
     {
-        return __('الجلسة الناجحة');
+        return __('جلسات التمرين (مقدم طلب التمرين)');
+    }
+
+    public static function canViewForRecord(Model $ownerRecord, string $pageClass): bool
+    {
+        return true;
+    }
+
+    public function isReadOnly(): bool
+    {
+        return true;
+    }
+
+    public function form(Schema $schema): Schema
+    {
+        return $schema->components([]);
     }
 
     public function table(Table $table): Table
@@ -68,30 +70,16 @@ class WorkoutSessionRelationManager extends RelationManager
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
-                TrashedFilter::make(),
-                SelectFilter::make('status')
-                    ->label(__('الحالة'))
-                    ->options(collect(SessionStatus::cases())->mapWithKeys(fn(SessionStatus $case) => [$case->value => $case->getLabel()])),
-            ])
-            ->recordActions([
-                EditAction::make()->label(false)->tooltip('تعديل'),
-                DeleteAction::make()->label(false)->tooltip('حذف'),
-                ForceDeleteAction::make()->label(false)->tooltip('حذف نهائي'),
-                RestoreAction::make()->label(false)->tooltip('استعادة'),
-            ])
-            ->toolbarActions([
-                BulkActionGroup::make([
-                    DeleteBulkAction::make(),
-                    ForceDeleteBulkAction::make(),
-                    RestoreBulkAction::make(),
-                ]),
+                //
             ])
             ->headerActions([
                 //
             ])
-            ->modifyQueryUsing(fn(Builder $query) => $query
-                ->withoutGlobalScopes([
-                    SoftDeletingScope::class,
-                ]));
+            ->recordActions([
+                //
+            ])
+            ->toolbarActions([
+                //
+            ]);
     }
 }

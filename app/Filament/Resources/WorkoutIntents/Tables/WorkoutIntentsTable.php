@@ -2,6 +2,11 @@
 
 namespace App\Filament\Resources\WorkoutIntents\Tables;
 
+use App\Enums\IntentStatus;
+use App\Models\Gym;
+use App\Models\User;
+use App\Models\WorkoutCategory;
+use App\Models\WorkoutTarget;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteAction;
 use Filament\Actions\DeleteBulkAction;
@@ -10,8 +15,10 @@ use Filament\Actions\ForceDeleteAction;
 use Filament\Actions\ForceDeleteBulkAction;
 use Filament\Actions\RestoreAction;
 use Filament\Actions\RestoreBulkAction;
-use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Columns\ToggleColumn;
+use Filament\Tables\Filters\SelectFilter;
+use Filament\Tables\Filters\TernaryFilter;
 use Filament\Tables\Filters\TrashedFilter;
 use Filament\Tables\Table;
 
@@ -39,33 +46,61 @@ class WorkoutIntentsTable
                     ->sortable(),
                 TextColumn::make('start_time')
                     ->label(__('وقت البدء'))
-                    ->dateTime()
+                    ->isoDateTime()
                     ->sortable(),
-                IconColumn::make('has_invitation')
+                ToggleColumn::make('has_invitation')
                     ->label(__('دعوة ضيف'))
-                    ->boolean(),
+                    ->onIcon('heroicon-o-check-circle')
+                    ->offIcon('heroicon-o-x-circle')
+                    ->onColor('success')
+                    ->offColor('danger')
+                    ->sortable(),
                 TextColumn::make('status')
                     ->label(__('الحالة'))
                     ->badge()
                     ->sortable(),
                 TextColumn::make('created_at')
                     ->label(__('تاريخ الإضافة'))
-                    ->dateTime()
+                    ->isoDateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
                 TextColumn::make('updated_at')
                     ->label(__('تاريخ التعديل'))
-                    ->dateTime()
+                    ->isoDateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
                 TextColumn::make('deleted_at')
                     ->label(__('تاريخ الحذف'))
-                    ->dateTime()
+                    ->isoDateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
                 TrashedFilter::make(),
+                SelectFilter::make('status')
+                    ->label(__('الحالة'))
+                    ->options(collect(IntentStatus::cases())->mapWithKeys(fn(IntentStatus $case) => [$case->value => $case->getLabel()])),
+                TernaryFilter::make('has_invitation')
+                    ->label(__('دعوة ضيف'))
+                    ->placeholder(__('الكل'))
+                    ->trueLabel('نعم')
+                    ->falseLabel('لا'),
+                SelectFilter::make('user_id')
+                    ->label(__('المستخدم'))
+                    ->options(User::query()->pluck('name', 'id'))
+                    ->searchable(),
+                SelectFilter::make('gym_id')
+                    ->label(__('الجيم'))
+                    ->options(Gym::query()->pluck('name', 'id'))
+                    ->searchable(),
+                SelectFilter::make('workout_category_id')
+                    ->label(__('نوع التمرين'))
+                    ->options(WorkoutCategory::query()->pluck('name', 'id'))
+                    ->searchable(),
+                SelectFilter::make('workout_target_id')
+                    ->label(__('الهدف العضلي'))
+                    ->options(WorkoutTarget::query()->pluck('name', 'id'))
+                    ->searchable(),
             ])
             ->recordActions([
                 EditAction::make()->label(false)->tooltip('تعديل'),

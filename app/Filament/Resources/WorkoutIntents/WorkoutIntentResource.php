@@ -5,9 +5,10 @@ namespace App\Filament\Resources\WorkoutIntents;
 use App\Filament\Resources\WorkoutIntents\Pages\CreateWorkoutIntent;
 use App\Filament\Resources\WorkoutIntents\Pages\EditWorkoutIntent;
 use App\Filament\Resources\WorkoutIntents\Pages\ListWorkoutIntents;
+use App\Filament\Resources\WorkoutIntents\RelationManagers\WorkoutRequestsRelationManager;
+use App\Filament\Resources\WorkoutIntents\RelationManagers\WorkoutSessionRelationManager;
 use App\Filament\Resources\WorkoutIntents\Schemas\WorkoutIntentForm;
 use App\Filament\Resources\WorkoutIntents\Tables\WorkoutIntentsTable;
-use App\Filament\Resources\WorkoutIntents\RelationManagers\WorkoutRequestsRelationManager;
 use App\Models\WorkoutIntent;
 use BackedEnum;
 use Filament\Resources\Resource;
@@ -25,16 +26,14 @@ class WorkoutIntentResource extends Resource
 
     protected static ?int $navigationSort = 4;
 
-    protected static ?string $recordTitleAttribute = 'start_time';
-
     public static function getModelLabel(): string
     {
-        return 'نية تمرين';
+        return 'طلب تمرين';
     }
 
     public static function getPluralModelLabel(): string
     {
-        return 'نوايا التمارين';
+        return 'طلبات التمارين';
     }
 
     public static function form(Schema $schema): Schema
@@ -52,7 +51,7 @@ class WorkoutIntentResource extends Resource
     {
         return [
             WorkoutRequestsRelationManager::class,
-            RelationManagers\WorkoutSessionRelationManager::class,
+            WorkoutSessionRelationManager::class,
         ];
     }
 

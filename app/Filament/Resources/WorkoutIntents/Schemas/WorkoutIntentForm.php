@@ -41,10 +41,13 @@ class WorkoutIntentForm
                     ->required(),
                 DateTimePicker::make('start_time')
                     ->label(__('وقت البدء'))
-                    ->required(),
+                    ->required()
+                    ->default(now())
+                    ->columnSpanFull(),
                 Toggle::make('has_invitation')
                     ->label(__('دعوة ضيف'))
-                    ->required(),
+                    ->required()
+                    ->columnSpanFull(),
                 Textarea::make('note')
                     ->label(__('ملاحظة'))
                     ->columnSpanFull(),
@@ -52,7 +55,9 @@ class WorkoutIntentForm
                     ->label(__('الحالة'))
                     ->options(IntentStatus::class)
                     ->required()
-                    ->default(0),
+                    ->searchable()
+                    ->default(0)
+                    ->columnSpanFull(),
             ]);
     }
 }

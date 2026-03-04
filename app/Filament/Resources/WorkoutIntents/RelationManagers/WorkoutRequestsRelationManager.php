@@ -2,18 +2,24 @@
 
 namespace App\Filament\Resources\WorkoutIntents\RelationManagers;
 
+use App\Enums\RequestStatus;
 use Filament\Actions\BulkActionGroup;
-use Filament\Actions\CreateAction;
 use Filament\Actions\DeleteAction;
 use Filament\Actions\DeleteBulkAction;
-use Filament\Actions\EditAction;
 use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Model;
 
 class WorkoutRequestsRelationManager extends RelationManager
 {
     protected static string $relationship = 'workoutRequests';
+
+    public static function getTitle(Model $ownerRecord, string $pageClass): string
+    {
+        return __('الطلبات');
+    }
 
     public function table(Table $table): Table
     {
@@ -30,17 +36,19 @@ class WorkoutRequestsRelationManager extends RelationManager
                     ->sortable(),
                 TextColumn::make('created_at')
                     ->label(__('تاريخ الإضافة'))
-                    ->dateTime()
+                    ->isoDateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
                 TextColumn::make('updated_at')
                     ->label(__('تاريخ التعديل'))
-                    ->dateTime()
+                    ->isoDateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
-                //
+                SelectFilter::make('status')
+                    ->label(__('الحالة'))
+                    ->options(collect(RequestStatus::cases())->mapWithKeys(fn(RequestStatus $case) => [$case->value => $case->getLabel()])),
             ])
             ->recordActions([
                 DeleteAction::make()->label(false)->tooltip('حذف'),

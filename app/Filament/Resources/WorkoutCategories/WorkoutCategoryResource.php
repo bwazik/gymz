@@ -27,7 +27,7 @@ class WorkoutCategoryResource extends Resource
 
     public static function getModelLabel(): string
     {
-        return 'نوع التمرين';
+        return 'نوع تمرين';
     }
 
     public static function getPluralModelLabel(): string

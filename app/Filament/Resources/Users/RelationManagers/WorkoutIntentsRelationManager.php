@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Filament\Resources\Gyms\RelationManagers;
+namespace App\Filament\Resources\Users\RelationManagers;
 
 use App\Enums\IntentStatus;
 use App\Filament\Resources\WorkoutIntents\WorkoutIntentResource;

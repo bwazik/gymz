@@ -9,7 +9,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->tinyInteger('gender')->nullable()->after('password');
+            $table->tinyInteger('gender')->default(0)->after('password');
             $table->date('dob')->nullable()->after('gender');
             $table->tinyInteger('level')->default(0)->after('dob');
             $table->integer('glutes_balance')->default(0)->after('level');

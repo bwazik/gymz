@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\Users\Tables;
 
+use App\Enums\UserLevel;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteAction;
 use Filament\Actions\DeleteBulkAction;
@@ -14,6 +15,9 @@ use Filament\Actions\ViewAction;
 use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Columns\ImageColumn;
 use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Columns\ToggleColumn;
+use Filament\Tables\Filters\SelectFilter;
+use Filament\Tables\Filters\TernaryFilter;
 use Filament\Tables\Filters\TrashedFilter;
 use Filament\Tables\Table;
 
@@ -39,6 +43,7 @@ class UsersTable
                     ->toggleable(isToggledHiddenByDefault: true),
                 TextColumn::make('phone')
                     ->label(__('رقم الهاتف'))
+                    ->placeholder('-')
                     ->searchable()
                     ->sortable(),
                 TextColumn::make('gender')
@@ -50,37 +55,48 @@ class UsersTable
                     ->badge()
                     ->sortable(),
                 TextColumn::make('glutes_balance')
-                    ->label(__('النقاط'))
+                    ->label(__('الجلوتس'))
                     ->numeric()
                     ->sortable(),
                 TextColumn::make('reliability_score')
                     ->label(__('الموثوقية'))
                     ->numeric()
                     ->sortable(),
-                IconColumn::make('is_admin')
+                ToggleColumn::make('is_admin')
                     ->label(__('مدير'))
-                    ->boolean(),
+                    ->onIcon('heroicon-o-check-circle')
+                    ->offIcon('heroicon-o-x-circle')
+                    ->onColor('success')
+                    ->offColor('danger')
+                    ->sortable(),
                 TextColumn::make('created_at')
                     ->label(__('تاريخ الإضافة'))
-                    ->dateTime()
+                    ->isoDateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
                 TextColumn::make('updated_at')
                     ->label(__('تاريخ التعديل'))
-                    ->dateTime()
+                    ->isoDateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
                 TextColumn::make('deleted_at')
                     ->label(__('تاريخ الحذف'))
-                    ->dateTime()
+                    ->isoDateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
                 TrashedFilter::make(),
+                SelectFilter::make('level')
+                    ->label(__('المستوى'))
+                    ->options(collect(UserLevel::cases())->mapWithKeys(fn(UserLevel $case) => [$case->value => $case->getLabel()])),
+                TernaryFilter::make('is_admin')
+                    ->label(__('مدير'))
+                    ->placeholder(__('الكل'))
+                    ->trueLabel('نعم')
+                    ->falseLabel('لا'),
             ])
             ->recordActions([
-                ViewAction::make()->label(false)->tooltip('عرض'),
                 EditAction::make()->label(false)->tooltip('تعديل'),
                 DeleteAction::make()->label(false)->tooltip('حذف'),
                 ForceDeleteAction::make()->label(false)->tooltip('حذف نهائي'),

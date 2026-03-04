@@ -8,9 +8,14 @@ use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Model;
 
-class WorkoutSessionsRelationManager extends RelationManager
+class WorkoutSessionsAsUserARelationManager extends RelationManager
 {
     protected static string $relationship = 'workoutSessionsAsUserA';
+
+    public static function getTitle(Model $ownerRecord, string $pageClass): string
+    {
+        return __('جلسات التمرين (صاحب طلب التمرين)');
+    }
 
     public static function canViewForRecord(Model $ownerRecord, string $pageClass): bool
     {
@@ -40,10 +45,29 @@ class WorkoutSessionsRelationManager extends RelationManager
                     ->label(__('المستخدم الثاني'))
                     ->searchable()
                     ->sortable(),
+                TextColumn::make('scanned_at')
+                    ->label(__('تاريخ المسح'))
+                    ->isoDateTime()
+                    ->sortable(),
                 TextColumn::make('status')
                     ->label(__('الحالة'))
                     ->badge()
-                    ->searchable(),
+                    ->sortable(),
+                TextColumn::make('deleted_at')
+                    ->label(__('تاريخ الحذف'))
+                    ->isoDateTime()
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: true),
+                TextColumn::make('created_at')
+                    ->label(__('تاريخ الإضافة'))
+                    ->isoDateTime()
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: true),
+                TextColumn::make('updated_at')
+                    ->label(__('تاريخ التعديل'))
+                    ->isoDateTime()
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
                 //

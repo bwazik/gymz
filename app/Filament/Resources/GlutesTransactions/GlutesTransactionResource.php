@@ -4,13 +4,15 @@ namespace App\Filament\Resources\GlutesTransactions;
 
 use App\Enums\TransactionType;
 use App\Filament\Resources\GlutesTransactions\Pages\ListGlutesTransactions;
+use App\Filament\Resources\GlutesTransactions\Schemas\GlutesTransactionForm;
+use App\Filament\Resources\GlutesTransactions\Tables\GlutesTransactionsTable;
 use App\Models\GlutesTransaction;
 use BackedEnum;
 use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
-use Filament\Tables\Table;
 use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Model;
 
 class GlutesTransactionResource extends Resource
@@ -19,16 +21,16 @@ class GlutesTransactionResource extends Resource
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedBanknotes;
 
-    protected static ?int $navigationSort = 4;
+    protected static ?int $navigationSort = 6;
 
     public static function getModelLabel(): string
     {
-        return 'معاملة النقاط';
+        return 'جلوتس';
     }
 
     public static function getPluralModelLabel(): string
     {
-        return 'معاملات النقاط (Glutes)';
+        return 'الجلوتس';
     }
 
     public static function canCreate(): bool
@@ -48,39 +50,12 @@ class GlutesTransactionResource extends Resource
 
     public static function form(Schema $schema): Schema
     {
-        return $schema
-            ->components([
-                //
-            ]);
+        return GlutesTransactionForm::configure($schema);
     }
 
     public static function table(Table $table): Table
     {
-        return $table
-            ->columns([
-                TextColumn::make('user.name')
-                    ->searchable()
-                    ->sortable(),
-                TextColumn::make('type')
-                    ->searchable(),
-                TextColumn::make('amount')
-                    ->numeric()
-                    ->sortable(),
-                TextColumn::make('description')
-                    ->searchable(),
-                TextColumn::make('created_at')
-                    ->dateTime()
-                    ->sortable(),
-            ])
-            ->filters([
-                //
-            ])
-            ->actions([
-                //
-            ])
-            ->bulkActions([
-                //
-            ]);
+        return GlutesTransactionsTable::configure($table);
     }
 
     public static function getRelations(): array

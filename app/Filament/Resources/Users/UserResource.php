@@ -2,14 +2,16 @@
 
 namespace App\Filament\Resources\Users;
 
+use App\Filament\Resources\Users\RelationManagers\WorkoutIntentsRelationManager;
 use App\Filament\Resources\Users\Pages\CreateUser;
 use App\Filament\Resources\Users\Pages\EditUser;
 use App\Filament\Resources\Users\Pages\ListUsers;
 use App\Filament\Resources\Users\Pages\ViewUser;
+use App\Filament\Resources\Users\RelationManagers\GlutesTransactionsRelationManager;
+use App\Filament\Resources\Users\RelationManagers\WorkoutSessionsAsUserARelationManager;
+use App\Filament\Resources\Users\RelationManagers\WorkoutSessionsAsUserBRelationManager;
 use App\Filament\Resources\Users\Schemas\UserForm;
 use App\Filament\Resources\Users\Tables\UsersTable;
-use App\Filament\Resources\Users\RelationManagers\WorkoutSessionsRelationManager;
-use App\Filament\Resources\Users\RelationManagers\GlutesTransactionsRelationManager;
 use App\Models\User;
 use BackedEnum;
 use Filament\Resources\Resource;
@@ -23,11 +25,11 @@ class UserResource extends Resource
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedUsers;
 
-    protected static ?int $navigationSort = 6;
+    protected static ?int $navigationSort = 5;
 
     public static function getModelLabel(): string
     {
-        return 'المستخدم';
+        return 'مستخدم';
     }
 
     public static function getPluralModelLabel(): string
@@ -48,7 +50,9 @@ class UserResource extends Resource
     public static function getRelations(): array
     {
         return [
-            WorkoutSessionsRelationManager::class,
+            WorkoutSessionsAsUserARelationManager::class,
+            WorkoutSessionsAsUserBRelationManager::class,
+            WorkoutIntentsRelationManager::class,
             GlutesTransactionsRelationManager::class,
         ];
     }

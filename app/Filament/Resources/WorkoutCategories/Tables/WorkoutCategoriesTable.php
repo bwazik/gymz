@@ -21,12 +21,12 @@ class WorkoutCategoriesTable
                     ->sortable(),
                 TextColumn::make('created_at')
                     ->label(__('تاريخ الإضافة'))
-                    ->dateTime()
+                    ->isoDateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
                 TextColumn::make('updated_at')
                     ->label(__('تاريخ التعديل'))
-                    ->dateTime()
+                    ->isoDateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
             ])

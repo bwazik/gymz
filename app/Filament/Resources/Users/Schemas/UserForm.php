@@ -4,6 +4,7 @@ namespace App\Filament\Resources\Users\Schemas;
 
 use App\Enums\Gender;
 use App\Enums\UserLevel;
+use App\Rules\PhoneNumber;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Select;
@@ -20,8 +21,11 @@ class UserForm
                 FileUpload::make('image_path')
                     ->label(__('الصورة'))
                     ->image()
-                    ->disk('public')
                     ->directory('users')
+                    ->disk('public')
+                    ->imageEditor()
+                    ->acceptedFileTypes(['image/jpeg', 'image/png', 'image/webp'])
+                    ->maxSize(3072)
                     ->columnSpanFull(),
                 TextInput::make('name')
                     ->label(__('الاسم'))
@@ -34,7 +38,7 @@ class UserForm
                     ->maxLength(255),
                 TextInput::make('phone')
                     ->label(__('رقم الهاتف'))
-                    ->tel()
+                    ->rule(new PhoneNumber, fn($component) => $component->getState())
                     ->unique(ignoreRecord: true)
                     ->maxLength(255),
                 TextInput::make('password')
@@ -45,16 +49,20 @@ class UserForm
                     ->maxLength(255),
                 Select::make('gender')
                     ->label(__('الجنس'))
-                    ->options(Gender::class),
+                    ->options(Gender::class)
+                    ->searchable()
+                    ->required()
+                    ->default(Gender::Male),
                 DatePicker::make('dob')
                     ->label(__('تاريخ الميلاد')),
                 Select::make('level')
                     ->label(__('المستوى'))
                     ->options(UserLevel::class)
+                    ->searchable()
                     ->required()
-                    ->default(UserLevel::BEGINNER),
+                    ->default(UserLevel::Mid),
                 TextInput::make('glutes_balance')
-                    ->label(__('رصيد النقاط (Glutes)'))
+                    ->label(__('الجلوتس'))
                     ->required()
                     ->numeric()
                     ->default(0),
@@ -62,10 +70,12 @@ class UserForm
                     ->label(__('نقاط الموثوقية'))
                     ->required()
                     ->numeric()
-                    ->default(100),
+                    ->default(100)
+                    ->columnSpanFull(),
                 Toggle::make('is_admin')
                     ->label(__('صلاحية الإدارة'))
-                    ->required(),
+                    ->required()
+                    ->columnSpanFull(),
             ]);
     }
 }
