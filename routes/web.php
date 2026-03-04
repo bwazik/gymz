@@ -12,4 +12,8 @@ Route::view('profile', 'profile')
     ->middleware(['auth'])
     ->name('profile');
 
-require __DIR__.'/auth.php';
+Route::get('requests', App\Livewire\RequestsManager::class)
+    ->middleware(['auth'])
+    ->name('requests');
+
+require __DIR__ . '/auth.php';

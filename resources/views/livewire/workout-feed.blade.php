@@ -79,10 +79,19 @@
                 </div>
 
                 {{-- Action Button --}}
-                <button
-                    class="px-4 py-1.5 text-xs font-semibold rounded-full bg-gymz-accent text-gymz-dark hover:bg-gymz-accent/90 transition-all duration-200 shadow-lg shadow-gymz-accent/25">
-                    Send Request
-                </button>
+                @if (in_array($intent->id, $sentRequestIntentIds))
+                    <span
+                        class="px-4 py-1.5 text-xs font-semibold rounded-full bg-white/10 text-white/40 border border-white/10 cursor-default">
+                        Request Sent
+                    </span>
+                @else
+                    <button wire:click="sendRequest({{ $intent->id }})" wire:loading.attr="disabled"
+                        wire:target="sendRequest({{ $intent->id }})"
+                        class="px-4 py-1.5 text-xs font-semibold rounded-full bg-gymz-accent text-gymz-dark hover:bg-gymz-accent/90 transition-all duration-200 shadow-lg shadow-gymz-accent/25 disabled:opacity-50">
+                        <span wire:loading.remove wire:target="sendRequest({{ $intent->id }})">Send Request</span>
+                        <span wire:loading wire:target="sendRequest({{ $intent->id }})">Sending...</span>
+                    </button>
+                @endif
             </div>
         </div>
     @empty
