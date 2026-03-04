@@ -33,12 +33,16 @@ class WorkoutSessionsRelationManager extends RelationManager
             ->recordTitleAttribute('id')
             ->columns([
                 TextColumn::make('userA.name')
+                    ->label(__('المستخدم الأول'))
                     ->searchable()
                     ->sortable(),
                 TextColumn::make('userB.name')
+                    ->label(__('المستخدم الثاني'))
                     ->searchable()
                     ->sortable(),
                 TextColumn::make('status')
+                    ->label(__('الحالة'))
+                    ->badge()
                     ->searchable(),
             ])
             ->filters([

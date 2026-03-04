@@ -27,13 +27,18 @@ class GlutesTransactionsRelationManager extends RelationManager
             ->recordTitleAttribute('created_at')
             ->columns([
                 TextColumn::make('type')
+                    ->label(__('النوع'))
+                    ->badge()
                     ->searchable(),
                 TextColumn::make('amount')
+                    ->label(__('القيمة'))
                     ->numeric()
                     ->sortable(),
                 TextColumn::make('description')
+                    ->label(__('الوصف'))
                     ->searchable(),
                 TextColumn::make('created_at')
+                    ->label(__('تاريخ الإضافة'))
                     ->dateTime()
                     ->sortable(),
             ])
