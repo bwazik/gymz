@@ -5,10 +5,12 @@ namespace App\Filament\Resources\Gyms\RelationManagers;
 use App\Filament\Resources\WorkoutIntents\WorkoutIntentResource;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\CreateAction;
+use Filament\Actions\DeleteAction;
 use Filament\Actions\DeleteBulkAction;
+use Filament\Actions\EditAction;
+use Filament\Actions\ForceDeleteBulkAction;
+use Filament\Actions\RestoreBulkAction;
 use Filament\Resources\RelationManagers\RelationManager;
-use Filament\Tables\Actions\DeleteAction;
-use Filament\Tables\Actions\EditAction;
 use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\TrashedFilter;
@@ -44,14 +46,17 @@ class WorkoutIntentsRelationManager extends RelationManager
                     ->label(__('الحالة'))
                     ->searchable(),
                 TextColumn::make('created_at')
+                    ->label(__('تاريخ الإضافة'))
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
                 TextColumn::make('updated_at')
+                    ->label(__('تاريخ التعديل'))
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
                 TextColumn::make('deleted_at')
+                    ->label(__('تاريخ الحذف'))
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
@@ -60,13 +65,18 @@ class WorkoutIntentsRelationManager extends RelationManager
                 TrashedFilter::make()
             ])
             ->recordActions([
-                EditAction::make(),
-                DeleteAction::make(),
+                EditAction::make()->label(false)->tooltip('تعديل'),
+                DeleteAction::make()->label(false)->tooltip('حذف'),
             ])
             ->toolbarActions([
                 BulkActionGroup::make([
                     DeleteBulkAction::make(),
+                    ForceDeleteBulkAction::make(),
+                    RestoreBulkAction::make(),
                 ]),
+            ])
+            ->headerActions([
+                CreateAction::make(),
             ]);
     }
 }

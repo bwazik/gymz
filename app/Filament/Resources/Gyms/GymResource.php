@@ -57,6 +57,8 @@ class GymResource extends Resource
     {
         return [
             'index' => ListGyms::route('/'),
+            'create' => CreateGym::route('/create'),
+            'edit' => EditGym::route('/{record}/edit'),
         ];
     }
 }
