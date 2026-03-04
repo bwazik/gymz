@@ -10,12 +10,23 @@ use Filament\Widgets\StatsOverviewWidget\Stat;
 
 class StatsOverviewWidget extends BaseWidget
 {
+    protected static ?int $sort = 2;
+
     protected function getStats(): array
     {
         return [
-            Stat::make('Total Users', User::count()),
-            Stat::make('Completed Sessions', WorkoutSession::where('status', SessionStatus::Completed)->count()),
-            Stat::make('Total Glutes in Economy', User::sum('glutes_balance')),
+            Stat::make('جميع المستخدمين', User::count())
+                ->description('عدد المستخدمين المسجلين')
+                ->descriptionIcon('heroicon-m-user-group')
+                ->color('warning'),
+            Stat::make('الجلسات المكتملة', WorkoutSession::where('status', SessionStatus::Completed)->count())
+                ->description('عدد الجلسات الناجحة')
+                ->descriptionIcon('heroicon-m-check-circle')
+                ->color('success'),
+            Stat::make('مجموع الجلوتس', User::sum('glutes_balance'))
+                ->description('إجمالي الرصيد')
+                ->descriptionIcon('heroicon-m-wallet')
+                ->color('danger'),
         ];
     }
 }

@@ -3,13 +3,16 @@
 namespace App\Filament\Widgets;
 
 use App\Models\Gym;
-use Filament\Tables;
+use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Filament\Widgets\TableWidget as BaseWidget;
 
 class TopGymsWidget extends BaseWidget
 {
-    protected static ?string $heading = 'Top Active Gyms';
+    protected static ?int $sort = 4;
+    protected int | string | array $columnSpan = 1;
+
+    protected static ?string $heading = 'الجيمات الأكثر تفاعلا';
 
     public function table(Table $table): Table
     {
@@ -18,10 +21,12 @@ class TopGymsWidget extends BaseWidget
                 Gym::withCount('workoutIntents')->orderByDesc('workout_intents_count')->limit(5)
             )
             ->columns([
-                Tables\Columns\TextColumn::make('name'),
-                Tables\Columns\TextColumn::make('city.name'),
-                Tables\Columns\TextColumn::make('workout_intents_count')
-                    ->label('Intents'),
+                TextColumn::make('name')
+                    ->label('الإسم'),
+                TextColumn::make('city.name')
+                    ->label('المدينة'),
+                TextColumn::make('workout_intents_count')
+                    ->label('عدد الطلبات'),
             ])
             ->paginated(false);
     }

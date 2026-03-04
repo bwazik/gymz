@@ -8,7 +8,10 @@ use Illuminate\Support\Carbon;
 
 class IntentsChartWidget extends ChartWidget
 {
-    protected ?string $heading = 'Workout Intents (Last 7 Days)';
+    protected static ?int $sort = 3;
+    protected int | string | array $columnSpan = 1;
+
+    protected ?string $heading = 'طلبات التمرين (آخر 7 أيام)';
 
     protected function getData(): array
     {
@@ -24,7 +27,7 @@ class IntentsChartWidget extends ChartWidget
         return [
             'datasets' => [
                 [
-                    'label' => 'Workout Intents',
+                    'label' => 'طلبات التمرين',
                     'data' => $data,
                 ],
             ],
