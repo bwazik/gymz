@@ -6,4 +6,5 @@
     </x-slot>
 
     <livewire:workout-feed />
+    <livewire:create-intent />
 </x-app-layout>
