@@ -2,9 +2,12 @@
 
 namespace App\Filament\Resources\WorkoutIntents;
 
+use App\Filament\Resources\WorkoutIntents\Pages\CreateWorkoutIntent;
+use App\Filament\Resources\WorkoutIntents\Pages\EditWorkoutIntent;
 use App\Filament\Resources\WorkoutIntents\Pages\ListWorkoutIntents;
 use App\Filament\Resources\WorkoutIntents\Schemas\WorkoutIntentForm;
 use App\Filament\Resources\WorkoutIntents\Tables\WorkoutIntentsTable;
+use App\Filament\Resources\WorkoutIntents\RelationManagers\WorkoutRequestsRelationManager;
 use App\Models\WorkoutIntent;
 use BackedEnum;
 use Filament\Resources\Resource;
@@ -22,14 +25,16 @@ class WorkoutIntentResource extends Resource
 
     protected static ?int $navigationSort = 2;
 
+    protected static ?string $recordTitleAttribute = 'start_time';
+
     public static function getModelLabel(): string
     {
-        return 'طلب تمرين';
+        return 'نية تمرين';
     }
 
     public static function getPluralModelLabel(): string
     {
-        return 'طلبات التمارين';
+        return 'نوايا التمارين';
     }
 
     public static function form(Schema $schema): Schema
@@ -46,7 +51,7 @@ class WorkoutIntentResource extends Resource
     public static function getRelations(): array
     {
         return [
-            //
+            WorkoutRequestsRelationManager::class,
         ];
     }
 
@@ -54,6 +59,8 @@ class WorkoutIntentResource extends Resource
     {
         return [
             'index' => ListWorkoutIntents::route('/'),
+            'create' => CreateWorkoutIntent::route('/create'),
+            'edit' => EditWorkoutIntent::route('/{record}/edit'),
         ];
     }
 

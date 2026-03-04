@@ -16,21 +16,34 @@ class WorkoutIntentForm
         return $schema
             ->components([
                 Select::make('user_id')
+                    ->label(__('المستخدم'))
                     ->relationship('user', 'name')
+                    ->searchable()
+                    ->preload()
                     ->required(),
                 Select::make('gym_id')
+                    ->label(__('الجيم'))
                     ->relationship('gym', 'name')
+                    ->searchable()
+                    ->preload()
                     ->required(),
                 Select::make('workout_target_id')
+                    ->label(__('الهدف العضلي'))
                     ->relationship('workoutTarget', 'name')
+                    ->searchable()
+                    ->preload()
                     ->required(),
                 DateTimePicker::make('start_time')
+                    ->label(__('وقت البدء'))
                     ->required(),
                 Toggle::make('has_invitation')
+                    ->label(__('دعوة ضيف'))
                     ->required(),
                 Textarea::make('note')
+                    ->label(__('ملاحظة'))
                     ->columnSpanFull(),
                 Select::make('status')
+                    ->label(__('الحالة'))
                     ->options(IntentStatus::class)
                     ->required()
                     ->default(0),
