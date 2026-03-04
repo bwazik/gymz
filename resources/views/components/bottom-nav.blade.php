@@ -24,8 +24,8 @@
         </a>
 
         <!-- Session (QR) -->
-        <a href="#"
-            class="flex flex-col items-center gap-1 opacity-70 hover:opacity-100 hover:text-gymz-accent transition-colors relative">
+        <a href="{{ route('sessions') }}"
+            class="flex flex-col items-center gap-1 {{ request()->routeIs('sessions') ? 'opacity-100 text-gymz-accent' : 'opacity-70 hover:opacity-100 hover:text-gymz-accent' }} transition-colors relative">
             <div
                 class="absolute -top-6 bg-gymz-accent rounded-full p-3 shadow-lg border-4 border-gymz-dark text-gymz-dark">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
