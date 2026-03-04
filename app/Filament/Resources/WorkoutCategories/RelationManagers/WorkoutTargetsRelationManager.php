@@ -8,15 +8,12 @@ use Filament\Tables\Actions\CreateAction;
 use Filament\Tables\Actions\DeleteAction;
 use Filament\Tables\Actions\DeleteBulkAction;
 use Filament\Tables\Actions\EditAction;
-use Filament\Tables\Actions\ForceDeleteBulkAction;
-use Filament\Tables\Actions\RestoreBulkAction;
 use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Tables\Columns\TextColumn;
-use Filament\Tables\Filters\TrashedFilter;
 use Filament\Tables\Table;
 
 class WorkoutTargetsRelationManager extends RelationManager
-{ 
+{
     protected static string $relationship = 'workoutTargets';
 
     protected static ?string $relatedResource = WorkoutTargetResource::class;
@@ -39,17 +36,17 @@ class WorkoutTargetsRelationManager extends RelationManager
             ->filters([
                 //
             ])
-            ->headerActions([
-                CreateAction::make(),
+            ->recordActions([
+                EditAction::make()->label(false)->tooltip('تعديل'),
+                DeleteAction::make()->label(false)->tooltip('حذف'),
             ])
-            ->actions([
-                EditAction::make(),
-                DeleteAction::make(),
-            ])
-            ->bulkActions([
+            ->toolbarActions([
                 BulkActionGroup::make([
                     DeleteBulkAction::make(),
                 ]),
+            ])
+            ->headerActions([
+                CreateAction::make(),
             ]);
     }
 }
