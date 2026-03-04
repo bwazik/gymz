@@ -3,20 +3,20 @@
 namespace App\Filament\Resources\WorkoutCategories\RelationManagers;
 
 use App\Filament\Resources\WorkoutTargets\WorkoutTargetResource;
-use Filament\Actions\BulkActionGroup;
-use Filament\Actions\CreateAction;
-use Filament\Actions\DeleteBulkAction;
-use Filament\Actions\ForceDeleteBulkAction;
-use Filament\Actions\RestoreBulkAction;
+use Filament\Tables\Actions\BulkActionGroup;
+use Filament\Tables\Actions\CreateAction;
+use Filament\Tables\Actions\DeleteAction;
+use Filament\Tables\Actions\DeleteBulkAction;
+use Filament\Tables\Actions\EditAction;
+use Filament\Tables\Actions\ForceDeleteBulkAction;
+use Filament\Tables\Actions\RestoreBulkAction;
 use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\TrashedFilter;
 use Filament\Tables\Table;
-use Filament\Tables\Actions\EditAction;
-use Filament\Tables\Actions\DeleteAction;
 
 class WorkoutTargetsRelationManager extends RelationManager
-{
+{ 
     protected static string $relationship = 'workoutTargets';
 
     protected static ?string $relatedResource = WorkoutTargetResource::class;
@@ -40,14 +40,14 @@ class WorkoutTargetsRelationManager extends RelationManager
                 //
             ])
             ->headerActions([
-                \Filament\Tables\Actions\CreateAction::make(),
+                CreateAction::make(),
             ])
             ->actions([
                 EditAction::make(),
                 DeleteAction::make(),
             ])
             ->bulkActions([
-                \Filament\Tables\Actions\BulkActionGroup::make([
+                BulkActionGroup::make([
                     DeleteBulkAction::make(),
                 ]),
             ]);

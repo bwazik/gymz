@@ -34,12 +34,12 @@ class WorkoutCategoriesTable
                 //
             ])
             ->recordActions([
-                \Filament\Tables\Actions\EditAction::make()->label(false)->tooltip('تعديل'),
-                \Filament\Tables\Actions\DeleteAction::make()->label(false)->tooltip('حذف'),
+                EditAction::make()->label(false)->tooltip('تعديل'),
+                DeleteAction::make()->label(false)->tooltip('حذف'),
             ])
             ->toolbarActions([
-                \Filament\Tables\Actions\BulkActionGroup::make([
-                    \Filament\Tables\Actions\DeleteBulkAction::make(),
+                BulkActionGroup::make([
+                    DeleteBulkAction::make(),
                 ]),
             ]);
     }
