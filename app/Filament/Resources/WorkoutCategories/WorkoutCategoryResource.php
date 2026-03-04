@@ -21,18 +21,18 @@ class WorkoutCategoryResource extends Resource
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedTag;
 
-    protected static ?int $navigationSort = 5;
+    protected static ?int $navigationSort = 3;
 
     protected static ?string $recordTitleAttribute = 'name';
 
     public static function getModelLabel(): string
     {
-        return 'فئة التمرين';
+        return 'نوع التمرين';
     }
 
     public static function getPluralModelLabel(): string
     {
-        return 'فئات التمارين';
+        return 'أنواع التمارين';
     }
 
     public static function form(Schema $schema): Schema

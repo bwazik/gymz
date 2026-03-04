@@ -2,7 +2,6 @@
 
 namespace App\Filament\Resources\WorkoutCategories\RelationManagers;
 
-use App\Filament\Resources\WorkoutTargets\WorkoutTargetResource;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\CreateAction;
 use Filament\Actions\DeleteAction;
@@ -15,8 +14,6 @@ use Filament\Tables\Table;
 class WorkoutTargetsRelationManager extends RelationManager
 {
     protected static string $relationship = 'workoutTargets';
-
-    protected static ?string $relatedResource = WorkoutTargetResource::class;
 
     public function table(Table $table): Table
     {
