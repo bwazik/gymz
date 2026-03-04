@@ -2,6 +2,8 @@
 
 namespace App\Filament\Resources\WorkoutCategories;
 
+use App\Filament\Resources\WorkoutCategories\Pages\CreateWorkoutCategory;
+use App\Filament\Resources\WorkoutCategories\Pages\EditWorkoutCategory;
 use App\Filament\Resources\WorkoutCategories\Pages\ListWorkoutCategories;
 use App\Filament\Resources\WorkoutCategories\Schemas\WorkoutCategoryForm;
 use App\Filament\Resources\WorkoutCategories\Tables\WorkoutCategoriesTable;
@@ -54,6 +56,8 @@ class WorkoutCategoryResource extends Resource
     {
         return [
             'index' => ListWorkoutCategories::route('/'),
+            'create' => CreateWorkoutCategory::route('/create'),
+            'edit' => EditWorkoutCategory::route('/{record}/edit'),
         ];
     }
 }

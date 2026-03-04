@@ -4,6 +4,7 @@ namespace App\Filament\Resources\WorkoutCategories\Tables;
 
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteBulkAction;
+use Filament\Actions\DeleteAction;
 use Filament\Actions\EditAction;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
@@ -33,11 +34,12 @@ class WorkoutCategoriesTable
                 //
             ])
             ->recordActions([
-                EditAction::make(),
+                \Filament\Tables\Actions\EditAction::make()->label(false)->tooltip('تعديل'),
+                \Filament\Tables\Actions\DeleteAction::make()->label(false)->tooltip('حذف'),
             ])
             ->toolbarActions([
-                BulkActionGroup::make([
-                    DeleteBulkAction::make(),
+                \Filament\Tables\Actions\BulkActionGroup::make([
+                    \Filament\Tables\Actions\DeleteBulkAction::make(),
                 ]),
             ]);
     }

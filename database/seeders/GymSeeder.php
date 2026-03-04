@@ -10,12 +10,11 @@ use Illuminate\Database\Seeder;
 class GymSeeder extends Seeder
 {
     use TruncatableTables;
-    /**
-     * Run the database seeds.
-     */
+
     public function run(): void
     {
         $this->truncateTables(['gyms']);
+
         $city = City::where('name', 'بنها')->first();
 
         if (!$city) {

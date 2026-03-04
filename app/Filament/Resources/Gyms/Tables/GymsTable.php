@@ -4,6 +4,7 @@ namespace App\Filament\Resources\Gyms\Tables;
 
 use App\Models\City;
 use Filament\Actions\BulkActionGroup;
+use Filament\Actions\DeleteAction;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
 use Filament\Tables\Columns\IconColumn;
@@ -64,7 +65,8 @@ class GymsTable
                     ->searchable(),
             ])
             ->recordActions([
-                EditAction::make(),
+                EditAction::make()->label(false)->tooltip('تعديل'),
+                DeleteAction::make()->label(false)->tooltip('حذف'),
             ])
             ->toolbarActions([
                 BulkActionGroup::make([

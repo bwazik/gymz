@@ -6,16 +6,17 @@ use App\Models\Gym;
 use App\Models\User;
 use App\Models\WorkoutIntent;
 use App\Models\WorkoutTarget;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use App\Traits\TruncatableTables;
 use Illuminate\Database\Seeder;
 
 class WorkoutIntentSeeder extends Seeder
 {
-    /**
-     * Run the database seeds.
-     */
+    use TruncatableTables;
+
     public function run(): void
     {
+        $this->truncateTables(['workout_intents']);
+
         $users = User::all();
         $gyms = Gym::all();
         $targets = WorkoutTarget::all();

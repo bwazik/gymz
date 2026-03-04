@@ -3,6 +3,7 @@
 namespace App\Filament\Resources\Cities\Tables;
 
 use Filament\Actions\BulkActionGroup;
+use Filament\Actions\DeleteAction;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
 use Filament\Tables\Columns\TextColumn;
@@ -45,7 +46,8 @@ class CitiesTable
                     ->falseLabel('غير نشط'),
             ])
             ->recordActions([
-                EditAction::make(),
+                EditAction::make()->label(false)->tooltip('تعديل'),
+                DeleteAction::make()->label(false)->tooltip('حذف'),
             ])
             ->toolbarActions([
                 BulkActionGroup::make([

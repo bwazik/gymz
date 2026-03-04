@@ -24,12 +24,12 @@ class WorkoutIntentResource extends Resource
 
     public static function getModelLabel(): string
     {
-        return 'نية التمرين';
+        return 'طلب تمرين';
     }
 
     public static function getPluralModelLabel(): string
     {
-        return 'نوايا التمارين (Intents)';
+        return 'طلبات التمارين';
     }
 
     public static function form(Schema $schema): Schema
