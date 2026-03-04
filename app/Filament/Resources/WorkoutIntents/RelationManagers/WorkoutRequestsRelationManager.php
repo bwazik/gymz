@@ -2,12 +2,13 @@
 
 namespace App\Filament\Resources\WorkoutIntents\RelationManagers;
 
-use App\Filament\Resources\WorkoutRequests\WorkoutRequestResource;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\CreateAction;
 use Filament\Actions\DeleteAction;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
+use App\Filament\Resources\WorkoutRequests\Schemas\WorkoutRequestForm;
+use Filament\Forms\Form;
 use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
@@ -16,7 +17,12 @@ class WorkoutRequestsRelationManager extends RelationManager
 {
     protected static string $relationship = 'workoutRequests';
 
-    protected static ?string $relatedResource = WorkoutRequestResource::class;
+    public function form(Form $form): Form
+    {
+        return $form->schema(
+            WorkoutRequestForm::configure($form)->getComponents()
+        );
+    }
 
     public function table(Table $table): Table
     {
@@ -25,10 +31,6 @@ class WorkoutRequestsRelationManager extends RelationManager
             ->columns([
                 TextColumn::make('sender.name')
                     ->label(__('المرسل'))
-                    ->searchable()
-                    ->sortable(),
-                TextColumn::make('receiver.name')
-                    ->label(__('المستقبل'))
                     ->searchable()
                     ->sortable(),
                 TextColumn::make('status')
