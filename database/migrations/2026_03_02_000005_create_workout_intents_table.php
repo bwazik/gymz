@@ -12,6 +12,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('user_id')->constrained()->cascadeOnDelete();
             $table->foreignId('gym_id')->constrained()->cascadeOnDelete();
+            $table->foreignId('workout_category_id')->constrained()->cascadeOnDelete();
             $table->foreignId('workout_target_id')->constrained()->cascadeOnDelete();
             $table->dateTime('start_time');
             $table->boolean('has_invitation')->default(false);

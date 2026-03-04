@@ -35,6 +35,11 @@ class WorkoutCategory extends Model
         return $this->hasMany(WorkoutTarget::class);
     }
 
+    public function workoutIntents(): HasMany
+    {
+        return $this->hasMany(WorkoutIntent::class);
+    }
+
     /*
     |--------------------------------------------------------------------------
     | Scopes & Methods

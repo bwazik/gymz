@@ -39,6 +39,7 @@ class WorkoutIntent extends Model
     protected $fillable = [
         'user_id',
         'gym_id',
+        'workout_category_id',
         'workout_target_id',
         'start_time',
         'has_invitation',
@@ -66,6 +67,11 @@ class WorkoutIntent extends Model
     public function gym(): BelongsTo
     {
         return $this->belongsTo(Gym::class);
+    }
+
+    public function workoutCategory(): BelongsTo
+    {
+        return $this->belongsTo(WorkoutCategory::class);
     }
 
     public function workoutTarget(): BelongsTo
