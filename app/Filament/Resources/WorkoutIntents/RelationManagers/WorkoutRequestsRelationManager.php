@@ -7,7 +7,8 @@ use Filament\Actions\CreateAction;
 use Filament\Actions\DeleteAction;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
-use App\Filament\Resources\WorkoutRequests\Schemas\WorkoutRequestForm;
+use App\Enums\RequestStatus;
+use Filament\Forms\Components\Select;
 use Filament\Forms\Form;
 use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Tables\Columns\TextColumn;
@@ -19,9 +20,20 @@ class WorkoutRequestsRelationManager extends RelationManager
 
     public function form(Form $form): Form
     {
-        return $form->schema(
-            WorkoutRequestForm::configure($form)->getComponents()
-        );
+        return $form
+            ->schema([
+                Select::make('sender_id')
+                    ->label(__('المرسل'))
+                    ->relationship('sender', 'name')
+                    ->searchable()
+                    ->preload()
+                    ->required(),
+                Select::make('status')
+                    ->label(__('الحالة'))
+                    ->options(RequestStatus::class)
+                    ->required()
+                    ->default(RequestStatus::PENDING),
+            ]);
     }
 
     public function table(Table $table): Table
