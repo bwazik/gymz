@@ -2,7 +2,6 @@
 
 namespace App\Filament\Resources\WorkoutIntents\RelationManagers;
 
-use App\Enums\SessionStatus;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\CreateAction;
 use Filament\Actions\DeleteAction;
@@ -12,9 +11,6 @@ use Filament\Actions\ForceDeleteAction;
 use Filament\Actions\ForceDeleteBulkAction;
 use Filament\Actions\RestoreAction;
 use Filament\Actions\RestoreBulkAction;
-use Filament\Forms\Components\DateTimePicker;
-use Filament\Forms\Components\Select;
-use Filament\Forms\Form;
 use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\TrashedFilter;
@@ -25,32 +21,6 @@ use Illuminate\Database\Eloquent\SoftDeletingScope;
 class WorkoutSessionRelationManager extends RelationManager
 {
     protected static string $relationship = 'workoutSession';
-
-    public function form(Form $form): Form
-    {
-        return $form
-            ->schema([
-                Select::make('user_a_id')
-                    ->label(__('المستخدم الأول'))
-                    ->relationship('userA', 'name')
-                    ->searchable()
-                    ->preload()
-                    ->required(),
-                Select::make('user_b_id')
-                    ->label(__('المستخدم الثاني'))
-                    ->relationship('userB', 'name')
-                    ->searchable()
-                    ->preload()
-                    ->required(),
-                DateTimePicker::make('scanned_at')
-                    ->label(__('تاريخ المسح')),
-                Select::make('status')
-                    ->label(__('الحالة'))
-                    ->options(SessionStatus::class)
-                    ->required()
-                    ->default(SessionStatus::SCHEDULED),
-            ]);
-    }
 
     public function table(Table $table): Table
     {

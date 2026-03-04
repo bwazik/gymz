@@ -21,6 +21,7 @@ class DatabaseSeeder extends Seeder
             UserSeeder::class,
             WorkoutIntentSeeder::class,
             WorkoutRequestSeeder::class,
+            WorkoutSessionSeeder::class,
         ]);
     }
 }
