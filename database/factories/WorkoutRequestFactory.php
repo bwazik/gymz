@@ -18,7 +18,7 @@ class WorkoutRequestFactory extends Factory
     public function definition(): array
     {
         return [
-            'status' => fake()->randomElement([RequestStatus::PENDING, RequestStatus::ACCEPTED, RequestStatus::REJECTED]),
+            'status' => fake()->randomElement([RequestStatus::Pending, RequestStatus::Accepted, RequestStatus::Rejected]),
         ];
     }
 }

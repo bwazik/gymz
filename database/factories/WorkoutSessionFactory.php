@@ -21,7 +21,7 @@ class WorkoutSessionFactory extends Factory
         return [
             'qr_token' => Str::random(32),
             'scanned_at' => null,
-            'status' => fake()->randomElement([SessionStatus::SCHEDULED, SessionStatus::IN_PROGRESS, SessionStatus::COMPLETED, SessionStatus::CANCELED]),
+            'status' => fake()->randomElement([SessionStatus::Scheduled, SessionStatus::InProgress, SessionStatus::Completed, SessionStatus::Disputed]),
         ];
     }
 }
