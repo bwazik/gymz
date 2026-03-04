@@ -27,6 +27,12 @@ class WorkoutIntentForm
                     ->searchable()
                     ->preload()
                     ->required(),
+                Select::make('workout_category_id')
+                    ->label(__('فئة التمرين'))
+                    ->relationship('workoutCategory', 'name')
+                    ->searchable()
+                    ->preload()
+                    ->required(),
                 Select::make('workout_target_id')
                     ->label(__('الهدف العضلي'))
                     ->relationship('workoutTarget', 'name')

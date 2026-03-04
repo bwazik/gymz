@@ -29,6 +29,10 @@ class WorkoutIntentsTable
                     ->label(__('الجيم'))
                     ->searchable()
                     ->sortable(),
+                TextColumn::make('workoutCategory.name')
+                    ->label(__('فئة التمرين'))
+                    ->searchable()
+                    ->sortable(),
                 TextColumn::make('workoutTarget.name')
                     ->label(__('الهدف العضلي'))
                     ->searchable()
