@@ -12,10 +12,15 @@ class WorkoutTargetForm
     {
         return $schema
             ->components([
-                Select::make('workout_category_id')
-                    ->relationship('workoutCategory', 'name')
-                    ->required(),
                 TextInput::make('name')
+                    ->label(__('الاسم'))
+                    ->required()
+                    ->maxLength(255),
+                Select::make('workout_category_id')
+                    ->label(__('فئة التمرين'))
+                    ->relationship('workoutCategory', 'name')
+                    ->searchable()
+                    ->preload()
                     ->required(),
             ]);
     }

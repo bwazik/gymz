@@ -3,6 +3,7 @@
 namespace App\Filament\Resources\WorkoutTargets\Tables;
 
 use Filament\Actions\BulkActionGroup;
+use Filament\Actions\DeleteAction;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
 use Filament\Tables\Columns\TextColumn;
@@ -14,15 +15,21 @@ class WorkoutTargetsTable
     {
         return $table
             ->columns([
-                TextColumn::make('workoutCategory.name')
-                    ->searchable(),
                 TextColumn::make('name')
-                    ->searchable(),
+                    ->label(__('الاسم'))
+                    ->searchable()
+                    ->sortable(),
+                TextColumn::make('workoutCategory.name')
+                    ->label(__('فئة التمرين'))
+                    ->searchable()
+                    ->sortable(),
                 TextColumn::make('created_at')
+                    ->label(__('تاريخ الإضافة'))
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
                 TextColumn::make('updated_at')
+                    ->label(__('تاريخ التعديل'))
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
@@ -31,7 +38,8 @@ class WorkoutTargetsTable
                 //
             ])
             ->recordActions([
-                EditAction::make(),
+                EditAction::make()->label(false)->tooltip('تعديل'),
+                DeleteAction::make()->label(false)->tooltip('حذف'),
             ])
             ->toolbarActions([
                 BulkActionGroup::make([
