@@ -15,12 +15,16 @@ class WorkoutCategoriesTable
         return $table
             ->columns([
                 TextColumn::make('name')
-                    ->searchable(),
+                    ->label(__('الاسم'))
+                    ->searchable()
+                    ->sortable(),
                 TextColumn::make('created_at')
+                    ->label(__('تاريخ الإضافة'))
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
                 TextColumn::make('updated_at')
+                    ->label(__('تاريخ التعديل'))
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),

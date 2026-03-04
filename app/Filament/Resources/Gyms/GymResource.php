@@ -19,21 +19,22 @@ class GymResource extends Resource
 {
     protected static ?string $model = Gym::class;
 
-    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedBuildingStorefront;
+    protected static string|BackedEnum|null $navigationIcon = Heroicon::BuildingOffice;
 
-    protected static ?int $navigationSort = 7;
+    protected static ?int $navigationSort = 2;
+
+    protected static ?string $recordTitleAttribute = 'name';
 
     public static function getModelLabel(): string
     {
-        return 'الصالات الرياضية';
+        return 'جيم';
     }
 
     public static function getPluralModelLabel(): string
     {
-        return 'الصالات الرياضية (Gyms)';
+        return 'الجيمات';
     }
 
-    protected static ?string $recordTitleAttribute = 'name';
 
     public static function form(Schema $schema): Schema
     {
@@ -56,8 +57,6 @@ class GymResource extends Resource
     {
         return [
             'index' => ListGyms::route('/'),
-            'create' => CreateGym::route('/create'),
-            'edit' => EditGym::route('/{record}/edit'),
         ];
     }
 }

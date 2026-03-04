@@ -12,7 +12,9 @@ class WorkoutCategoryForm
         return $schema
             ->components([
                 TextInput::make('name')
-                    ->required(),
+                    ->label(__('الاسم'))
+                    ->required()
+                    ->maxLength(255),
             ]);
     }
 }
