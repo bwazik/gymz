@@ -52,6 +52,7 @@ class WorkoutIntentResource extends Resource
     {
         return [
             WorkoutRequestsRelationManager::class,
+            RelationManagers\WorkoutSessionRelationManager::class,
         ];
     }
 
