@@ -4,13 +4,6 @@
         <h2 class="text-2xl font-black text-gray-900 dark:text-white tracking-tighter">الجلسات النشطة</h2>
     </div>
 
-    {{-- Flash Messages --}}
-    @if (session()->has('error'))
-        <div
-            class="mb-4 px-4 py-3 rounded-2xl bg-red-500/10 text-red-500 dark:text-red-400 text-sm font-bold border border-red-500/20">
-            {{ session('error') }}
-        </div>
-    @endif
 
     @forelse ($this->activeSessions as $session)
         @php
@@ -208,8 +201,8 @@
                         </p>
                     </template>
 
-                    <button wire:click="endSession({{ $session->id }})" wire:loading.attr="disabled"
-                        wire:confirm="هتنهي التمرينة وتاخد ١٠ Glutes مع شريكك؟"
+                    <button wire:loading.attr="disabled"
+                        @click="if (canEnd) { $dispatch('open-ios-alert', { title: 'إنهاء التمرينة', message: 'متأكد إنك عايز تنهي التمرينة وتستلم الـ ١٠ Glutes؟', action: 'endSession', params: {{ $session->id }}, wire: $wire }) }"
                         class="w-full py-3.5 rounded-2xl font-bold text-sm transition-all active:scale-95 disabled:opacity-50"
                         :class="canEnd
                             ?

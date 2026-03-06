@@ -40,12 +40,12 @@ class SessionManager extends Component
 
         // Ensure session is still Scheduled
         if ($session->status !== SessionStatus::Scheduled) {
-            session()->flash('error', 'الجلسة دي مش في حالة مجدولة');
+            $this->dispatch('toast', message: 'الجلسة دي مش في حالة مجدولة', type: 'error');
             return;
         }
 
         if ($token !== $session->qr_token) {
-            session()->flash('error', 'الكود مش صح. جرب تاني.');
+            $this->dispatch('toast', message: 'الكود مش صح. جرب تاني.', type: 'error');
             return;
         }
 
@@ -58,6 +58,7 @@ class SessionManager extends Component
 
         unset($this->activeSessions);
         $this->dispatch('token-verified');
+        $this->dispatch('toast', message: 'تم التحقق بنجاح! 🔥 يلا بينا', type: 'success');
     }
 
     public function endSession(int $sessionId): void
@@ -75,7 +76,7 @@ class SessionManager extends Component
 
         // ANTI-CHEAT: Minimum 30 minutes
         if ($session->scanned_at && now()->diffInMinutes($session->scanned_at) < 90) {
-            session()->flash('error', 'التمرينة لازم تكون ٩٠ دقيقة على الأقل عشان تاخد النقط 🏋️');
+            $this->dispatch('toast', message: 'التمرينة لازم تكون ٩٠ دقيقة على الأقل عشان تاخد النقط 🏋️', type: 'error');
             return;
         }
 
@@ -99,6 +100,7 @@ class SessionManager extends Component
 
         unset($this->activeSessions);
         $this->dispatch('session-completed');
+        $this->dispatch('toast', message: 'تم استلام ١٠ Glutes 🏆 عاش يا بطل!', type: 'success');
     }
 
     public function render()

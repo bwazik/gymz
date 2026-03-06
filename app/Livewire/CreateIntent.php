@@ -42,7 +42,7 @@ class CreateIntent extends Component
         $this->targets = collect();
         $this->showModal = false;
 
-        session()->flash('message', 'تمرينة اتنشرت!');
+        $this->dispatch('toast', message: 'تمرينة اتنشرت بنجاح! 🔥', type: 'success');
     }
 
     public function render()

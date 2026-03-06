@@ -33,6 +33,9 @@
 <body
     class="bg-[#f2f2f7] dark:bg-[#000000] font-tajawal antialiased text-gray-900 dark:text-gray-100 flex justify-center min-h-screen selection:bg-blue-500/30">
 
+    <x-toaster />
+    <x-ios-alert />
+
     <main class="w-full max-w-md mx-auto relative min-h-screen pb-32 pt-6 px-4 shadow-2xl bg-white/30 dark:bg-white/5">
         <!-- Header -->
         <header
