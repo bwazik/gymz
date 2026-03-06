@@ -65,7 +65,7 @@ new class extends Component {
                 <span class="text-gray-400 dark:text-white/40 w-24 text-sm font-medium">الحالية</span>
                 <input wire:model="current_password" id="current_password" type="password"
                     class="flex-1 bg-transparent border-0 focus:ring-0 text-gray-900 dark:text-white px-2 py-4 text-sm font-bold placeholder-gray-400 text-left [&:-webkit-autofill]:[transition:background-color_9999999s_ease-in-out_0s] [&:-webkit-autofill]:[-webkit-text-fill-color:inherit] dark:[&:-webkit-autofill]:[-webkit-text-fill-color:#fff]"
-                    dir="ltr" required autocomplete="current-password">
+                    dir="ltr" required maxlength="255" autocomplete="current-password">
             </div>
 
             {{-- New Password --}}
@@ -73,7 +73,7 @@ new class extends Component {
                 <span class="text-gray-400 dark:text-white/40 w-24 text-sm font-medium">الجديدة</span>
                 <input wire:model="password" id="password" type="password"
                     class="flex-1 bg-transparent border-0 focus:ring-0 text-gray-900 dark:text-white px-2 py-4 text-sm font-bold placeholder-gray-400 text-left [&:-webkit-autofill]:[transition:background-color_9999999s_ease-in-out_0s] [&:-webkit-autofill]:[-webkit-text-fill-color:inherit] dark:[&:-webkit-autofill]:[-webkit-text-fill-color:#fff]"
-                    dir="ltr" required autocomplete="new-password">
+                    dir="ltr" required minlength="8" maxlength="255" autocomplete="new-password">
             </div>
 
             {{-- Confirm Password --}}
@@ -81,7 +81,7 @@ new class extends Component {
                 <span class="text-gray-400 dark:text-white/40 w-24 text-sm font-medium">تأكيد</span>
                 <input wire:model="password_confirmation" id="password_confirmation" type="password"
                     class="flex-1 bg-transparent border-0 focus:ring-0 text-gray-900 dark:text-white px-2 py-4 text-sm font-bold placeholder-gray-400 text-left [&:-webkit-autofill]:[transition:background-color_9999999s_ease-in-out_0s] [&:-webkit-autofill]:[-webkit-text-fill-color:inherit] dark:[&:-webkit-autofill]:[-webkit-text-fill-color:#fff]"
-                    dir="ltr" required autocomplete="new-password">
+                    dir="ltr" required minlength="8" maxlength="255" autocomplete="new-password">
             </div>
 
         </div>

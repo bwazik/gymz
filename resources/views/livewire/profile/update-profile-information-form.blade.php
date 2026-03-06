@@ -127,7 +127,8 @@ new class extends Component {
                     <span class="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></span>
                 </div>
             </div>
-            <input type="file" id="photo-upload" wire:model="photo" class="hidden" accept="image/*">
+            <input type="file" id="photo-upload" wire:model="photo" class="hidden"
+                accept="image/jpeg,image/png,image/webp">
 
             <div>
                 <h3 class="text-xl font-bold text-gray-900 dark:text-white">{{ auth()->user()->name }}</h3>
@@ -226,7 +227,7 @@ new class extends Component {
                 <span class="text-gray-400 dark:text-white/40 w-16 text-sm font-medium">الاسم</span>
                 <input wire:model="name" id="name" type="text"
                     class="flex-1 bg-transparent border-0 focus:ring-0 text-gray-900 dark:text-white px-2 py-4 text-sm font-bold placeholder-gray-400 [&:-webkit-autofill]:[transition:background-color_9999999s_ease-in-out_0s] [&:-webkit-autofill]:[-webkit-text-fill-color:inherit] dark:[&:-webkit-autofill]:[-webkit-text-fill-color:#fff]"
-                    required autofocus placeholder="اسمك">
+                    required autofocus maxlength="255" placeholder="اسمك">
             </div>
 
             {{-- Email --}}
@@ -234,7 +235,7 @@ new class extends Component {
                 <span class="text-gray-400 dark:text-white/40 w-16 text-sm font-medium">الإيميل</span>
                 <input wire:model="email" id="email" type="email"
                     class="flex-1 bg-transparent border-0 focus:ring-0 text-gray-900 dark:text-white px-2 py-4 text-sm font-bold placeholder-gray-400 text-left [&:-webkit-autofill]:[transition:background-color_9999999s_ease-in-out_0s] [&:-webkit-autofill]:[-webkit-text-fill-color:inherit] dark:[&:-webkit-autofill]:[-webkit-text-fill-color:#fff]"
-                    dir="ltr" required placeholder="email@example.com">
+                    dir="ltr" required maxlength="255" placeholder="email@example.com">
             </div>
 
             {{-- Phone --}}
@@ -242,7 +243,7 @@ new class extends Component {
                 <span class="text-gray-400 dark:text-white/40 w-16 text-sm font-medium">الموبايل</span>
                 <input wire:model="phone" id="phone" type="tel"
                     class="flex-1 bg-transparent border-0 focus:ring-0 text-gray-900 dark:text-white px-2 py-4 text-sm font-bold placeholder-gray-400 text-left [&:-webkit-autofill]:[transition:background-color_9999999s_ease-in-out_0s] [&:-webkit-autofill]:[-webkit-text-fill-color:inherit] dark:[&:-webkit-autofill]:[-webkit-text-fill-color:#fff]"
-                    dir="ltr" placeholder="01xxxxxxxxx">
+                    dir="ltr" maxlength="11" pattern="^(011|010|012|015)\d{8}$" placeholder="01xxxxxxxxx">
             </div>
 
         </div>

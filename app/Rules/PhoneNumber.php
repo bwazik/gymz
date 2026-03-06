@@ -13,7 +13,7 @@ class PhoneNumber implements ValidationRule
 
         foreach ($phones as $phone) {
             if (!preg_match('/^(011|010|012|015)\d{8}$/', $phone)) {
-                $fail('The :attribute must be a valid Egyptian phone number starting with 011, 010, 012, or 015 and exactly 11 digits.');
+                $fail('لازم يبقي رقم تليفون مصري صحيح بيبدأ بـ 010، 011، 012، أو 015 ويكون 11 رقم.');
             }
         }
     }
