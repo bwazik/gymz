@@ -3,6 +3,7 @@
 namespace App\Livewire;
 
 use App\Enums\RequestStatus;
+use App\Models\User;
 use App\Models\WorkoutIntent;
 use App\Models\WorkoutRequest;
 use Illuminate\Support\Facades\Auth;
@@ -21,17 +22,15 @@ class WorkoutFeed extends Component
     {
         $intent = WorkoutIntent::findOrFail($intentId);
 
-        // Prevent sending request to own intent
         if ($intent->user_id === Auth::id()) {
             return;
         }
 
-        // Prevent duplicate requests
-        $exists = WorkoutRequest::where('intent_id', $intentId)
+        $alreadySent = WorkoutRequest::where('intent_id', $intentId)
             ->where('sender_id', Auth::id())
             ->exists();
 
-        if ($exists) {
+        if ($alreadySent) {
             return;
         }
 
@@ -48,24 +47,27 @@ class WorkoutFeed extends Component
     {
         $user = Auth::user();
 
-        // Get IDs of intents the user already sent requests to
-        $sentRequestIntentIds = WorkoutRequest::where('sender_id', $user->id)
-            ->pluck('intent_id')
-            ->toArray();
+        return view('livewire.workout-feed', [
+            'intents' => $this->getUpcomingIntents($user),
+            'sentRequestIntentIds' => $this->getSentRequestIntentIds($user),
+        ]);
+    }
 
-        $intents = WorkoutIntent::with(['user', 'gym', 'workoutTarget'])
+    private function getUpcomingIntents(User $user)
+    {
+        return WorkoutIntent::with(['user', 'gym', 'workoutTarget'])
             ->active()
             ->upcoming()
-            ->whereHas('user', function ($q) use ($user) {
-                $q->where('gender', $user->gender);
-            })
+            ->whereHas('user', fn($q) => $q->where('gender', $user->gender))
             ->where('user_id', '!=', $user->id)
             ->orderBy('start_time', 'asc')
             ->get();
+    }
 
-        return view('livewire.workout-feed', [
-            'intents' => $intents,
-            'sentRequestIntentIds' => $sentRequestIntentIds,
-        ]);
+    private function getSentRequestIntentIds(User $user): array
+    {
+        return WorkoutRequest::where('sender_id', $user->id)
+            ->pluck('intent_id')
+            ->toArray();
     }
 }
