@@ -17,7 +17,8 @@ new class extends Component {
         $key = 'delete-account:' . Auth::id();
 
         if (RateLimiter::tooManyAttempts($key, 3)) {
-            $this->dispatch('toast', message: 'محاولات كثيرة، حاول بعد شوية.', type: 'error');
+            $seconds = RateLimiter::availableIn($key);
+            $this->dispatch('toast', message: "محاولات كتير! استنى {$seconds} ثانية ⏳", type: 'error');
             return;
         }
 

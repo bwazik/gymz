@@ -19,8 +19,9 @@ new class extends Component {
     {
         $key = 'update-password:' . Auth::id();
 
-        if (RateLimiter::tooManyAttempts($key, 5)) {
-            $this->dispatch('toast', message: 'محاولات كثيرة، حاول بعد شوية.', type: 'error');
+        if (RateLimiter::tooManyAttempts($key, 3)) {
+            $seconds = RateLimiter::availableIn($key);
+            $this->dispatch('toast', message: "محاولات كتير! استنى {$seconds} ثانية ⏳", type: 'error');
             return;
         }
 

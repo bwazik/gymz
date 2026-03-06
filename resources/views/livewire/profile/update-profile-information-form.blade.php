@@ -35,8 +35,9 @@ new class extends Component {
     {
         $key = 'update-profile:' . Auth::id();
 
-        if (RateLimiter::tooManyAttempts($key, 5)) {
-            $this->dispatch('toast', message: 'محاولات كثيرة، حاول بعد شوية.', type: 'error');
+        if (RateLimiter::tooManyAttempts($key, 3)) {
+            $seconds = RateLimiter::availableIn($key);
+            $this->dispatch('toast', message: "تعديلات كتير! استنى {$seconds} ثانية ⏳", type: 'error');
             return;
         }
 

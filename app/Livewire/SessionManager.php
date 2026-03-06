@@ -9,6 +9,7 @@ use App\Models\User;
 use App\Models\WorkoutSession;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\RateLimiter;
 use Livewire\Attributes\Computed;
 use Livewire\Attributes\Layout;
 use Livewire\Component;
@@ -31,6 +32,14 @@ class SessionManager extends Component
 
     public function verifyToken(string $token, int $sessionId): void
     {
+        $key = 'verify-token:' . Auth::id();
+        if (RateLimiter::tooManyAttempts($key, 5)) {
+            $seconds = RateLimiter::availableIn($key);
+            $this->dispatch('toast', message: "محاولات كتير! استنى {$seconds} ثانية ⏳", type: 'error');
+            return;
+        }
+        RateLimiter::hit($key, 60);
+
         $session = WorkoutSession::findOrFail($sessionId);
 
         // Ensure user is part of this session
@@ -63,6 +72,14 @@ class SessionManager extends Component
 
     public function endSession(int $sessionId): void
     {
+        $key = 'end-session:' . Auth::id();
+        if (RateLimiter::tooManyAttempts($key, 3)) {
+            $seconds = RateLimiter::availableIn($key);
+            $this->dispatch('toast', message: "محاولات كتير! استنى {$seconds} ثانية ⏳", type: 'error');
+            return;
+        }
+        RateLimiter::hit($key, 60);
+
         $session = WorkoutSession::with('workoutIntent.gym')->findOrFail($sessionId);
 
         // Ensure user is part of this session

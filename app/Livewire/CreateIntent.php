@@ -7,6 +7,8 @@ use App\Models\Gym;
 use App\Models\WorkoutCategory;
 use App\Models\WorkoutTarget;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\RateLimiter;
 use Livewire\Component;
 
 class CreateIntent extends Component
@@ -36,6 +38,14 @@ class CreateIntent extends Component
 
     public function save(): void
     {
+        $key = 'create-intent:' . Auth::id();
+        if (RateLimiter::tooManyAttempts($key, 3)) {
+            $seconds = RateLimiter::availableIn($key);
+            $this->dispatch('toast', message: "نشرت تمارين كتير! استنى {$seconds} ثانية ⏳", type: 'error');
+            return;
+        }
+        RateLimiter::hit($key, 60);
+
         $this->form->store();
 
         $this->dispatch('intent-created');

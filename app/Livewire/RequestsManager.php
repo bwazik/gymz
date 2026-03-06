@@ -9,6 +9,7 @@ use App\Models\WorkoutRequest;
 use App\Models\WorkoutSession;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\Str;
 use Livewire\Attributes\Computed;
 use Livewire\Attributes\Layout;
@@ -42,6 +43,14 @@ class RequestsManager extends Component
 
     public function acceptRequest(int $requestId): void
     {
+        $key = 'manage-request:' . Auth::id();
+        if (RateLimiter::tooManyAttempts($key, 10)) {
+            $seconds = RateLimiter::availableIn($key);
+            $this->dispatch('toast', message: "حاولت كتير! استنى {$seconds} ثانية ⏳", type: 'error');
+            return;
+        }
+        RateLimiter::hit($key, 60);
+
         $request = WorkoutRequest::with('workoutIntent')->findOrFail($requestId);
 
         // Ensure this request belongs to the current user's intent
@@ -78,6 +87,14 @@ class RequestsManager extends Component
 
     public function rejectRequest(int $requestId): void
     {
+        $key = 'manage-request:' . Auth::id();
+        if (RateLimiter::tooManyAttempts($key, 10)) {
+            $seconds = RateLimiter::availableIn($key);
+            $this->dispatch('toast', message: "حاولت كتير! استنى {$seconds} ثانية ⏳", type: 'error');
+            return;
+        }
+        RateLimiter::hit($key, 60);
+
         $request = WorkoutRequest::findOrFail($requestId);
 
         // Ensure this request belongs to the current user's intent
