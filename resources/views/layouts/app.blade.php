@@ -26,23 +26,36 @@
     x-data="{
         rotateX: 0,
         rotateY: 0,
-        handleMove(e) {
+        isDragging: false,
+        startX: 0,
+        startY: 0,
+        start(e) {
+            this.isDragging = true;
+            this.startX = e.clientX || (e.touches && e.touches[0].clientX) || 0;
+            this.startY = e.clientY || (e.touches && e.touches[0].clientY) || 0;
+        },
+        move(e) {
+            if (!this.isDragging) return;
             let clientX = e.clientX || (e.touches && e.touches[0].clientX) || 0;
             let clientY = e.clientY || (e.touches && e.touches[0].clientY) || 0;
-            let centerX = window.innerWidth / 2;
-            let centerY = window.innerHeight / 2;
-            this.rotateY = ((clientX - centerX) / centerX) * 8;
-            this.rotateX = -((clientY - centerY) / centerY) * 8;
+            let deltaX = clientX - this.startX;
+            let deltaY = clientY - this.startY;
+            this.rotateY = Math.max(-20, Math.min(20, deltaX * 0.1));
+            this.rotateX = Math.max(-20, Math.min(20, -deltaY * 0.1));
         },
-        resetMove() {
+        end() {
+            this.isDragging = false;
             this.rotateX = 0;
             this.rotateY = 0;
         }
     }"
-    @mousemove.window="handleMove($event)"
-    @touchmove.window="handleMove($event)"
-    @mouseleave.window="resetMove()"
-    @touchend.window="resetMove()"
+    @mousedown.window="start($event)"
+    @touchstart.window="start($event)"
+    @mousemove.window="move($event)"
+    @touchmove.window="move($event)"
+    @mouseup.window="end()"
+    @touchend.window="end()"
+    @mouseleave.window="end()"
 >
 
     <!-- Strict Mobile Container (Phone Frame) -->
@@ -51,8 +64,7 @@
 
         <!-- Sticky Glassmorphic Top Bar -->
         <header
-            class="sticky top-0 z-50 w-full bg-[#fafafa]/70 dark:bg-[#121212]/70 backdrop-blur-2xl border-b border-black/5 dark:border-white/5 px-6 py-4 flex justify-between items-center transition-transform duration-100 ease-out"
-            :style="`transform: perspective(1000px) translateZ(10px) rotateX(${rotateX}deg) rotateY(${rotateY}deg);`">
+            class="sticky top-0 z-50 w-full bg-[#fafafa]/70 dark:bg-[#121212]/70 backdrop-blur-2xl border-b border-black/5 dark:border-white/5 px-6 py-4 flex justify-between items-center">
             <div class="font-bold text-xl tracking-tight text-gray-900 dark:text-white">GymZ</div>
             <button class="active:scale-95 transition-transform duration-300 relative group">
                 <svg class="w-6 h-6 text-gray-600 dark:text-gray-300 group-hover:text-gray-900 dark:group-hover:text-white transition-colors" fill="none" stroke="currentColor"
@@ -67,8 +79,7 @@
         </header>
 
         <!-- Page Content -->
-        <main class="relative z-10 flex-1 pb-32 pt-6 px-4 snap-y snap-mandatory overflow-y-auto transition-transform duration-100 ease-out"
-              :style="`transform: perspective(1000px) translateZ(0px) rotateX(${rotateX * 0.2}deg) rotateY(${rotateY * 0.2}deg);`">
+        <main class="relative z-10 flex-1 pb-32 pt-6 px-4 snap-y snap-mandatory overflow-y-auto">
             {{ $slot }}
         </main>
 
