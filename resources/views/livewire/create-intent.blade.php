@@ -21,7 +21,7 @@
                 x-transition:enter-start="translate-y-full" x-transition:enter-end="translate-y-0"
                 x-transition:leave="transition ease-in duration-200" x-transition:leave-start="translate-y-0"
                 x-transition:leave-end="translate-y-full"
-                class="bg-white/80 dark:bg-[#1c1c1e]/80 backdrop-blur-3xl border-t border-white/50 dark:border-white/10 p-6 rounded-t-[2rem] w-full max-w-md shadow-2xl pb-[calc(1.5rem+env(safe-area-inset-bottom))]"
+                class="bg-white/80 dark:bg-[#1c1c1e]/80 backdrop-blur-3xl border-t border-white/50 dark:border-white/10 p-6 rounded-t-[2rem] w-full max-w-md shadow-2xl pb-[calc(3rem+env(safe-area-inset-bottom))] max-h-[85vh] overflow-y-auto"
                 @click.stop>
                 {{-- Drag Handle --}}
                 <div class="flex justify-center mb-4">

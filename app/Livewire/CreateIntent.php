@@ -16,22 +16,50 @@ class CreateIntent extends Component
 {
     public bool $showModal = false;
 
-    #[Validate('required|integer|exists:gyms,id', message: 'الجيم مش صح')]
+    #[Validate([
+        'gym_id' => 'required|integer|exists:gyms,id',
+    ], message: [
+        'gym_id.required' => 'لازم تختار الجيم',
+        'gym_id.integer' => 'الجيم مش صح',
+        'gym_id.exists' => 'الجيم ده مش موجود',
+    ])]
     public $gym_id = '';
 
-    #[Validate('required|integer|exists:workout_categories,id', message: 'نوع التمرين مش صح')]
+    #[Validate([
+        'workout_category_id' => 'required|integer|exists:workout_categories,id',
+    ], message: [
+        'workout_category_id.required' => 'لازم تختار نوع التمرين',
+        'workout_category_id.integer' => 'نوع التمرين مش صح',
+        'workout_category_id.exists' => 'نوع التمرين ده مش موجود',
+    ])]
     public $workout_category_id = '';
 
-    #[Validate('required|integer|exists:workout_targets,id', message: 'العضلة مش صح')]
+    #[Validate([
+        'workout_target_id' => 'required|integer|exists:workout_targets,id',
+    ], message: [
+        'workout_target_id.required' => 'لازم تختار العضلة',
+        'workout_target_id.integer' => 'العضلة مش صح',
+        'workout_target_id.exists' => 'العضلة دي مش موجودة',
+    ])]
     public $workout_target_id = '';
 
-    #[Validate('required|date|after:now', message: 'التاريخ مش صح')]
+    #[Validate([
+        'start_time' => 'required|date|after:now',
+    ], message: [
+        'start_time.required' => 'لازم تحدد ميعاد التمرين',
+        'start_time.date' => 'الميعاد مش صح',
+        'start_time.after' => 'الميعاد لازم يكون في المستقبل',
+    ])]
     public $start_time = '';
 
     #[Validate('boolean')]
     public bool $has_invitation = false;
 
-    #[Validate('nullable|string|max:255', message: 'الملاحظات مش صح')]
+    #[Validate([
+        'note' => 'nullable|string|max:255',
+    ], message: [
+        'note.max' => 'الملاحظات لازم تكون أقل من ٢٥٥ حرف',
+    ])]
     public $note = '';
 
     public Collection $gyms;
