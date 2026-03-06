@@ -25,28 +25,37 @@
                 'M17.982 18.725A7.488 7.488 0 0012 15.75a7.488 7.488 0 00-5.982 2.975m11.963 0a9 9 0 10-11.963 0m11.963 0A8.966 8.966 0 0112 21a8.966 8.966 0 01-5.982-2.275M15 9.75a3 3 0 11-6 0 3 3 0 016 0z',
         ],
     ];
+
+    $currentRoute = request()->route()->getName();
+    $activeIndex = collect($navItems)->search(fn($item) => request()->routeIs($item['route']));
+    $activeIndex = $activeIndex !== false ? $activeIndex : 0;
 @endphp
 
 <nav
-    class="fixed bottom-6 left-1/2 -translate-x-1/2 w-[90%] max-w-[380px] bg-white/60 dark:bg-[#1c1c1e]/70 backdrop-blur-2xl border border-black/5 dark:border-white/10 rounded-full flex justify-around items-center p-2 shadow-lg z-50 transition-all duration-300">
+    class="fixed bottom-8 left-1/2 -translate-x-1/2 flex items-center p-1.5 rounded-[2rem] bg-white/60 dark:bg-[#1c1c1e]/60 backdrop-blur-3xl border border-white/40 dark:border-white/10 shadow-[0_8px_32px_rgba(0,0,0,0.12),inset_0_1px_1px_rgba(255,255,255,0.8)] dark:shadow-[0_8px_32px_rgba(0,0,0,0.4),inset_0_1px_1px_rgba(255,255,255,0.1)] z-50 w-[90%] max-w-[360px]">
+
+    {{-- Active Pill Background --}}
+    <div id="active-pill"
+        class="absolute h-[calc(100%-12px)] w-[calc(25%-6px)] bg-gray-400/20 dark:bg-white/15 rounded-full transition-transform duration-300 ease-[cubic-bezier(0.32,0.72,0,1)] pointer-events-none"
+        style="right: 6px; transform: translateX({{ $activeIndex * -100 }}%);">
+    </div>
 
     @foreach ($navItems as $item)
         @php $isActive = request()->routeIs($item['route']); @endphp
 
-        <a href="{{ route($item['route']) }}"
-            class="flex flex-col items-center justify-center gap-0.5 px-3 py-1.5 rounded-full transition-all duration-200 active:scale-95
-            {{ $isActive
-                ? 'bg-black/10 dark:bg-white/15 text-gray-900 dark:text-white'
-                : 'text-gray-400 dark:text-gray-500 hover:text-gray-600 dark:hover:text-gray-300' }}">
+        <a href="{{ route($item['route']) }}" wire:navigate data-route="{{ $item['route'] }}"
+            data-active="{{ $isActive ? 'true' : 'false' }}"
+            class="flex-1 flex flex-col items-center justify-center py-2 relative z-10 transition-colors duration-200
+            {{ $isActive ? 'text-[#ff2d55]' : 'text-gray-500 dark:text-gray-400' }}">
 
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                stroke-width="{{ $isActive ? '2' : '1.5' }}" stroke="currentColor"
-                class="w-5 h-5 transition-all duration-200">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="{{ $isActive ? 'currentColor' : 'none' }}" viewBox="0 0 24 24"
+                stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
                 <path stroke-linecap="round" stroke-linejoin="round" d="{{ $item['icon'] }}" />
             </svg>
 
-            <span class="text-[10px] font-medium leading-tight">{{ $item['label'] }}</span>
+            <span class="text-[10px] font-semibold mt-0.5">
+                {{ $item['label'] }}
+            </span>
         </a>
     @endforeach
-
 </nav>
