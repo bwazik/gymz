@@ -66,6 +66,8 @@ class User extends Authenticatable implements FilamentUser
         'glutes_balance',
         'reliability_score',
         'image_path',
+        'google_id',
+        'is_onboarded',
     ];
 
     /**
@@ -94,6 +96,7 @@ class User extends Authenticatable implements FilamentUser
             'level' => UserLevel::class,
             'glutes_balance' => 'integer',
             'reliability_score' => 'integer',
+            'is_onboarded' => 'boolean',
         ];
     }
 

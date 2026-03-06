@@ -1,24 +1,20 @@
 <?php
 
+use App\Http\Controllers\Auth\GoogleAuthController;
 use Illuminate\Support\Facades\Route;
 
-Route::view('/', 'welcome');
+Route::view('/', 'dashboard')->name('dashboard')->name('home');
+
 Route::view('offline', 'offline')->name('offline');
 
-Route::view('dashboard', 'dashboard')
-    ->middleware(['auth', 'verified'])
-    ->name('dashboard');
-
-Route::view('profile', 'profile')
-    ->middleware(['auth'])
-    ->name('profile');
-
-Route::get('requests', App\Livewire\RequestsManager::class)
-    ->middleware(['auth'])
-    ->name('requests');
-
-Route::get('sessions', App\Livewire\SessionManager::class)
-    ->middleware(['auth'])
-    ->name('sessions');
+Route::get('/auth/google', [GoogleAuthController::class, 'redirect'])->name('google.login');
+Route::get('/auth/google/callback', [GoogleAuthController::class, 'callback']);
 
 require __DIR__ . '/auth.php';
+
+Route::middleware(['auth'])->group(function () {
+    Route::view('profile', 'profile')->name('profile');
+    Route::get('requests', App\Livewire\RequestsManager::class)->name('requests');
+    Route::get('sessions', App\Livewire\SessionManager::class)->name('sessions');
+    Route::view('/onboarding', 'onboarding')->name('onboarding');
+});
