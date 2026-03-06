@@ -5,8 +5,8 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <meta name="theme-color" content="#f3f4f6" media="(prefers-color-scheme: light)">
-    <meta name="theme-color" content="#0a0a0a" media="(prefers-color-scheme: dark)">
+    <meta name="theme-color" content="#f2f2f7" media="(prefers-color-scheme: light)">
+    <meta name="theme-color" content="#000000" media="(prefers-color-scheme: dark)">
 
     <!-- PWA -->
     <link rel="manifest" href="/manifest.json">
@@ -19,121 +19,115 @@
 
     <!-- Prevent FOUC for Dark Mode -->
     <script>
-        if (localStorage.getItem('darkMode') === 'true' || (!('darkMode' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+        if (localStorage.getItem('darkMode') === 'true' || (!('darkMode' in localStorage) && window.matchMedia(
+                '(prefers-color-scheme: dark)').matches)) {
             document.documentElement.classList.add('dark');
         } else {
             document.documentElement.classList.remove('dark');
         }
     </script>
 
-    <!-- Scripts -->
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 
 <body
-    class="font-tajawal antialiased bg-[#e9ecef] dark:bg-[#050505] text-gray-900 dark:text-gray-100 flex justify-center min-h-screen selection:bg-gray-300 dark:selection:bg-white/20 transition-colors duration-300"
+    class="font-tajawal antialiased bg-[#f2f2f7] dark:bg-black text-gray-900 dark:text-gray-100 flex justify-center min-h-screen"
     x-data="{
-        rotateX: 0,
-        rotateY: 0,
-        isDragging: false,
-        startX: 0,
-        startY: 0,
-        start(e) {
-            this.isDragging = true;
-            this.startX = e.clientX || (e.touches && e.touches[0].clientX) || 0;
-            this.startY = e.clientY || (e.touches && e.touches[0].clientY) || 0;
-        },
-        move(e) {
-            if (!this.isDragging) return;
-            let clientX = e.clientX || (e.touches && e.touches[0].clientX) || 0;
-            let clientY = e.clientY || (e.touches && e.touches[0].clientY) || 0;
-            let deltaX = clientX - this.startX;
-            let deltaY = clientY - this.startY;
-            this.rotateY = Math.max(-20, Math.min(20, deltaX * 0.1));
-            this.rotateX = Math.max(-20, Math.min(20, -deltaY * 0.1));
-        },
-        end() {
-            this.isDragging = false;
-            this.rotateX = 0;
-            this.rotateY = 0;
+        touchStartX: 0,
+        touchEndX: 0,
+        routes: [
+            { name: 'dashboard', url: '{{ route('dashboard') }}' },
+            { name: 'requests', url: '{{ route('requests') }}' },
+            { name: 'sessions', url: '{{ route('sessions') }}' },
+            { name: 'profile', url: '{{ route('profile') }}' },
+        ],
+        currentRoute: '{{ request()->route()->getName() }}',
+
+        handleSwipe() {
+            const distance = this.touchStartX - this.touchEndX;
+            if (Math.abs(distance) < 70) return;
+
+            const idx = this.routes.findIndex(r => r.name === this.currentRoute);
+            if (idx === -1) return;
+
+            let targetIdx;
+            if (distance > 0) {
+                // Swiped left → next page (RTL: forward)
+                targetIdx = idx + 1;
+            } else {
+                // Swiped right → prev page (RTL: back)
+                targetIdx = idx - 1;
+            }
+
+            if (targetIdx < 0 || targetIdx >= this.routes.length) return;
+
+            const target = this.routes[targetIdx];
+            if (window.Livewire && typeof window.Livewire.navigate === 'function') {
+                window.Livewire.navigate(target.url);
+            } else {
+                window.location.href = target.url;
+            }
         }
-    }"
-    @mousedown.window="start($event)"
-    @touchstart.window="start($event)"
-    @mousemove.window="move($event)"
-    @touchmove.window="move($event)"
-    @mouseup.window="end()"
-    @touchend.window="end()"
-    @mouseleave.window="end()"
->
+    }" @touchstart.passive="touchStartX = $event.changedTouches[0].screenX"
+    @touchend="touchEndX = $event.changedTouches[0].screenX; handleSwipe()">
 
-    <!-- Strict Mobile Container (Phone Frame) -->
+    <!-- Mobile App Frame -->
     <div
-        class="w-full max-w-md bg-[#fafafa] dark:bg-[#121212] min-h-screen relative overflow-x-hidden shadow-[0_0_50px_rgba(0,0,0,0.1)] dark:shadow-[0_0_50px_rgba(0,0,0,0.5)] sm:border-x border-gray-200/50 dark:border-white/5 flex flex-col transition-colors duration-300">
+        class="w-full max-w-md bg-white dark:bg-[#1c1c1e] min-h-screen relative overflow-hidden shadow-2xl flex flex-col transition-colors duration-300">
 
-        <!-- Sticky Glassmorphic Top Bar -->
+        <!-- Header -->
         <header
-            class="sticky top-0 z-50 w-full bg-[#fafafa]/70 dark:bg-[#121212]/70 backdrop-blur-2xl border-b border-black/5 dark:border-white/5 px-6 py-4 flex justify-between items-center transition-colors duration-300">
-            <div class="font-bold text-xl tracking-tight text-gray-900 dark:text-white">GymZ</div>
-            
-            <div class="flex items-center gap-4">
-                <!-- Theme Toggle Button -->
-                <button 
-                    x-data="{ 
-                        isDark: document.documentElement.classList.contains('dark'),
-                        toggle() { 
-                            this.isDark = !this.isDark; 
-                            if (this.isDark) { 
-                                document.documentElement.classList.add('dark'); 
-                                localStorage.setItem('darkMode', 'true'); 
-                            } else { 
-                                document.documentElement.classList.remove('dark'); 
-                                localStorage.setItem('darkMode', 'false'); 
-                            } 
-                        } 
-                    }" 
-                    @click="toggle()" 
-                    class="p-2 rounded-full hover:bg-black/5 dark:hover:bg-white/10 transition-colors duration-300 active:scale-95">
-                    <!-- Sun Icon (shown in dark mode, switches to light) -->
-                    <svg x-show="isDark" style="display: none;" class="w-5 h-5 text-gray-300 hover:text-white transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"></path>
+            class="sticky top-0 z-50 w-full bg-white/80 dark:bg-[#1c1c1e]/80 backdrop-blur-2xl border-b border-black/5 dark:border-white/10 px-5 py-4 flex justify-between items-center transition-colors duration-300">
+            <div class="font-bold text-xl tracking-tight">GymZ</div>
+            <div class="flex items-center gap-3">
+                <!-- Theme Toggle -->
+                <button x-data="{
+                    isDark: document.documentElement.classList.contains('dark'),
+                    toggle() {
+                        this.isDark = !this.isDark;
+                        document.documentElement.classList.toggle('dark', this.isDark);
+                        localStorage.setItem('darkMode', this.isDark);
+                    }
+                }" @click="toggle()"
+                    class="p-2 rounded-full hover:bg-black/5 dark:hover:bg-white/10 transition-all duration-200 active:scale-90">
+                    <svg x-show="isDark" x-cloak class="w-5 h-5 text-gray-300" fill="none" stroke="currentColor"
+                        stroke-width="2" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round"
+                            d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
                     </svg>
-                    <!-- Moon Icon (shown in light mode, switches to dark) -->
-                    <svg x-show="!isDark" class="w-5 h-5 text-gray-600 hover:text-gray-900 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path>
+                    <svg x-show="!isDark" class="w-5 h-5 text-gray-600" fill="none" stroke="currentColor"
+                        stroke-width="2" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round"
+                            d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
                     </svg>
                 </button>
-
-                <!-- Notifications Button -->
-                <button class="active:scale-95 transition-transform duration-300 relative group p-2 rounded-full hover:bg-black/5 dark:hover:bg-white/10">
-                    <svg class="w-5 h-5 text-gray-600 dark:text-gray-300 group-hover:text-gray-900 dark:group-hover:text-white transition-colors" fill="none" stroke="currentColor"
-                        viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9">
-                        </path>
+                <!-- Notifications -->
+                <button
+                    class="p-2 rounded-full hover:bg-black/5 dark:hover:bg-white/10 transition-all duration-200 active:scale-90 relative">
+                    <svg class="w-5 h-5 text-gray-600 dark:text-gray-300" fill="none" stroke="currentColor"
+                        stroke-width="2" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round"
+                            d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
                     </svg>
                     <span
-                        class="absolute top-1 right-2 block h-2 w-2 rounded-full bg-red-500 shadow-[0_0_8px_rgba(239,68,68,0.8)]"></span>
+                        class="absolute top-1.5 right-1.5 block h-2 w-2 rounded-full bg-red-500 ring-2 ring-white dark:ring-[#1c1c1e]"></span>
                 </button>
             </div>
         </header>
 
         <!-- Page Content -->
-        <main class="relative z-10 flex-1 pb-32 pt-6 px-4 snap-y snap-mandatory overflow-y-auto">
+        <main class="flex-1 pb-28 pt-4 px-4">
             {{ $slot }}
         </main>
 
-        <!-- Bottom Navigation Component -->
+        <!-- Bottom Navigation -->
         <x-bottom-nav />
-
     </div>
 
-    <!-- Service Worker Registration -->
+    <!-- Service Worker -->
     <script>
         if ('serviceWorker' in navigator) {
-            window.addEventListener('load', () => {
-                navigator.serviceWorker.register('/sw.js');
-            });
+            window.addEventListener('load', () => navigator.serviceWorker.register('/sw.js'));
         }
     </script>
 </body>

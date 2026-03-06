@@ -18,21 +18,8 @@ export default {
                 tajawal: ["Tajawal", "sans-serif"],
             },
             colors: {
-                "gymz-dark": "#0f172a", // Deep slate background
-                "gymz-glass": "rgba(255, 255, 255, 0.05)", // Liquid Glass base
-                "gymz-accent": "#10b981", // Emerald Green for interaction/highlights
-            },
-            backdropBlur: {
-                xs: "2px",
-                sm: "4px",
-                md: "8px",
-                lg: "12px",
-                "2xl": "40px",
-                "3xl": "64px",
-            },
-            boxShadow: {
-                glass: "0 4px 30px rgba(0, 0, 0, 0.1)",
-                "glass-inset": "inset 0 0 0 1px rgba(255, 255, 255, 0.1)",
+                "gymz-dark": "#0f172a",
+                "gymz-accent": "#10b981",
             },
         },
     },
