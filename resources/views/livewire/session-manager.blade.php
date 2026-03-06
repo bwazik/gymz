@@ -162,9 +162,9 @@
                 {{-- In Progress: Anti-Cheat Timer + End Button --}}
                 @php
                     $scannedAt = $session->scanned_at;
-                    $minutesPassed = $scannedAt ? now()->diffInMinutes($scannedAt) : 0;
-                    $canEnd = $minutesPassed >= 30;
-                    $remainingMinutes = max(0, 30 - $minutesPassed);
+                    $minutesPassed = $scannedAt ? (int) now()->diffInMinutes($scannedAt) : 0;
+                    $canEnd = $minutesPassed >= 90;
+                    $remainingMinutes = max(0, 90 - $minutesPassed);
                 @endphp
 
                 <div class="bg-black/5 dark:bg-white/5 rounded-2xl p-6 text-center" x-data="{
