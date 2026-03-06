@@ -8,6 +8,7 @@ use App\Enums\SessionStatus;
 use App\Models\WorkoutRequest;
 use App\Models\WorkoutSession;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 use Livewire\Attributes\Computed;
 use Livewire\Attributes\Layout;
@@ -48,26 +49,28 @@ class RequestsManager extends Component
             return;
         }
 
-        // Accept this request
-        $request->update(['status' => RequestStatus::Accepted]);
+        DB::transaction(function () use ($request) {
+            // Accept this request
+            $request->update(['status' => RequestStatus::Accepted]);
 
-        // Mark intent as Matched
-        $request->workoutIntent->update(['status' => IntentStatus::Matched]);
+            // Mark intent as Matched
+            $request->workoutIntent->update(['status' => IntentStatus::Matched]);
 
-        // Reject all other pending requests for this intent
-        WorkoutRequest::where('intent_id', $request->intent_id)
-            ->where('id', '!=', $request->id)
-            ->where('status', RequestStatus::Pending)
-            ->update(['status' => RequestStatus::Rejected]);
+            // Reject all other pending requests for this intent
+            WorkoutRequest::where('intent_id', $request->intent_id)
+                ->where('id', '!=', $request->id)
+                ->where('status', RequestStatus::Pending)
+                ->update(['status' => RequestStatus::Rejected]);
 
-        // Create a WorkoutSession
-        WorkoutSession::create([
-            'intent_id' => $request->intent_id,
-            'user_a_id' => $request->workoutIntent->user_id,
-            'user_b_id' => $request->sender_id,
-            'qr_token' => Str::random(32),
-            'status' => SessionStatus::Scheduled,
-        ]);
+            // Create a WorkoutSession
+            WorkoutSession::create([
+                'intent_id' => $request->intent_id,
+                'user_a_id' => $request->workoutIntent->user_id,
+                'user_b_id' => $request->sender_id,
+                'qr_token' => Str::random(32),
+                'status' => SessionStatus::Scheduled,
+            ]);
+        });
 
         unset($this->incomingRequests);
     }
