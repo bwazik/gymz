@@ -15,7 +15,7 @@
 
             {{-- Session Header: Partner + Gym --}}
             <div class="flex items-center gap-3 mb-4">
-                <img src="{{ $partner->image_path ? Storage::url($partner->image_path) : asset('images/default.jpg') }}"
+                <img src="{{ $partner->image_path ? (Str::startsWith($partner->image_path, 'http') ? $partner->image_path : Storage::url($partner->image_path)) : asset('images/default.jpg') }}"
                     alt="{{ $partner->name }}"
                     class="w-11 h-11 rounded-full object-cover border border-black/5 dark:border-white/10">
                 <div class="flex-1">

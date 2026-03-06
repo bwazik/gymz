@@ -28,7 +28,7 @@
             <x-glass-card class="mb-4">
                 {{-- Sender Info --}}
                 <div class="flex items-center gap-3 mb-3">
-                    <img src="{{ $request->sender->image_path ? Storage::url($request->sender->image_path) : asset('images/default.jpg') }}"
+                    <img src="{{ $request->sender->image_path ? (Str::startsWith($request->sender->image_path, 'http') ? $request->sender->image_path : Storage::url($request->sender->image_path)) : asset('images/default.jpg') }}"
                         alt="{{ $request->sender->name }}"
                         class="w-11 h-11 rounded-full object-cover border border-black/5 dark:border-white/10">
                     <div class="flex-1">
@@ -97,7 +97,7 @@
             <x-glass-card class="mb-4">
                 {{-- Intent Owner Info --}}
                 <div class="flex items-center gap-3 mb-3">
-                    <img src="{{ $request->workoutIntent->user->image_path ? Storage::url($request->workoutIntent->user->image_path) : asset('images/default.jpg') }}"
+                    <img src="{{ $request->workoutIntent->user->image_path ? (Str::startsWith($request->workoutIntent->user->image_path, 'http') ? $request->workoutIntent->user->image_path : Storage::url($request->workoutIntent->user->image_path)) : asset('images/default.jpg') }}"
                         alt="{{ $request->workoutIntent->user->name }}"
                         class="w-11 h-11 rounded-full object-cover border border-black/5 dark:border-white/10">
                     <div class="flex-1">

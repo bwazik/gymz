@@ -31,7 +31,7 @@
             {{-- Header: Avatar + Name --}}
             <div class="flex items-center gap-3 mb-4">
                 @auth
-                    <img src="{{ $intent->user->image_path ? Storage::url($intent->user->image_path) : asset('images/default.jpg') }}"
+                    <img src="{{ $intent->user->image_path ? (Str::startsWith($intent->user->image_path, 'http') ? $intent->user->image_path : Storage::url($intent->user->image_path)) : asset('images/default.jpg') }}"
                         alt="{{ $intent->user->name }}"
                         class="w-11 h-11 rounded-full object-cover border border-black/5 dark:border-white/10">
                     <div>
@@ -40,13 +40,16 @@
                     </div>
                 @endauth
                 @guest
-                    <div class="w-11 h-11 rounded-full bg-gray-200 dark:bg-white/10 flex items-center justify-center backdrop-blur-sm border border-black/5">
+                    <div
+                        class="w-11 h-11 rounded-full bg-gray-200 dark:bg-white/10 flex items-center justify-center backdrop-blur-sm border border-black/5">
                         <svg class="w-5 h-5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
                         </svg>
                     </div>
                     <div>
-                        <p class="font-bold text-sm text-gray-900 dark:text-white filter blur-[2px] select-none">عضو مخفي</p>
+                        <p class="font-bold text-sm text-gray-900 dark:text-white filter blur-[2px] select-none">عضو مخفي
+                        </p>
                         <p class="text-xs text-gymz-accent">سجل دخول لكشف الهوية</p>
                     </div>
                 @endguest
@@ -107,7 +110,8 @@
                 @endauth
 
                 @guest
-                    <a href="{{ route('google.login') }}" class="px-5 py-2 text-[11px] font-bold rounded-full bg-gymz-accent text-white active:scale-95 transition-transform duration-200 shadow-lg shadow-gymz-accent/20">
+                    <a href="{{ route('google.login') }}"
+                        class="px-5 py-2 text-[11px] font-bold rounded-full bg-gymz-accent text-white active:scale-95 transition-transform duration-200 shadow-lg shadow-gymz-accent/20">
                         سجل واتمرن معاهم 🚀
                     </a>
                 @endguest

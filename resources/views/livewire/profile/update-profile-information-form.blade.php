@@ -123,7 +123,7 @@ new class extends Component {
                 @if ($photo)
                     <img src="{{ $photo->temporaryUrl() }}" class="w-full h-full object-cover">
                 @else
-                    <img src="{{ auth()->user()->image_path ? Storage::url(auth()->user()->image_path) : asset('images/default.jpg') }}"
+                    <img src="{{ auth()->user()->image_path ? (Str::startsWith(auth()->user()->image_path, 'http') ? auth()->user()->image_path : Storage::url(auth()->user()->image_path)) : asset('images/default.jpg') }}"
                         class="w-full h-full object-cover group-hover:opacity-50 transition-opacity">
                 @endif
 
@@ -234,13 +234,16 @@ new class extends Component {
         <x-ios-input-group>
 
             {{-- Name --}}
-            <x-ios-input label="الاسم" id="name" wire:model="name" placeholder="اسمك" required autofocus maxlength="255" />
+            <x-ios-input label="الاسم" id="name" wire:model="name" placeholder="اسمك" required autofocus
+                maxlength="255" />
 
             {{-- Email --}}
-            <x-ios-input label="الإيميل" id="email" type="email" wire:model="email" dir="ltr" placeholder="email@example.com" required maxlength="255" />
+            <x-ios-input label="الإيميل" id="email" type="email" wire:model="email" dir="ltr"
+                placeholder="email@example.com" required maxlength="255" />
 
             {{-- Phone --}}
-            <x-ios-input label="الموبايل" id="phone" type="tel" wire:model="phone" dir="ltr" placeholder="01xxxxxxxxx" maxlength="11" pattern="^(011|010|012|015)\d{8}$" />
+            <x-ios-input label="الموبايل" id="phone" type="tel" wire:model="phone" dir="ltr"
+                placeholder="01xxxxxxxxx" maxlength="11" pattern="^(011|010|012|015)\d{8}$" />
 
         </x-ios-input-group>
 

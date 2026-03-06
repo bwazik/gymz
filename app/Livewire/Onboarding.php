@@ -28,6 +28,13 @@ class Onboarding extends Component
         ];
     }
 
+    public function mount()
+    {
+        if (Auth::user()->is_onboarded) {
+            return redirect()->route('home');
+        }
+    }
+
     public function save()
     {
         try {

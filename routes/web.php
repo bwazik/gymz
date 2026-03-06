@@ -4,7 +4,9 @@ use App\Http\Controllers\Auth\GoogleAuthController;
 use Illuminate\Support\Facades\Route;
 use App\Livewire\Onboarding;
 
-Route::view('/', 'dashboard')->name('home');
+Route::get('/', function () {
+    return view('dashboard');
+})->name('home')->middleware('onboarded');
 
 Route::view('offline', 'offline')->name('offline');
 
@@ -16,7 +18,7 @@ Route::get('/onboarding', Onboarding::class)->name('onboarding')->middleware('au
 
 require __DIR__ . '/auth.php';
 
-Route::middleware(['auth'])->group(function () {
+Route::middleware(['auth', 'onboarded'])->group(function () {
     Route::view('profile', 'profile')->name('profile');
     Route::get('requests', App\Livewire\RequestsManager::class)->name('requests');
     Route::get('sessions', App\Livewire\SessionManager::class)->name('sessions');
