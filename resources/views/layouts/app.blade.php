@@ -17,18 +17,38 @@
 
     <title>{{ config('app.name', 'GymZ') }}</title>
 
+    <!-- Prevent FOUC for Dark Mode -->
+    <script>
+        if (localStorage.getItem('darkMode') === 'true' || (!('darkMode' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            document.documentElement.classList.add('dark');
+        } else {
+            document.documentElement.classList.remove('dark');
+        }
+    </script>
+
     <!-- Scripts -->
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 
 <body
-    class="font-tajawal antialiased bg-[#e9ecef] dark:bg-[#050505] text-gray-900 dark:text-gray-100 flex justify-center min-h-screen selection:bg-gray-300 dark:selection:bg-white/20"
+    class="font-tajawal antialiased bg-[#e9ecef] dark:bg-[#050505] text-gray-900 dark:text-gray-100 flex justify-center min-h-screen selection:bg-gray-300 dark:selection:bg-white/20 transition-colors duration-300"
     x-data="{
         rotateX: 0,
         rotateY: 0,
         isDragging: false,
         startX: 0,
         startY: 0,
+        isDarkMode: document.documentElement.classList.contains('dark'),
+        toggleTheme() {
+            this.isDarkMode = !this.isDarkMode;
+            if (this.isDarkMode) {
+                document.documentElement.classList.add('dark');
+                localStorage.setItem('darkMode', 'true');
+            } else {
+                document.documentElement.classList.remove('dark');
+                localStorage.setItem('darkMode', 'false');
+            }
+        },
         start(e) {
             this.isDragging = true;
             this.startX = e.clientX || (e.touches && e.touches[0].clientX) || 0;
@@ -60,22 +80,38 @@
 
     <!-- Strict Mobile Container (Phone Frame) -->
     <div
-        class="w-full max-w-md bg-[#fafafa] dark:bg-[#121212] min-h-screen relative overflow-x-hidden shadow-[0_0_50px_rgba(0,0,0,0.1)] dark:shadow-[0_0_50px_rgba(0,0,0,0.5)] sm:border-x border-gray-200/50 dark:border-white/5 flex flex-col">
+        class="w-full max-w-md bg-[#fafafa] dark:bg-[#121212] min-h-screen relative overflow-x-hidden shadow-[0_0_50px_rgba(0,0,0,0.1)] dark:shadow-[0_0_50px_rgba(0,0,0,0.5)] sm:border-x border-gray-200/50 dark:border-white/5 flex flex-col transition-colors duration-300">
 
         <!-- Sticky Glassmorphic Top Bar -->
         <header
-            class="sticky top-0 z-50 w-full bg-[#fafafa]/70 dark:bg-[#121212]/70 backdrop-blur-2xl border-b border-black/5 dark:border-white/5 px-6 py-4 flex justify-between items-center">
+            class="sticky top-0 z-50 w-full bg-[#fafafa]/70 dark:bg-[#121212]/70 backdrop-blur-2xl border-b border-black/5 dark:border-white/5 px-6 py-4 flex justify-between items-center transition-colors duration-300">
             <div class="font-bold text-xl tracking-tight text-gray-900 dark:text-white">GymZ</div>
-            <button class="active:scale-95 transition-transform duration-300 relative group">
-                <svg class="w-6 h-6 text-gray-600 dark:text-gray-300 group-hover:text-gray-900 dark:group-hover:text-white transition-colors" fill="none" stroke="currentColor"
-                    viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                        d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9">
-                    </path>
-                </svg>
-                <span
-                    class="absolute top-0 right-0 block h-2 w-2 rounded-full bg-red-500 shadow-[0_0_8px_rgba(239,68,68,0.8)]"></span>
-            </button>
+            
+            <div class="flex items-center gap-4">
+                <!-- Theme Toggle Button -->
+                <button @click="toggleTheme()" class="p-2 rounded-full hover:bg-black/5 dark:hover:bg-white/10 transition-colors duration-300 active:scale-95">
+                    <!-- Sun Icon (shown in dark mode, switches to light) -->
+                    <svg x-show="isDarkMode" style="display: none;" class="w-5 h-5 text-gray-300 hover:text-white transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"></path>
+                    </svg>
+                    <!-- Moon Icon (shown in light mode, switches to dark) -->
+                    <svg x-show="!isDarkMode" class="w-5 h-5 text-gray-600 hover:text-gray-900 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path>
+                    </svg>
+                </button>
+
+                <!-- Notifications Button -->
+                <button class="active:scale-95 transition-transform duration-300 relative group p-2 rounded-full hover:bg-black/5 dark:hover:bg-white/10">
+                    <svg class="w-5 h-5 text-gray-600 dark:text-gray-300 group-hover:text-gray-900 dark:group-hover:text-white transition-colors" fill="none" stroke="currentColor"
+                        viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9">
+                        </path>
+                    </svg>
+                    <span
+                        class="absolute top-1 right-2 block h-2 w-2 rounded-full bg-red-500 shadow-[0_0_8px_rgba(239,68,68,0.8)]"></span>
+                </button>
+            </div>
         </header>
 
         <!-- Page Content -->
