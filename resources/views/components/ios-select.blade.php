@@ -5,15 +5,22 @@
         id: $id('ios-select'),
         open: false,
         value: @entangle($attributes->wire('model')),
+        get options() {
+            try {
+                return JSON.parse($el.dataset.options || '{}');
+            } catch (e) {
+                return {};
+            }
+        },
         getLabel() {
-            const opts = @js($options);
-            return opts[this.value] ?? '{{ $placeholder }}';
+            return this.options[this.value] ?? $el.dataset.placeholder;
         },
         toggle() {
-            if ({{ $disabled ? 'true' : 'false' }}) return;
             this.open = !this.open;
         }
     }"
+    data-options="{{ e(json_encode($options)) }}"
+    data-placeholder="{{ $placeholder }}"
     x-id="['ios-select']"
     @click.away="open = false"
     @ios-select-toggled.window="if ($event.detail !== id) open = false"
