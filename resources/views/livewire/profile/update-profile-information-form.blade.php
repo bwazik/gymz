@@ -3,6 +3,7 @@
 use App\Models\User;
 use App\Rules\PhoneNumber;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\ValidationException;
@@ -32,6 +33,15 @@ new class extends Component {
      */
     public function updateProfileInformation(): void
     {
+        $key = 'update-profile:' . Auth::id();
+
+        if (RateLimiter::tooManyAttempts($key, 5)) {
+            $this->dispatch('toast', message: 'محاولات كثيرة، حاول بعد شوية.', type: 'error');
+            return;
+        }
+
+        RateLimiter::hit($key, 60);
+
         $user = Auth::user();
 
         try {
@@ -49,8 +59,8 @@ new class extends Component {
 
         $user->fill([
             'name' => $validated['name'],
-            'email' => $validated['email'],
-            'phone' => $validated['phone'],
+            'email' => $validated['email'] ?: null,
+            'phone' => $validated['phone'] ?: null,
         ]);
 
         if ($this->photo) {

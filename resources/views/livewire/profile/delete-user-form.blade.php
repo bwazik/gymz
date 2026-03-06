@@ -2,6 +2,7 @@
 
 use App\Livewire\Actions\Logout;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Validation\ValidationException;
 use Livewire\Volt\Component;
 
@@ -13,6 +14,15 @@ new class extends Component {
      */
     public function deleteUser(Logout $logout): void
     {
+        $key = 'delete-account:' . Auth::id();
+
+        if (RateLimiter::tooManyAttempts($key, 3)) {
+            $this->dispatch('toast', message: 'محاولات كثيرة، حاول بعد شوية.', type: 'error');
+            return;
+        }
+
+        RateLimiter::hit($key, 60);
+
         try {
             $this->validate([
                 'password' => ['required', 'string', 'current_password'],

@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Validation\Rules\Password;
 use Illuminate\Validation\ValidationException;
 use Livewire\Volt\Component;
@@ -16,6 +17,15 @@ new class extends Component {
      */
     public function updatePassword(): void
     {
+        $key = 'update-password:' . Auth::id();
+
+        if (RateLimiter::tooManyAttempts($key, 5)) {
+            $this->dispatch('toast', message: 'محاولات كثيرة، حاول بعد شوية.', type: 'error');
+            return;
+        }
+
+        RateLimiter::hit($key, 60);
+
         try {
             $validated = $this->validate([
                 'current_password' => ['required', 'string', 'current_password'],
