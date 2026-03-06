@@ -38,17 +38,6 @@
         isDragging: false,
         startX: 0,
         startY: 0,
-        isDarkMode: document.documentElement.classList.contains('dark'),
-        toggleTheme() {
-            this.isDarkMode = !this.isDarkMode;
-            if (this.isDarkMode) {
-                document.documentElement.classList.add('dark');
-                localStorage.setItem('darkMode', 'true');
-            } else {
-                document.documentElement.classList.remove('dark');
-                localStorage.setItem('darkMode', 'false');
-            }
-        },
         start(e) {
             this.isDragging = true;
             this.startX = e.clientX || (e.touches && e.touches[0].clientX) || 0;
@@ -89,13 +78,28 @@
             
             <div class="flex items-center gap-4">
                 <!-- Theme Toggle Button -->
-                <button @click="toggleTheme()" class="p-2 rounded-full hover:bg-black/5 dark:hover:bg-white/10 transition-colors duration-300 active:scale-95">
+                <button 
+                    x-data="{ 
+                        isDark: document.documentElement.classList.contains('dark'),
+                        toggle() { 
+                            this.isDark = !this.isDark; 
+                            if (this.isDark) { 
+                                document.documentElement.classList.add('dark'); 
+                                localStorage.setItem('darkMode', 'true'); 
+                            } else { 
+                                document.documentElement.classList.remove('dark'); 
+                                localStorage.setItem('darkMode', 'false'); 
+                            } 
+                        } 
+                    }" 
+                    @click="toggle()" 
+                    class="p-2 rounded-full hover:bg-black/5 dark:hover:bg-white/10 transition-colors duration-300 active:scale-95">
                     <!-- Sun Icon (shown in dark mode, switches to light) -->
-                    <svg x-show="isDarkMode" style="display: none;" class="w-5 h-5 text-gray-300 hover:text-white transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <svg x-show="isDark" style="display: none;" class="w-5 h-5 text-gray-300 hover:text-white transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"></path>
                     </svg>
                     <!-- Moon Icon (shown in light mode, switches to dark) -->
-                    <svg x-show="!isDarkMode" class="w-5 h-5 text-gray-600 hover:text-gray-900 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <svg x-show="!isDark" class="w-5 h-5 text-gray-600 hover:text-gray-900 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path>
                     </svg>
                 </button>
