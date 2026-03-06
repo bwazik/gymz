@@ -1,0 +1,1 @@
+<input {{ $attributes->merge(['type' => 'datetime-local', 'class' => 'w-full rounded-2xl bg-black/5 dark:bg-white/10 border-0 text-gray-900 dark:text-white text-sm px-4 py-3.5 focus:bg-white dark:focus:bg-[#3a3a3c] focus:ring-2 focus:ring-gymz-accent/50 transition-all dark:[color-scheme:dark]']) }}>

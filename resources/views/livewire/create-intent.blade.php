@@ -32,7 +32,7 @@
 
             <form wire:submit="save" class="space-y-4">
                 {{-- Gym Select --}}
-                <div>
+                <div class="relative z-30">
                     <label class="block text-xs font-medium text-gray-600 dark:text-white/60 mb-1.5">الجيم</label>
                     <x-ios-select wire:model="form.gym_id" :options="$gyms->pluck('name', 'id')" placeholder="اختار الجيم..." />
                     @error('form.gym_id')
@@ -48,7 +48,7 @@
                 </div>
 
                 {{-- Category Select --}}
-                <div>
+                <div class="relative z-20">
                     <label class="block text-xs font-medium text-gray-600 dark:text-white/60 mb-1.5">نوع
                         التمرين</label>
                     <x-ios-select wire:model.live="form.workout_category_id" :options="$categories->pluck('name', 'id')"
@@ -66,7 +66,7 @@
                 </div>
 
                 {{-- Target Select (dynamic) --}}
-                <div>
+                <div class="relative z-10">
                     <label class="block text-xs font-medium text-gray-600 dark:text-white/60 mb-1.5">العضلة /
                         الهدف</label>
                     <x-ios-select wire:model="form.workout_target_id" :options="$targets->pluck('name', 'id')"
@@ -89,8 +89,7 @@
                     <label class="block text-xs font-medium text-gray-600 dark:text-white/60 mb-1.5">ميعاد
                         التمرين</label>
                     <div class="relative">
-                        <input type="datetime-local" wire:model="form.start_time"
-                            class="w-full rounded-2xl bg-black/5 dark:bg-white/10 border-0 text-gray-900 dark:text-white text-sm px-4 py-3.5 focus:bg-white dark:focus:bg-[#3a3a3c] focus:ring-2 focus:ring-gymz-accent/50 transition-all dark:[color-scheme:dark]">
+                        <x-ios-datetime wire:model="form.start_time" />
                     </div>
                     @error('form.start_time')
                         <span class="flex items-center gap-1 text-red-500 dark:text-red-400 text-[11px] font-bold mt-1.5">
@@ -105,26 +104,13 @@
                 </div>
 
                 {{-- Guest Pass Toggle --}}
-                <div class="flex items-center justify-between py-1">
-                    <div>
-                        <label class="text-sm font-medium text-gray-900 dark:text-white">معايا دعوة (Guest
-                            Pass)</label>
-                        <p class="text-xs text-gray-500 dark:text-white/40">تقدر تدخل حد معندوش اشتراك في الجيم</p>
-                    </div>
-                    <label class="relative inline-flex items-center cursor-pointer" dir="ltr">
-                        <input type="checkbox" wire:model="form.has_invitation" class="sr-only peer">
-                        <div
-                            class="w-11 h-6 bg-gray-300 dark:bg-white/10 rounded-full peer peer-checked:bg-gymz-accent peer-focus:ring-2 peer-focus:ring-gymz-accent/30 transition-colors after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all after:shadow-sm peer-checked:after:translate-x-full">
-                        </div>
-                    </label>
-                </div>
+                <x-ios-toggle label="معايا دعوة (Guest Pass)" description="تقدر تدخل حد معندوش اشتراك في الجيم" wire:model="form.has_invitation" />
 
                 {{-- Note --}}
                 <div>
                     <label class="block text-xs font-medium text-gray-600 dark:text-white/60 mb-1.5">ملاحظات <span
                             class="text-gray-400 dark:text-white/30">(اختياري)</span></label>
-                    <textarea wire:model="form.note" rows="2" placeholder="محتاج spotter، عايز أكسر PR النهاردة..."
-                        class="w-full rounded-2xl bg-black/5 dark:bg-white/10 border-0 text-gray-900 dark:text-white text-sm px-4 py-3 focus:bg-white dark:focus:bg-[#3a3a3c] focus:ring-2 focus:ring-gymz-accent/50 transition-all resize-none placeholder-gray-400 dark:placeholder-white/30"></textarea>
+                    <x-ios-textarea wire:model="form.note" rows="2" placeholder="محتاج spotter، عايز أكسر PR النهاردة..." />
                     @error('form.note')
                         <span class="flex items-center gap-1 text-red-500 dark:text-red-400 text-[11px] font-bold mt-1.5">
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"

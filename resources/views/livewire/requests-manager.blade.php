@@ -25,8 +25,7 @@
     {{-- Incoming Tab --}}
     @if ($activeTab === 'incoming')
         @forelse ($this->incomingRequests as $request)
-            <div
-                class="relative overflow-hidden bg-white/70 dark:bg-[#1c1c1e]/70 backdrop-blur-2xl border border-black/5 dark:border-white/10 rounded-[2rem] p-5 mb-4 transition-all duration-300">
+            <x-glass-card class="mb-4">
                 {{-- Sender Info --}}
                 <div class="flex items-center gap-3 mb-3">
                     <img src="{{ $request->sender->image_path ? Storage::url($request->sender->image_path) : asset('images/default.jpg') }}"
@@ -75,10 +74,9 @@
                         رفض
                     </button>
                 </div>
-            </div>
+            </x-glass-card>
         @empty
-            <div
-                class="bg-white/50 dark:bg-[#1c1c1e]/50 backdrop-blur-xl border border-black/5 dark:border-white/10 rounded-[2rem] p-8 text-center">
+            <x-glass-card class="p-8 text-center">
                 <div
                     class="w-16 h-16 mx-auto mb-4 rounded-full bg-black/5 dark:bg-white/5 flex items-center justify-center">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
@@ -89,15 +87,14 @@
                 </div>
                 <h3 class="font-bold text-gray-700 dark:text-white/70 mb-1">مفيش طلبات لسه</h3>
                 <p class="text-sm text-gray-500 dark:text-gray-500">لما حد يطلب يتمرن معاك هيظهر هنا</p>
-            </div>
+            </x-glass-card>
         @endforelse
     @endif
 
     {{-- Outgoing Tab --}}
     @if ($activeTab === 'outgoing')
         @forelse ($this->outgoingRequests as $request)
-            <div
-                class="relative overflow-hidden bg-white/70 dark:bg-[#1c1c1e]/70 backdrop-blur-2xl border border-black/5 dark:border-white/10 rounded-[2rem] p-5 mb-4 transition-all duration-300">
+            <x-glass-card class="mb-4">
                 {{-- Intent Owner Info --}}
                 <div class="flex items-center gap-3 mb-3">
                     <img src="{{ $request->workoutIntent->user->image_path ? Storage::url($request->workoutIntent->user->image_path) : asset('images/default.jpg') }}"
@@ -152,10 +149,9 @@
                     <span class="text-gray-300 dark:text-white/20">·</span>
                     <span>{{ $request->workoutIntent->start_time->format('g:i A') }}</span>
                 </div>
-            </div>
+            </x-glass-card>
         @empty
-            <div
-                class="bg-white/50 dark:bg-[#1c1c1e]/50 backdrop-blur-xl border border-black/5 dark:border-white/10 rounded-[2rem] p-8 text-center">
+            <x-glass-card class="p-8 text-center">
                 <div
                     class="w-16 h-16 mx-auto mb-4 rounded-full bg-black/5 dark:bg-white/5 flex items-center justify-center">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
@@ -166,7 +162,7 @@
                 </div>
                 <h3 class="font-bold text-gray-700 dark:text-white/70 mb-1">مبعتش طلبات لسه</h3>
                 <p class="text-sm text-gray-500 dark:text-gray-500">الطلبات اللي هتبعتها من الفيد هتظهر هنا</p>
-            </div>
+            </x-glass-card>
         @endforelse
     @endif
 </div>

@@ -13,8 +13,7 @@
 
     @forelse ($intents as $intent)
         {{-- Apple Glass Card --}}
-        <div
-            class="relative overflow-hidden bg-white/70 dark:bg-[#1c1c1e]/70 backdrop-blur-2xl border border-black/5 dark:border-white/10 shadow-sm rounded-[2rem] p-5 mb-4 transition-all duration-300">
+        <x-glass-card class="mb-4">
 
             {{-- Guest Pass Ribbon (Top Left Corner) --}}
             @if ($intent->has_invitation)
@@ -25,7 +24,7 @@
                         <path stroke-linecap="round" stroke-linejoin="round"
                             d="M16.5 6v.75m0 3v.75m0 3v.75m0 3V18m-9-5.25h5.25M7.5 15h3M3.375 5.25c-.621 0-1.125.504-1.125 1.125v3.026a2.999 2.999 0 010 5.198v3.026c0 .621.504 1.125 1.125 1.125h17.25c.621 0 1.125-.504 1.125-1.125v-3.026a2.999 2.999 0 010-5.198V6.375c0-.621-.504-1.125-1.125-1.125H3.375z" />
                     </svg>
-                    معايا انفايت
+                    معايا انفتيشن
                 </span>
             @endif
 
@@ -92,11 +91,10 @@
                     </button>
                 @endif
             </div>
-        </div>
+        </x-glass-card>
     @empty
         {{-- Empty State --}}
-        <div
-            class="bg-white/50 dark:bg-[#1c1c1e]/50 backdrop-blur-xl border border-black/5 dark:border-white/10 rounded-[2rem] p-8 text-center">
+        <x-glass-card class="p-8 text-center">
             <div
                 class="w-16 h-16 mx-auto mb-4 rounded-full bg-gray-100 dark:bg-white/5 flex items-center justify-center">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
@@ -107,6 +105,6 @@
             </div>
             <h3 class="text-gray-700 dark:text-white/70 font-medium mb-1">مفيش حد لسه نزل تمرين</h3>
             <p class="text-sm text-gray-500 dark:text-gray-400">نزل تمرين و خلي الناس تيجي تتمرن معاك</p>
-        </div>
+        </x-glass-card>
     @endforelse
 </div>

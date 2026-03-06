@@ -11,8 +11,7 @@
             $partner = $isRoleA ? $session->userB : $session->userA;
         @endphp
 
-        <div
-            class="bg-white/70 dark:bg-[#1c1c1e]/70 backdrop-blur-3xl border border-black/5 dark:border-white/10 rounded-[2rem] p-6 mb-4">
+        <x-glass-card class="p-6 mb-4 backdrop-blur-3xl">
 
             {{-- Session Header: Partner + Gym --}}
             <div class="flex items-center gap-3 mb-4">
@@ -215,11 +214,10 @@
                     </button>
                 </div>
             @endif
-        </div>
+        </x-glass-card>
     @empty
         {{-- Empty State --}}
-        <div
-            class="bg-white/50 dark:bg-[#1c1c1e]/50 backdrop-blur-xl border border-black/5 dark:border-white/10 rounded-[2rem] p-8 text-center">
+        <x-glass-card class="p-8 text-center">
             <div
                 class="w-16 h-16 mx-auto mb-4 rounded-full bg-black/5 dark:bg-white/5 flex items-center justify-center">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
@@ -232,7 +230,7 @@
             </div>
             <h3 class="font-bold text-gray-700 dark:text-white/70 mb-1">مفيش جلسات حالياً</h3>
             <p class="text-sm text-gray-500 dark:text-gray-500">ابدأ تمرينة جديدة من الفيد!</p>
-        </div>
+        </x-glass-card>
     @endforelse
 </div>
 

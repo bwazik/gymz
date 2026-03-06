@@ -52,7 +52,7 @@ class CreateIntent extends Component
         $this->targets = collect();
         $this->showModal = false;
 
-        $this->dispatch('toast', message: 'تمرينة اتنشرت بنجاح! 🔥', type: 'success');
+        $this->dispatch('toast', message: 'التمرينة اتنشرت بنجاح! 🔥', type: 'success');
     }
 
     public function render()
