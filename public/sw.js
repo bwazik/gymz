@@ -1,4 +1,4 @@
-const CACHE_NAME = "gymz-cache-v1";
+const CACHE_NAME = "gymz-cache-v2";
 const OFFLINE_URL = "/offline";
 
 // Assets to pre-cache on install
@@ -37,7 +37,12 @@ self.addEventListener("fetch", (event) => {
 
     // Skip Livewire internal requests and OAuth routes
     const url = new URL(event.request.url);
-    if (url.pathname.startsWith("/livewire/") || url.pathname.startsWith("/auth/google")) {
+    if (
+        url.pathname.startsWith("/livewire/") ||
+        url.pathname.startsWith("/auth/google") ||
+        url.pathname === "/login" ||
+        url.pathname === "/logout"
+    ) {
         return;
     }
 
