@@ -12,6 +12,17 @@ new class extends Component {
     public string $password = '';
     public string $password_confirmation = '';
 
+    public function messages(): array
+    {
+        return [
+            'current_password.required' => 'لازم تكتب كلمة السر الحالية',
+            'current_password.current_password' => 'كلمة السر الحالية غلط',
+            'password.required' => 'لازم تكتب كلمة السر الجديدة',
+            'password.min' => 'كلمة السر لازم تكون 8 حروف على الأقل',
+            'password.confirmed' => 'تأكيد كلمة السر مش متطابق',
+        ];
+    }
+
     /**
      * Update the password for the currently authenticated user.
      */
@@ -19,7 +30,7 @@ new class extends Component {
     {
         $key = 'update-password:' . Auth::id();
 
-        if (RateLimiter::tooManyAttempts($key, 3)) {
+        if (RateLimiter::tooManyAttempts($key, 5)) {
             $seconds = RateLimiter::availableIn($key);
             $this->dispatch('toast', message: "محاولات كتير! استنى {$seconds} ثانية ⏳", type: 'error');
             return;

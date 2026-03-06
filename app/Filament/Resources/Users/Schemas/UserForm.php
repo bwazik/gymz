@@ -21,7 +21,7 @@ class UserForm
                 FileUpload::make('image_path')
                     ->label(__('الصورة'))
                     ->image()
-                    ->directory('users')
+                    ->directory('avatars')
                     ->disk('public')
                     ->imageEditor()
                     ->acceptedFileTypes(['image/jpeg', 'image/png', 'image/webp'])

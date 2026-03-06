@@ -9,6 +9,14 @@ use Livewire\Volt\Component;
 new class extends Component {
     public string $password = '';
 
+    public function messages(): array
+    {
+        return [
+            'password.required' => 'لازم تكتب كلمة السر للتأكيد',
+            'password.current_password' => 'كلمة السر غلط',
+        ];
+    }
+
     /**
      * Delete the currently authenticated user.
      */

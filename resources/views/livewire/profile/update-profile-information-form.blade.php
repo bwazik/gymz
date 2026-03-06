@@ -28,6 +28,21 @@ new class extends Component {
         $this->phone = Auth::user()->phone ?? '';
     }
 
+    public function messages(): array
+    {
+        return [
+            'name.required' => 'لازم تكتب اسمك',
+            'name.max' => 'الاسم طويل جداً',
+            'email.required' => 'الإيميل مطلوب',
+            'email.email' => 'صيغة الإيميل مش صحيحة',
+            'email.unique' => 'الإيميل ده متسجل قبل كده',
+            'phone.unique' => 'رقم الموبايل متسجل قبل كده',
+            'photo.image' => 'الملف لازم يكون صورة',
+            'photo.mimes' => 'الصورة لازم تكون بصيغة jpeg, png, أو webp',
+            'photo.max' => 'حجم الصورة لازم ما يتخطاش 3 ميجابايت',
+        ];
+    }
+
     /**
      * Update the profile information for the currently authenticated user.
      */
@@ -35,9 +50,9 @@ new class extends Component {
     {
         $key = 'update-profile:' . Auth::id();
 
-        if (RateLimiter::tooManyAttempts($key, 3)) {
+        if (RateLimiter::tooManyAttempts($key, 5)) {
             $seconds = RateLimiter::availableIn($key);
-            $this->dispatch('toast', message: "تعديلات كتير! استنى {$seconds} ثانية ⏳", type: 'error');
+            $this->dispatch('toast', message: "محاولات كتير! استنى {$seconds} ثانية ⏳", type: 'error');
             return;
         }
 
@@ -75,7 +90,7 @@ new class extends Component {
 
         $user->save();
 
-        $this->dispatch('toast', message: 'تم تحديث البيانات بنجاح! ✅', type: 'success');
+        $this->dispatch('toast', message: 'تم تحديث البيانات بنجاح!', type: 'success');
         $this->photo = null; // Clear photo to prevent re-upload on next submit
     }
 
@@ -182,11 +197,7 @@ new class extends Component {
             {{-- Glutes Balance --}}
             <div class="bg-black/5 dark:bg-white/5 rounded-2xl p-4 text-center">
                 <div class="flex items-center justify-center gap-1.5 mb-2">
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
-                        stroke="currentColor" class="w-4 h-4 text-gymz-accent">
-                        <path stroke-linecap="round" stroke-linejoin="round"
-                            d="M20.25 6.375c0 2.278-3.694 4.125-8.25 4.125S3.75 8.653 3.75 6.375m16.5 0c0-2.278-3.694-4.125-8.25-4.125S3.75 4.097 3.75 6.375m16.5 0v11.25c0 2.278-3.694 4.125-8.25 4.125s-8.25-1.847-8.25-4.125V6.375m16.5 0v3.75m-16.5-3.75v3.75m16.5 0v3.75C20.25 16.153 16.556 18 12 18s-8.25-1.847-8.25-4.125v-3.75m16.5 0c0 2.278-3.694 4.125-8.25 4.125s-8.25-1.847-8.25-4.125" />
-                    </svg>
+                    <img src="{{ asset('images/peach.svg') }}" class="w-4 h-4 scale-125" alt="glutes">
                     <span class="text-xs text-gray-500 dark:text-gray-400 font-bold">الجلوتس</span>
                 </div>
                 <p class="text-xl font-black text-gray-900 dark:text-white">
