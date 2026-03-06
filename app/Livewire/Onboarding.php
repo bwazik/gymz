@@ -3,10 +3,10 @@
 namespace App\Livewire;
 
 use App\Enums\UserLevel;
-use Livewire\Attributes\Layout;
+use App\Enums\Gender;
+use Illuminate\Validation\Rules\Enum;
 use Livewire\Component;
 
-#[Layout('layouts.guest')]
 class Onboarding extends Component
 {
     public string $phone = '';
@@ -18,16 +18,16 @@ class Onboarding extends Component
     {
         $this->validate([
             'phone' => ['required', 'string', 'max:11', 'regex:/^(011|010|012|015)\d{8}$/'],
-            'gender' => ['required', 'in:male,female'],
+            'gender' => ['required', new Enum(Gender::class)],
             'dob' => ['required', 'date', 'before:today'],
-            'level' => ['required', new \Illuminate\Validation\Rules\Enum(UserLevel::class)],
+            'level' => ['required', new Enum(UserLevel::class)],
         ]);
 
         auth()->user()->update([
             'phone' => $this->phone,
-            'gender' => $this->gender,
+            'gender' => (int) $this->gender,
             'dob' => $this->dob,
-            'level' => $this->level,
+            'level' => (int) $this->level,
             'is_onboarded' => true
         ]);
 
