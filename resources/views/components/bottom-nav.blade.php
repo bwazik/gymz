@@ -24,8 +24,11 @@
 @endphp
 
 <nav x-data="dockPill()"
+    @hide-bottom-nav.window="isHidden = true"
+    @show-bottom-nav.window="isHidden = false"
     @touchstart="touchStart" @touchmove="touchMove" @touchend="touchEnd"
-    class="fixed bottom-[calc(2rem+env(safe-area-inset-bottom))] left-1/2 -translate-x-1/2 flex items-center p-1.5 rounded-[2rem] bg-white/60 dark:bg-[#1c1c1e]/60 backdrop-blur-md backdrop-saturate-150 border border-white/50 dark:border-white/10 shadow-[0_8px_30px_rgba(0,0,0,0.15),inset_0_1px_0_rgba(255,255,255,0.9)] dark:shadow-[0_8px_30px_rgba(0,0,0,0.6),inset_0_1px_0_rgba(255,255,255,0.08)] z-50 w-[90%] max-w-[360px] transform-gpu touch-none">
+    :class="isHidden ? 'opacity-0 translate-y-24 pointer-events-none' : 'opacity-100 translate-y-0'"
+    class="fixed bottom-[calc(2rem+env(safe-area-inset-bottom))] left-1/2 -translate-x-1/2 flex items-center p-1.5 rounded-[2rem] bg-white/60 dark:bg-[#1c1c1e]/60 backdrop-blur-md backdrop-saturate-150 border border-white/50 dark:border-white/10 shadow-[0_8px_30px_rgba(0,0,0,0.15),inset_0_1px_0_rgba(255,255,255,0.9)] dark:shadow-[0_8px_30px_rgba(0,0,0,0.6),inset_0_1px_0_rgba(255,255,255,0.08)] z-50 w-[90%] max-w-[360px] transform-gpu touch-none transition-all duration-300 ease-out">
 
     <div class="absolute inset-0 rounded-[2rem] pointer-events-none bg-gradient-to-b from-white/70 via-white/20 to-white/5 dark:from-white/10 dark:via-white/5 dark:to-transparent"></div>
 
@@ -64,6 +67,7 @@
             startX: 0,
             currentTranslateX: 0,
             initialTranslateX: 0,
+            isHidden: false,
 
             init() {
                 this.tabs = Array.from(this.$el.querySelectorAll('a[data-route]'));
