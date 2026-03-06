@@ -19,10 +19,12 @@ new class extends Component {
         try {
             $validated = $this->validate([
                 'current_password' => ['required', 'string', 'current_password'],
-                'password' => ['required', 'string', Password::defaults(), 'confirmed'],
+                'password' => ['required', 'string', 'max:255', Password::defaults(), 'confirmed'],
             ]);
         } catch (ValidationException $e) {
             $this->reset('current_password', 'password', 'password_confirmation');
+            $firstError = collect($e->errors())->flatten()->first();
+            $this->dispatch('toast', message: $firstError, type: 'error');
             throw $e;
         }
 
@@ -74,9 +76,7 @@ new class extends Component {
 
         </div>
 
-        <x-input-error class="mt-2" :messages="$errors->get('current_password')" />
-        <x-input-error class="mt-2" :messages="$errors->get('password')" />
-        <x-input-error class="mt-2" :messages="$errors->get('password_confirmation')" />
+
 
         <button type="submit" wire:loading.attr="disabled"
             class="w-full mt-4 py-3.5 rounded-2xl bg-gymz-accent text-white font-bold active:scale-95 transition-all shadow-lg shadow-gymz-accent/20 disabled:opacity-50">

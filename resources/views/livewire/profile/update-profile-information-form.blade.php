@@ -1,9 +1,11 @@
 <?php
 
 use App\Models\User;
+use App\Rules\PhoneNumber;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Validation\Rule;
+use Illuminate\Validation\ValidationException;
 use Livewire\Volt\Component;
 use Livewire\WithFileUploads;
 
@@ -32,12 +34,18 @@ new class extends Component {
     {
         $user = Auth::user();
 
-        $validated = $this->validate([
-            'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'lowercase', 'email', 'max:255', Rule::unique(User::class)->ignore($user->id)],
-            'phone' => ['nullable', 'string', 'max:20', Rule::unique(User::class)->ignore($user->id)],
-            'photo' => ['nullable', 'image', 'max:2048'],
-        ]);
+        try {
+            $validated = $this->validate([
+                'name' => ['required', 'string', 'max:255'],
+                'email' => ['required', 'string', 'email', 'max:255', Rule::unique(User::class)->ignore($user->id)],
+                'phone' => ['nullable', 'string', 'max:255', new PhoneNumber(), Rule::unique(User::class)->ignore($user->id)],
+                'photo' => ['nullable', 'image', 'mimes:jpeg,png,webp', 'max:3072'],
+            ]);
+        } catch (ValidationException $e) {
+            $firstError = collect($e->errors())->flatten()->first();
+            $this->dispatch('toast', message: $firstError, type: 'error');
+            throw $e;
+        }
 
         $user->fill([
             'name' => $validated['name'],
@@ -120,7 +128,7 @@ new class extends Component {
             </div>
         </div>
 
-        <x-input-error class="text-center mt-2 mb-4" :messages="$errors->get('photo')" />
+
 
         {{-- Badges Row --}}
         <div class="flex flex-wrap items-center gap-2 mb-5">
@@ -229,9 +237,7 @@ new class extends Component {
 
         </div>
 
-        <x-input-error class="mt-2" :messages="$errors->get('name')" />
-        <x-input-error class="mt-2" :messages="$errors->get('email')" />
-        <x-input-error class="mt-2" :messages="$errors->get('phone')" />
+
 
         @if (auth()->user() instanceof \Illuminate\Contracts\Auth\MustVerifyEmail && !auth()->user()->hasVerifiedEmail())
             <div class="px-4">

@@ -10,7 +10,7 @@ return new class extends Migration
     {
         Schema::table('users', function (Blueprint $table) {
             $table->tinyInteger('gender')->default(0)->after('password');
-            $table->date('dob')->nullable()->after('gender');
+            $table->date('dob')->after('gender');
             $table->tinyInteger('level')->default(0)->after('dob');
             $table->integer('glutes_balance')->default(0)->after('level');
             $table->integer('reliability_score')->default(100)->after('glutes_balance');

@@ -2,6 +2,7 @@
 
 use App\Livewire\Actions\Logout;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Validation\ValidationException;
 use Livewire\Volt\Component;
 
 new class extends Component {
@@ -12,9 +13,15 @@ new class extends Component {
      */
     public function deleteUser(Logout $logout): void
     {
-        $this->validate([
-            'password' => ['required', 'string', 'current_password'],
-        ]);
+        try {
+            $this->validate([
+                'password' => ['required', 'string', 'current_password'],
+            ]);
+        } catch (ValidationException $e) {
+            $firstError = collect($e->errors())->flatten()->first();
+            $this->dispatch('toast', message: $firstError, type: 'error');
+            throw $e;
+        }
 
         tap(Auth::user(), $logout(...))->delete();
 
@@ -67,13 +74,7 @@ new class extends Component {
                         dir="ltr" required placeholder="كلمة السر">
                 </div>
 
-                @if ($errors->get('password'))
-                    <div class="text-[11px] text-red-500 mt-2">
-                        @foreach ($errors->get('password') as $error)
-                            <p>{{ $error }}</p>
-                        @endforeach
-                    </div>
-                @endif
+
             </div>
 
             <div class="border-t border-black/5 dark:border-white/10 flex">
