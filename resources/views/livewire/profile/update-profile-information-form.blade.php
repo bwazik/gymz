@@ -231,34 +231,18 @@ new class extends Component {
 
     <form wire:submit="updateProfileInformation" class="space-y-4">
         {{-- Glass Container for Fields --}}
-        <div
-            class="bg-white/70 dark:bg-[#1c1c1e]/70 backdrop-blur-3xl border border-black/5 dark:border-white/10 rounded-3xl overflow-hidden shadow-sm">
+        <x-ios-input-group>
 
             {{-- Name --}}
-            <div class="relative border-b border-black/5 dark:border-white/10 flex items-center px-4">
-                <span class="text-gray-400 dark:text-white/40 w-16 text-sm font-medium">الاسم</span>
-                <input wire:model="name" id="name" type="text"
-                    class="flex-1 bg-transparent border-0 focus:ring-0 text-gray-900 dark:text-white px-2 py-4 text-sm font-bold placeholder-gray-400 [&:-webkit-autofill]:[transition:background-color_9999999s_ease-in-out_0s] [&:-webkit-autofill]:[-webkit-text-fill-color:inherit] dark:[&:-webkit-autofill]:[-webkit-text-fill-color:#fff]"
-                    required autofocus maxlength="255" placeholder="اسمك">
-            </div>
+            <x-ios-input label="الاسم" id="name" wire:model="name" placeholder="اسمك" required autofocus maxlength="255" />
 
             {{-- Email --}}
-            <div class="relative border-b border-black/5 dark:border-white/10 flex items-center px-4">
-                <span class="text-gray-400 dark:text-white/40 w-16 text-sm font-medium">الإيميل</span>
-                <input wire:model="email" id="email" type="email"
-                    class="flex-1 bg-transparent border-0 focus:ring-0 text-gray-900 dark:text-white px-2 py-4 text-sm font-bold placeholder-gray-400 text-left [&:-webkit-autofill]:[transition:background-color_9999999s_ease-in-out_0s] [&:-webkit-autofill]:[-webkit-text-fill-color:inherit] dark:[&:-webkit-autofill]:[-webkit-text-fill-color:#fff]"
-                    dir="ltr" required maxlength="255" placeholder="email@example.com">
-            </div>
+            <x-ios-input label="الإيميل" id="email" type="email" wire:model="email" dir="ltr" placeholder="email@example.com" required maxlength="255" />
 
             {{-- Phone --}}
-            <div class="relative flex items-center px-4">
-                <span class="text-gray-400 dark:text-white/40 w-16 text-sm font-medium">الموبايل</span>
-                <input wire:model="phone" id="phone" type="tel"
-                    class="flex-1 bg-transparent border-0 focus:ring-0 text-gray-900 dark:text-white px-2 py-4 text-sm font-bold placeholder-gray-400 text-left [&:-webkit-autofill]:[transition:background-color_9999999s_ease-in-out_0s] [&:-webkit-autofill]:[-webkit-text-fill-color:inherit] dark:[&:-webkit-autofill]:[-webkit-text-fill-color:#fff]"
-                    dir="ltr" maxlength="11" pattern="^(011|010|012|015)\d{8}$" placeholder="01xxxxxxxxx">
-            </div>
+            <x-ios-input label="الموبايل" id="phone" type="tel" wire:model="phone" dir="ltr" placeholder="01xxxxxxxxx" maxlength="11" pattern="^(011|010|012|015)\d{8}$" />
 
-        </div>
+        </x-ios-input-group>
 
 
 
@@ -279,12 +263,6 @@ new class extends Component {
             </div>
         @endif
 
-        <button type="submit" wire:loading.attr="disabled"
-            class="w-full mt-4 py-3.5 rounded-2xl bg-gymz-accent text-white font-bold active:scale-95 transition-all shadow-lg shadow-gymz-accent/20 disabled:opacity-50 flex justify-center items-center gap-2">
-            <span wire:loading.remove wire:target="updateProfileInformation">حفظ البيانات</span>
-            <span wire:loading wire:target="updateProfileInformation"
-                class="w-5 h-5 border-2 border-white border-t-transparent flex rounded-full animate-spin"></span>
-            <span wire:loading wire:target="updateProfileInformation">جاري الحفظ...</span>
-        </button>
+        <x-ios-button target="updateProfileInformation" wire:loading.attr="disabled">حفظ البيانات</x-ios-button>
     </form>
 </section>

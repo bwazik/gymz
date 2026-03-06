@@ -69,41 +69,21 @@ new class extends Component {
 
     <form wire:submit="updatePassword" class="space-y-4">
         {{-- Glass Container for Fields --}}
-        <div
-            class="bg-white/70 dark:bg-[#1c1c1e]/70 backdrop-blur-3xl border border-black/5 dark:border-white/10 rounded-3xl overflow-hidden shadow-sm">
+        <x-ios-input-group>
 
             {{-- Current Password --}}
-            <div class="relative border-b border-black/5 dark:border-white/10 flex items-center px-4">
-                <span class="text-gray-400 dark:text-white/40 w-24 text-sm font-medium">الحالية</span>
-                <input wire:model="current_password" id="current_password" type="password"
-                    class="flex-1 bg-transparent border-0 focus:ring-0 text-gray-900 dark:text-white px-2 py-4 text-sm font-bold placeholder-gray-400 text-left [&:-webkit-autofill]:[transition:background-color_9999999s_ease-in-out_0s] [&:-webkit-autofill]:[-webkit-text-fill-color:inherit] dark:[&:-webkit-autofill]:[-webkit-text-fill-color:#fff]"
-                    dir="ltr" required maxlength="255" autocomplete="current-password">
-            </div>
+            <x-ios-input label="الحالية" id="current_password" type="password" wire:model="current_password" dir="ltr" labelWidth="w-24" required maxlength="255" autocomplete="current-password" />
 
             {{-- New Password --}}
-            <div class="relative border-b border-black/5 dark:border-white/10 flex items-center px-4">
-                <span class="text-gray-400 dark:text-white/40 w-24 text-sm font-medium">الجديدة</span>
-                <input wire:model="password" id="password" type="password"
-                    class="flex-1 bg-transparent border-0 focus:ring-0 text-gray-900 dark:text-white px-2 py-4 text-sm font-bold placeholder-gray-400 text-left [&:-webkit-autofill]:[transition:background-color_9999999s_ease-in-out_0s] [&:-webkit-autofill]:[-webkit-text-fill-color:inherit] dark:[&:-webkit-autofill]:[-webkit-text-fill-color:#fff]"
-                    dir="ltr" required minlength="8" maxlength="255" autocomplete="new-password">
-            </div>
+            <x-ios-input label="الجديدة" id="password" type="password" wire:model="password" dir="ltr" labelWidth="w-24" required minlength="8" maxlength="255" autocomplete="new-password" />
 
             {{-- Confirm Password --}}
-            <div class="relative flex items-center px-4">
-                <span class="text-gray-400 dark:text-white/40 w-24 text-sm font-medium">تأكيد</span>
-                <input wire:model="password_confirmation" id="password_confirmation" type="password"
-                    class="flex-1 bg-transparent border-0 focus:ring-0 text-gray-900 dark:text-white px-2 py-4 text-sm font-bold placeholder-gray-400 text-left [&:-webkit-autofill]:[transition:background-color_9999999s_ease-in-out_0s] [&:-webkit-autofill]:[-webkit-text-fill-color:inherit] dark:[&:-webkit-autofill]:[-webkit-text-fill-color:#fff]"
-                    dir="ltr" required minlength="8" maxlength="255" autocomplete="new-password">
-            </div>
+            <x-ios-input label="تأكيد" id="password_confirmation" type="password" wire:model="password_confirmation" dir="ltr" labelWidth="w-24" required minlength="8" maxlength="255" autocomplete="new-password" />
 
-        </div>
+        </x-ios-input-group>
 
 
 
-        <button type="submit" wire:loading.attr="disabled"
-            class="w-full mt-4 py-3.5 rounded-2xl bg-gymz-accent text-white font-bold active:scale-95 transition-all shadow-lg shadow-gymz-accent/20 disabled:opacity-50">
-            <span wire:loading.remove wire:target="updatePassword">تغيير كلمة السر</span>
-            <span wire:loading wire:target="updatePassword">جاري الحفظ...</span>
-        </button>
+        <x-ios-button target="updatePassword" wire:loading.attr="disabled">تغيير كلمة السر</x-ios-button>
     </form>
 </section>
