@@ -29,17 +29,9 @@
                 class="relative overflow-hidden bg-white/70 dark:bg-[#1c1c1e]/70 backdrop-blur-2xl border border-black/5 dark:border-white/10 rounded-[2rem] p-5 mb-4 transition-all duration-300">
                 {{-- Sender Info --}}
                 <div class="flex items-center gap-3 mb-3">
-                    @if ($request->sender->image_path)
-                        <img src="{{ Storage::url($request->sender->image_path) }}" alt="{{ $request->sender->name }}"
-                            class="w-11 h-11 rounded-full object-cover border border-black/5 dark:border-white/10">
-                    @else
-                        <div
-                            class="w-11 h-11 rounded-full bg-gymz-accent/15 flex items-center justify-center border border-black/5 dark:border-white/10">
-                            <span class="text-sm font-bold text-gymz-accent">
-                                {{ strtoupper(substr($request->sender->name, 0, 1)) }}
-                            </span>
-                        </div>
-                    @endif
+                    <img src="{{ $request->sender->image_path ? Storage::url($request->sender->image_path) : asset('images/default.jpg') }}"
+                        alt="{{ $request->sender->name }}"
+                        class="w-11 h-11 rounded-full object-cover border border-black/5 dark:border-white/10">
                     <div class="flex-1">
                         <p class="font-semibold text-sm text-gray-900 dark:text-white">{{ $request->sender->name }}</p>
                         <p class="text-xs text-gray-500 dark:text-gray-400">{{ $request->sender->level?->getLabel() }}
@@ -108,18 +100,9 @@
                 class="relative overflow-hidden bg-white/70 dark:bg-[#1c1c1e]/70 backdrop-blur-2xl border border-black/5 dark:border-white/10 rounded-[2rem] p-5 mb-4 transition-all duration-300">
                 {{-- Intent Owner Info --}}
                 <div class="flex items-center gap-3 mb-3">
-                    @if ($request->workoutIntent->user->image_path)
-                        <img src="{{ Storage::url($request->workoutIntent->user->image_path) }}"
-                            alt="{{ $request->workoutIntent->user->name }}"
-                            class="w-11 h-11 rounded-full object-cover border border-black/5 dark:border-white/10">
-                    @else
-                        <div
-                            class="w-11 h-11 rounded-full bg-black/5 dark:bg-white/10 flex items-center justify-center border border-black/5 dark:border-white/10">
-                            <span class="text-sm font-bold text-gray-500 dark:text-white/60">
-                                {{ strtoupper(substr($request->workoutIntent->user->name, 0, 1)) }}
-                            </span>
-                        </div>
-                    @endif
+                    <img src="{{ $request->workoutIntent->user->image_path ? Storage::url($request->workoutIntent->user->image_path) : asset('images/default.jpg') }}"
+                        alt="{{ $request->workoutIntent->user->name }}"
+                        class="w-11 h-11 rounded-full object-cover border border-black/5 dark:border-white/10">
                     <div class="flex-1">
                         <p class="font-semibold text-sm text-gray-900 dark:text-white">
                             {{ $request->workoutIntent->user->name }}</p>
