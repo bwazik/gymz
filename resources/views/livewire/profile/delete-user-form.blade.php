@@ -40,47 +40,52 @@ new class extends Component {
         </button>
     </div>
 
-    {{-- Apple Style Confirmation Modal --}}
-    <x-modal name="confirm-user-deletion" :show="$errors->isNotEmpty()" focusable>
-        <form wire:submit="deleteUser" class="p-6 text-center">
+    {{-- Pure iOS Prompt Alert --}}
+    <div x-data="{ show: @entangle($errors->isNotEmpty()) }" @open-modal.window="if ($event.detail === 'confirm-user-deletion') show = true"
+        @close.window="show = false" x-show="show" x-transition:enter="transition ease-out duration-200"
+        x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100"
+        x-transition:leave="transition ease-in duration-150" x-transition:leave-start="opacity-100"
+        x-transition:leave-end="opacity-0"
+        class="fixed inset-0 z-[110] flex items-center justify-center bg-black/40 backdrop-blur-sm"
+        style="display: none;">
 
-            <div class="w-16 h-16 mx-auto mb-4 rounded-full bg-red-500/10 flex items-center justify-center">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                    stroke="currentColor" class="w-8 h-8 text-red-500">
-                    <path stroke-linecap="round" stroke-linejoin="round"
-                        d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
-                </svg>
+        <form wire:submit="deleteUser" x-show="show" x-transition:enter="transition ease-out duration-200"
+            x-transition:enter-start="opacity-0 scale-90" x-transition:enter-end="opacity-100 scale-100"
+            x-transition:leave="transition ease-in duration-150" x-transition:leave-start="opacity-100 scale-100"
+            x-transition:leave-end="opacity-0 scale-90"
+            class="w-[270px] bg-white/80 dark:bg-[#2c2c2e]/80 backdrop-blur-3xl rounded-3xl flex flex-col text-center overflow-hidden border border-black/5 dark:border-white/10 shadow-2xl"
+            @click.stop>
+
+            <div class="px-6 pt-6 pb-4">
+                <h3 class="text-[17px] font-bold text-gray-900 dark:text-white mb-1">متأكد إنك هتحذف الحساب؟</h3>
+                <p class="text-[13px] text-gray-500 dark:text-gray-400 leading-relaxed mb-4">يرجى إدخال كلمة السر
+                    للتأكيد.</p>
+
+                <div class="bg-black/5 dark:bg-white/5 rounded-xl px-2 py-1 border border-black/5 dark:border-white/10">
+                    <input wire:model="password" type="password"
+                        class="w-full bg-transparent border-0 focus:ring-0 text-gray-900 dark:text-white px-2 py-2 text-[13px] font-bold placeholder-gray-400 text-center [&:-webkit-autofill]:[transition:background-color_9999999s_ease-in-out_0s] [&:-webkit-autofill]:[-webkit-text-fill-color:inherit] dark:[&:-webkit-autofill]:[-webkit-text-fill-color:#fff]"
+                        dir="ltr" required placeholder="كلمة السر">
+                </div>
+
+                @if ($errors->get('password'))
+                    <div class="text-[11px] text-red-500 mt-2">
+                        @foreach ($errors->get('password') as $error)
+                            <p>{{ $error }}</p>
+                        @endforeach
+                    </div>
+                @endif
             </div>
 
-            <h2 class="text-[17px] font-bold text-gray-900 dark:text-white mb-2">
-                مـتأكد إنك هتحذف الحساب؟
-            </h2>
-
-            <p class="text-[13px] text-gray-500 dark:text-gray-400 leading-relaxed mb-6">
-                يرجى إدخال كلمة السر الخاصة بك لتأكيد رغبتك في حذف الحساب نهائياً.
-            </p>
-
-            <div
-                class="mb-6 bg-black/5 dark:bg-white/5 rounded-2xl px-4 py-1 border border-black/5 dark:border-white/10">
-                <input wire:model="password" id="password" type="password"
-                    class="w-full bg-transparent border-0 focus:ring-0 text-gray-900 dark:text-white px-2 py-3 text-sm font-bold placeholder-gray-400 text-center"
-                    dir="ltr" required placeholder="كلمة السر">
-            </div>
-
-            <x-input-error :messages="$errors->get('password')" class="mt-2 mb-4" />
-
-            <div class="border-t border-black/5 dark:border-white/10 -mx-6 -mb-6 flex mt-4">
-                <button type="button" x-on:click="$dispatch('close')"
-                    class="flex-1 py-4 text-[17px] font-bold text-gray-500 dark:text-white/50 border-r border-black/5 dark:border-white/10 active:bg-black/5 dark:active:bg-white/10 transition-colors">
+            <div class="border-t border-black/5 dark:border-white/10 flex">
+                <button type="button" @click="show = false"
+                    class="flex-1 py-3 text-[17px] font-bold text-gymz-accent border-l border-black/5 dark:border-white/10 active:bg-black/5 dark:active:bg-white/10 transition-colors">
                     إلغاء
                 </button>
-
-                <button type="submit" wire:loading.attr="disabled"
-                    class="flex-1 py-4 text-[17px] font-bold text-red-500 active:bg-black/5 dark:active:bg-white/10 transition-colors">
-                    <span wire:loading.remove wire:target="deleteUser">حذف نهائي</span>
-                    <span wire:loading wire:target="deleteUser">جاري الحذف...</span>
+                <button type="submit"
+                    class="flex-1 py-3 text-[17px] font-bold text-red-500 active:bg-black/5 dark:active:bg-white/10 transition-colors">
+                    حذف نهائي
                 </button>
             </div>
         </form>
-    </x-modal>
+    </div>
 </section>

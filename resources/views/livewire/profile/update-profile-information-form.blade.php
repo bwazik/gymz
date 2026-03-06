@@ -78,16 +78,13 @@ new class extends Component {
 }; ?>
 
 <section>
-    <header class="mb-4 text-center">
-        <h2 class="text-lg font-bold text-gray-900 dark:text-white">
-            المعلومات الأساسية
-        </h2>
-    </header>
-
-    <form wire:submit="updateProfileInformation" class="space-y-4">
-        {{-- Profile Picture Upload --}}
-        <div class="flex justify-center mb-6">
-            <div class="relative w-24 h-24 rounded-full overflow-hidden border-2 border-dashed border-gray-300 dark:border-white/20 cursor-pointer group"
+    {{-- Fitness CV Card --}}
+    <div
+        class="bg-white/70 dark:bg-[#1c1c1e]/70 backdrop-blur-3xl border border-black/5 dark:border-white/10 rounded-[2rem] p-6 mb-6">
+        {{-- Header: Avatar + Info --}}
+        <div class="flex items-center gap-4 mb-5">
+            {{-- Clickable Avatar for Photo Upload --}}
+            <div class="relative w-20 h-20 rounded-full overflow-hidden border border-black/5 dark:border-white/10 cursor-pointer group"
                 onclick="document.getElementById('photo-upload').click()">
                 @if ($photo)
                     <img src="{{ $photo->temporaryUrl() }}" class="w-full h-full object-cover">
@@ -99,7 +96,7 @@ new class extends Component {
                 <div
                     class="absolute inset-0 bg-black/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
-                        stroke="currentColor" class="w-6 h-6 text-white">
+                        stroke="currentColor" class="w-5 h-5 text-white">
                         <path stroke-linecap="round" stroke-linejoin="round"
                             d="M6.827 6.175A2.31 2.31 0 015.186 7.23c-.38.054-.757.112-1.134.175C2.999 7.58 2.25 8.507 2.25 9.574V18a2.25 2.25 0 002.25 2.25h15A2.25 2.25 0 0021.75 18V9.574c0-1.067-.75-1.994-1.802-2.169a47.865 47.865 0 00-1.134-.175 2.31 2.31 0 01-1.64-1.055l-.822-1.316a2.192 2.192 0 00-1.736-1.039 48.774 48.774 0 00-5.232 0 2.192 2.192 0 00-1.736 1.039l-.821 1.316z" />
                         <path stroke-linecap="round" stroke-linejoin="round"
@@ -113,10 +110,95 @@ new class extends Component {
                 </div>
             </div>
             <input type="file" id="photo-upload" wire:model="photo" class="hidden" accept="image/*">
+
+            <div>
+                <h3 class="text-xl font-bold text-gray-900 dark:text-white">{{ auth()->user()->name }}</h3>
+                <p class="text-sm text-gray-500 dark:text-gray-400">{{ auth()->user()->email }}</p>
+                @if (auth()->user()->phone)
+                    <p class="text-sm text-gray-500 dark:text-gray-400" dir="ltr">{{ auth()->user()->phone }}</p>
+                @endif
+            </div>
         </div>
 
-        <x-input-error class="text-center mt-2" :messages="$errors->get('photo')" />
+        <x-input-error class="text-center mt-2 mb-4" :messages="$errors->get('photo')" />
 
+        {{-- Badges Row --}}
+        <div class="flex flex-wrap items-center gap-2 mb-5">
+            {{-- Level Badge --}}
+            @php
+                $levelClasses = match (auth()->user()->level) {
+                    \App\Enums\UserLevel::Beginner
+                        => 'bg-blue-500/15 text-blue-600 dark:text-blue-400 border-blue-500/30',
+                    \App\Enums\UserLevel::Mid => 'bg-gymz-accent/15 text-gymz-accent border-gymz-accent/30',
+                    \App\Enums\UserLevel::Pro
+                        => 'bg-amber-500/15 text-amber-600 dark:text-amber-400 border-amber-500/30',
+                    default
+                        => 'bg-gray-100 text-gray-500 border-gray-200 dark:bg-white/10 dark:text-white/50 dark:border-white/10',
+                };
+            @endphp
+            <span class="px-3 py-1 rounded-full text-[11px] font-bold border {{ $levelClasses }}">
+                {{ auth()->user()->level?->getLabel() ?? 'مبتدئ' }}
+            </span>
+
+            {{-- Gender Badge --}}
+            @if (auth()->user()->gender)
+                <span
+                    class="px-3 py-1 rounded-full text-[11px] font-bold border bg-gray-100 dark:bg-white/10 text-gray-700 dark:text-white/70 border-black/5 dark:border-white/10">
+                    {{ auth()->user()->gender->getLabel() }}
+                </span>
+            @endif
+
+            {{-- DOB Badge --}}
+            @if (auth()->user()->dob)
+                <span
+                    class="px-3 py-1 rounded-full text-[11px] font-bold border bg-gray-100 dark:bg-white/10 text-gray-700 dark:text-white/70 border-black/5 dark:border-white/10">
+                    {{ \Carbon\Carbon::parse(auth()->user()->dob)->translatedFormat('j F Y') }}
+                </span>
+            @endif
+        </div>
+
+        {{-- Stats Grid --}}
+        <div class="grid grid-cols-2 gap-3">
+            {{-- Glutes Balance --}}
+            <div class="bg-black/5 dark:bg-white/5 rounded-2xl p-4 text-center">
+                <div class="flex items-center justify-center gap-1.5 mb-2">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
+                        stroke="currentColor" class="w-4 h-4 text-gymz-accent">
+                        <path stroke-linecap="round" stroke-linejoin="round"
+                            d="M20.25 6.375c0 2.278-3.694 4.125-8.25 4.125S3.75 8.653 3.75 6.375m16.5 0c0-2.278-3.694-4.125-8.25-4.125S3.75 4.097 3.75 6.375m16.5 0v11.25c0 2.278-3.694 4.125-8.25 4.125s-8.25-1.847-8.25-4.125V6.375m16.5 0v3.75m-16.5-3.75v3.75m16.5 0v3.75C20.25 16.153 16.556 18 12 18s-8.25-1.847-8.25-4.125v-3.75m16.5 0c0 2.278-3.694 4.125-8.25 4.125s-8.25-1.847-8.25-4.125" />
+                    </svg>
+                    <span class="text-xs text-gray-500 dark:text-gray-400 font-bold">الجلوتس</span>
+                </div>
+                <p class="text-xl font-black text-gray-900 dark:text-white">
+                    {{ number_format(auth()->user()->glutes_balance) }}</p>
+            </div>
+
+            {{-- Reliability Score --}}
+            @php
+                $score = auth()->user()->reliability_score;
+                $scoreColor = $score > 80 ? 'text-green-500' : ($score > 50 ? 'text-amber-500' : 'text-red-500');
+            @endphp
+            <div class="bg-black/5 dark:bg-white/5 rounded-2xl p-4 text-center">
+                <div class="flex items-center justify-center gap-1.5 mb-2">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
+                        stroke="currentColor" class="w-4 h-4 {{ $scoreColor }}">
+                        <path stroke-linecap="round" stroke-linejoin="round"
+                            d="M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285z" />
+                    </svg>
+                    <span class="text-xs text-gray-500 dark:text-gray-400 font-bold">الموثوقية</span>
+                </div>
+                <p class="text-xl font-black {{ $scoreColor }}">{{ $score }}%</p>
+            </div>
+        </div>
+    </div>
+
+    <header class="mb-4 text-center">
+        <h2 class="text-lg font-bold text-gray-900 dark:text-white">
+            المعلومات الأساسية
+        </h2>
+    </header>
+
+    <form wire:submit="updateProfileInformation" class="space-y-4">
         {{-- Glass Container for Fields --}}
         <div
             class="bg-white/70 dark:bg-[#1c1c1e]/70 backdrop-blur-3xl border border-black/5 dark:border-white/10 rounded-3xl overflow-hidden shadow-sm">
@@ -125,7 +207,7 @@ new class extends Component {
             <div class="relative border-b border-black/5 dark:border-white/10 flex items-center px-4">
                 <span class="text-gray-400 dark:text-white/40 w-16 text-sm font-medium">الاسم</span>
                 <input wire:model="name" id="name" type="text"
-                    class="flex-1 bg-transparent border-0 focus:ring-0 text-gray-900 dark:text-white px-2 py-4 text-sm font-bold placeholder-gray-400"
+                    class="flex-1 bg-transparent border-0 focus:ring-0 text-gray-900 dark:text-white px-2 py-4 text-sm font-bold placeholder-gray-400 [&:-webkit-autofill]:[transition:background-color_9999999s_ease-in-out_0s] [&:-webkit-autofill]:[-webkit-text-fill-color:inherit] dark:[&:-webkit-autofill]:[-webkit-text-fill-color:#fff]"
                     required autofocus placeholder="اسمك">
             </div>
 
@@ -133,7 +215,7 @@ new class extends Component {
             <div class="relative border-b border-black/5 dark:border-white/10 flex items-center px-4">
                 <span class="text-gray-400 dark:text-white/40 w-16 text-sm font-medium">الإيميل</span>
                 <input wire:model="email" id="email" type="email"
-                    class="flex-1 bg-transparent border-0 focus:ring-0 text-gray-900 dark:text-white px-2 py-4 text-sm font-bold placeholder-gray-400 text-left"
+                    class="flex-1 bg-transparent border-0 focus:ring-0 text-gray-900 dark:text-white px-2 py-4 text-sm font-bold placeholder-gray-400 text-left [&:-webkit-autofill]:[transition:background-color_9999999s_ease-in-out_0s] [&:-webkit-autofill]:[-webkit-text-fill-color:inherit] dark:[&:-webkit-autofill]:[-webkit-text-fill-color:#fff]"
                     dir="ltr" required placeholder="email@example.com">
             </div>
 
@@ -141,7 +223,7 @@ new class extends Component {
             <div class="relative flex items-center px-4">
                 <span class="text-gray-400 dark:text-white/40 w-16 text-sm font-medium">الموبايل</span>
                 <input wire:model="phone" id="phone" type="tel"
-                    class="flex-1 bg-transparent border-0 focus:ring-0 text-gray-900 dark:text-white px-2 py-4 text-sm font-bold placeholder-gray-400 text-left"
+                    class="flex-1 bg-transparent border-0 focus:ring-0 text-gray-900 dark:text-white px-2 py-4 text-sm font-bold placeholder-gray-400 text-left [&:-webkit-autofill]:[transition:background-color_9999999s_ease-in-out_0s] [&:-webkit-autofill]:[-webkit-text-fill-color:inherit] dark:[&:-webkit-autofill]:[-webkit-text-fill-color:#fff]"
                     dir="ltr" placeholder="01xxxxxxxxx">
             </div>
 
