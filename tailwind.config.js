@@ -19,7 +19,7 @@ export default {
             },
             colors: {
                 "gymz-dark": "#0f172a",
-                "gymz-accent": "#10b981",
+                "gymz-accent": "#ff2d55",
             },
         },
     },
