@@ -5,21 +5,19 @@
         id: $id('ios-select'),
         open: false,
         value: @entangle($attributes->wire('model')),
-        get options() {
+        getLabel(rootEl) {
             try {
-                return JSON.parse(this.$el.dataset.options || '{}');
+                const opts = JSON.parse(rootEl.dataset.options || '{}');
+                return opts[this.value] ?? rootEl.dataset.placeholder;
             } catch (e) {
-                return {};
+                return rootEl.dataset.placeholder;
             }
-        },
-        getLabel() {
-            return this.options[this.value] ?? this.$el.dataset.placeholder;
         },
         toggle() {
             this.open = !this.open;
         }
     }"
-    data-options="{{ e(json_encode($options)) }}"
+    data-options="{{ empty($options) ? '{}' : json_encode($options) }}"
     data-placeholder="{{ $placeholder }}"
     x-id="['ios-select']"
     @click.away="open = false"
@@ -34,7 +32,7 @@
         class="w-full flex items-center justify-between rounded-2xl bg-black/5 dark:bg-white/10 text-gray-900 dark:text-white text-sm px-4 py-3.5 focus:outline-none focus:ring-2 focus:ring-gymz-accent/50 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
         :class="open ? 'ring-2 ring-gymz-accent/50 bg-white dark:bg-[#3a3a3c]' : ''"
     >
-        <span class="truncate" x-text="getLabel()" :class="!value ? 'text-gray-400 dark:text-white/40' : 'font-medium'"></span>
+        <span class="truncate" x-text="getLabel($root)" :class="!value ? 'text-gray-400 dark:text-white/40' : 'font-medium'"></span>
 
         <svg class="w-4 h-4 text-gray-400 transition-transform duration-200 shrink-0" :class="open ? 'rotate-180' : ''" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
