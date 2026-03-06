@@ -1,7 +1,7 @@
 <div>
     {{-- Floating Action Button --}}
     <button wire:click="$set('showModal', true)"
-        class="fixed bottom-[calc(5.5rem+env(safe-area-inset-bottom))] right-6 z-40 w-14 h-14 rounded-full bg-gymz-accent text-white flex items-center justify-center shadow-[0_8px_30px_rgba(255,45,85,0.4)] hover:scale-105 active:scale-95 transition-all duration-300">
+        class="fixed bottom-[calc(7.5rem+env(safe-area-inset-bottom))] right-6 z-40 w-14 h-14 rounded-full bg-gymz-accent text-white flex items-center justify-center shadow-[0_8px_30px_rgba(255,45,85,0.4)] hover:scale-105 active:scale-95 transition-all duration-300">
         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor"
             class="w-7 h-7">
             <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
@@ -42,15 +42,33 @@
                     {{-- Gym Select --}}
                     <div>
                         <label class="block text-xs font-medium text-gray-600 dark:text-white/60 mb-1.5">الجيم</label>
-                        <select wire:model="gym_id"
-                            class="w-full rounded-2xl bg-black/5 dark:bg-white/10 border-0 text-gray-900 dark:text-white text-sm px-4 py-3 focus:ring-2 focus:ring-gymz-accent/50 transition-colors">
-                            <option value="">اختار الجيم...</option>
-                            @foreach ($gyms as $gym)
-                                <option value="{{ $gym->id }}">{{ $gym->name }}</option>
-                            @endforeach
-                        </select>
+                        <div class="relative">
+                            <select wire:model="gym_id"
+                                class="appearance-none w-full rounded-2xl bg-gray-100 dark:bg-[#2c2c2e] border border-transparent text-gray-900 dark:text-white text-sm px-4 py-3.5 focus:bg-white dark:focus:bg-[#3a3a3c] focus:border-gymz-accent/50 focus:ring-2 focus:ring-gymz-accent/20 transition-all cursor-pointer">
+                                <option value="" class="bg-white text-gray-900 dark:bg-[#1c1c1e] dark:text-white">
+                                    اختار الجيم...</option>
+                                @foreach ($gyms as $gym)
+                                    <option value="{{ $gym->id }}"
+                                        class="bg-white text-gray-900 dark:bg-[#1c1c1e] dark:text-white">
+                                        {{ $gym->name }}</option>
+                                @endforeach
+                            </select>
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
+                                stroke="currentColor"
+                                class="w-4 h-4 absolute left-4 top-1/2 -translate-y-1/2 pointer-events-none text-gray-400">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
+                            </svg>
+                        </div>
                         @error('gym_id')
-                            <span class="text-red-500 dark:text-red-400 text-xs mt-1">{{ $message }}</span>
+                            <span
+                                class="flex items-center gap-1 text-red-500 dark:text-red-400 text-[11px] font-bold mt-1.5">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
+                                    stroke="currentColor" class="w-3 h-3">
+                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                        d="M12 9v3.75m9-.75a9 9 0 11-18 0 9 9 0 0118 0zm-9 3.75h.008v.008H12v-.008z" />
+                                </svg>
+                                {{ $message }}
+                            </span>
                         @enderror
                     </div>
 
@@ -58,15 +76,33 @@
                     <div>
                         <label class="block text-xs font-medium text-gray-600 dark:text-white/60 mb-1.5">نوع
                             التمرين</label>
-                        <select wire:model.live="workout_category_id"
-                            class="w-full rounded-2xl bg-black/5 dark:bg-white/10 border-0 text-gray-900 dark:text-white text-sm px-4 py-3 focus:ring-2 focus:ring-gymz-accent/50 transition-colors">
-                            <option value="">اختار النوع...</option>
-                            @foreach ($categories as $category)
-                                <option value="{{ $category->id }}">{{ $category->name }}</option>
-                            @endforeach
-                        </select>
+                        <div class="relative">
+                            <select wire:model.live="workout_category_id"
+                                class="appearance-none w-full rounded-2xl bg-gray-100 dark:bg-[#2c2c2e] border border-transparent text-gray-900 dark:text-white text-sm px-4 py-3.5 focus:bg-white dark:focus:bg-[#3a3a3c] focus:border-gymz-accent/50 focus:ring-2 focus:ring-gymz-accent/20 transition-all cursor-pointer">
+                                <option value="" class="bg-white text-gray-900 dark:bg-[#1c1c1e] dark:text-white">
+                                    اختار النوع...</option>
+                                @foreach ($categories as $category)
+                                    <option value="{{ $category->id }}"
+                                        class="bg-white text-gray-900 dark:bg-[#1c1c1e] dark:text-white">
+                                        {{ $category->name }}</option>
+                                @endforeach
+                            </select>
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
+                                stroke="currentColor"
+                                class="w-4 h-4 absolute left-4 top-1/2 -translate-y-1/2 pointer-events-none text-gray-400">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
+                            </svg>
+                        </div>
                         @error('workout_category_id')
-                            <span class="text-red-500 dark:text-red-400 text-xs mt-1">{{ $message }}</span>
+                            <span
+                                class="flex items-center gap-1 text-red-500 dark:text-red-400 text-[11px] font-bold mt-1.5">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
+                                    stroke="currentColor" class="w-3 h-3">
+                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                        d="M12 9v3.75m9-.75a9 9 0 11-18 0 9 9 0 0118 0zm-9 3.75h.008v.008H12v-.008z" />
+                                </svg>
+                                {{ $message }}
+                            </span>
                         @enderror
                     </div>
 
@@ -74,17 +110,34 @@
                     <div>
                         <label class="block text-xs font-medium text-gray-600 dark:text-white/60 mb-1.5">العضلة /
                             الهدف</label>
-                        <select wire:model="workout_target_id"
-                            class="w-full rounded-2xl bg-black/5 dark:bg-white/10 border-0 text-gray-900 dark:text-white text-sm px-4 py-3 focus:ring-2 focus:ring-gymz-accent/50 transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
-                            @if ($targets->isEmpty()) disabled @endif>
-                            <option value="">
-                                {{ $targets->isEmpty() ? 'اختار النوع الأول...' : 'اختار الهدف...' }}</option>
-                            @foreach ($targets as $target)
-                                <option value="{{ $target->id }}">{{ $target->name }}</option>
-                            @endforeach
-                        </select>
+                        <div class="relative">
+                            <select wire:model="workout_target_id"
+                                class="appearance-none w-full rounded-2xl bg-gray-100 dark:bg-[#2c2c2e] border border-transparent text-gray-900 dark:text-white text-sm px-4 py-3.5 focus:bg-white dark:focus:bg-[#3a3a3c] focus:border-gymz-accent/50 focus:ring-2 focus:ring-gymz-accent/20 transition-all cursor-pointer disabled:opacity-40 disabled:cursor-not-allowed"
+                                @if ($targets->isEmpty()) disabled @endif>
+                                <option value="" class="bg-white text-gray-900 dark:bg-[#1c1c1e] dark:text-white">
+                                    {{ $targets->isEmpty() ? 'اختار النوع الأول...' : 'اختار الهدف...' }}</option>
+                                @foreach ($targets as $target)
+                                    <option value="{{ $target->id }}"
+                                        class="bg-white text-gray-900 dark:bg-[#1c1c1e] dark:text-white">
+                                        {{ $target->name }}</option>
+                                @endforeach
+                            </select>
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
+                                stroke="currentColor"
+                                class="w-4 h-4 absolute left-4 top-1/2 -translate-y-1/2 pointer-events-none text-gray-400">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
+                            </svg>
+                        </div>
                         @error('workout_target_id')
-                            <span class="text-red-500 dark:text-red-400 text-xs mt-1">{{ $message }}</span>
+                            <span
+                                class="flex items-center gap-1 text-red-500 dark:text-red-400 text-[11px] font-bold mt-1.5">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                    stroke-width="2" stroke="currentColor" class="w-3 h-3">
+                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                        d="M12 9v3.75m9-.75a9 9 0 11-18 0 9 9 0 0118 0zm-9 3.75h.008v.008H12v-.008z" />
+                                </svg>
+                                {{ $message }}
+                            </span>
                         @enderror
                     </div>
 
@@ -92,10 +145,20 @@
                     <div>
                         <label class="block text-xs font-medium text-gray-600 dark:text-white/60 mb-1.5">ميعاد
                             التمرين</label>
-                        <input type="datetime-local" wire:model="start_time"
-                            class="w-full rounded-2xl bg-black/5 dark:bg-white/10 border-0 text-gray-900 dark:text-white text-sm px-4 py-3 focus:ring-2 focus:ring-gymz-accent/50 transition-colors dark:[color-scheme:dark]">
+                        <div class="relative">
+                            <input type="datetime-local" wire:model="start_time"
+                                class="w-full rounded-2xl bg-gray-100 dark:bg-[#2c2c2e] border border-transparent text-gray-900 dark:text-white text-sm px-4 py-3.5 focus:bg-white dark:focus:bg-[#3a3a3c] focus:border-gymz-accent/50 focus:ring-2 focus:ring-gymz-accent/20 transition-all dark:[color-scheme:dark]">
+                        </div>
                         @error('start_time')
-                            <span class="text-red-500 dark:text-red-400 text-xs mt-1">{{ $message }}</span>
+                            <span
+                                class="flex items-center gap-1 text-red-500 dark:text-red-400 text-[11px] font-bold mt-1.5">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                    stroke-width="2" stroke="currentColor" class="w-3 h-3">
+                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                        d="M12 9v3.75m9-.75a9 9 0 11-18 0 9 9 0 0118 0zm-9 3.75h.008v.008H12v-.008z" />
+                                </svg>
+                                {{ $message }}
+                            </span>
                         @enderror
                     </div>
 
@@ -119,9 +182,17 @@
                         <label class="block text-xs font-medium text-gray-600 dark:text-white/60 mb-1.5">ملاحظات <span
                                 class="text-gray-400 dark:text-white/30">(اختياري)</span></label>
                         <textarea wire:model="note" rows="2" placeholder="محتاج spotter، عايز أكسر PR النهاردة..."
-                            class="w-full rounded-2xl bg-black/5 dark:bg-white/10 border-0 text-gray-900 dark:text-white text-sm px-4 py-3 focus:ring-2 focus:ring-gymz-accent/50 transition-colors placeholder-gray-400 dark:placeholder-white/20 resize-none"></textarea>
+                            class="w-full rounded-2xl bg-gray-100 dark:bg-[#2c2c2e] border border-transparent text-gray-900 dark:text-white text-sm px-4 py-3.5 focus:bg-white dark:focus:bg-[#3a3a3c] focus:border-gymz-accent/50 focus:ring-2 focus:ring-gymz-accent/20 transition-all placeholder-gray-400 dark:placeholder-white/20 resize-none"></textarea>
                         @error('note')
-                            <span class="text-red-500 dark:text-red-400 text-xs mt-1">{{ $message }}</span>
+                            <span
+                                class="flex items-center gap-1 text-red-500 dark:text-red-400 text-[11px] font-bold mt-1.5">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                    stroke-width="2" stroke="currentColor" class="w-3 h-3">
+                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                        d="M12 9v3.75m9-.75a9 9 0 11-18 0 9 9 0 0118 0zm-9 3.75h.008v.008H12v-.008z" />
+                                </svg>
+                                {{ $message }}
+                            </span>
                         @enderror
                     </div>
 

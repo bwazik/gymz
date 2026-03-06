@@ -16,22 +16,22 @@ class CreateIntent extends Component
 {
     public bool $showModal = false;
 
-    #[Validate('required|integer|exists:gyms,id')]
+    #[Validate('required|integer|exists:gyms,id', message: 'الجيم مش صح')]
     public $gym_id = '';
 
-    #[Validate('required|integer|exists:workout_categories,id')]
+    #[Validate('required|integer|exists:workout_categories,id', message: 'نوع التمرين مش صح')]
     public $workout_category_id = '';
 
-    #[Validate('required|integer|exists:workout_targets,id')]
+    #[Validate('required|integer|exists:workout_targets,id', message: 'العضلة مش صح')]
     public $workout_target_id = '';
 
-    #[Validate('required|date|after:now')]
+    #[Validate('required|date|after:now', message: 'التاريخ مش صح')]
     public $start_time = '';
 
     #[Validate('boolean')]
     public bool $has_invitation = false;
 
-    #[Validate('nullable|string|max:255')]
+    #[Validate('nullable|string|max:255', message: 'الملاحظات مش صح')]
     public $note = '';
 
     public Collection $gyms;
