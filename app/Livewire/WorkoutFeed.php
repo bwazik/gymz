@@ -55,19 +55,25 @@ class WorkoutFeed extends Component
         ]);
     }
 
-    private function getUpcomingIntents(User $user)
+    private function getUpcomingIntents(?User $user)
     {
         return WorkoutIntent::with(['user', 'gym', 'workoutTarget'])
             ->active()
             ->upcoming()
-            ->whereHas('user', fn($q) => $q->where('gender', $user->gender))
-            ->where('user_id', '!=', $user->id)
+            ->when($user, function ($query, $user) {
+                $query->whereHas('user', fn($q) => $q->where('gender', $user->gender))
+                    ->where('user_id', '!=', $user->id);
+            })
             ->orderBy('start_time', 'asc')
             ->get();
     }
 
-    private function getSentRequestIntentIds(User $user): array
+    private function getSentRequestIntentIds(?User $user): array
     {
+        if (!$user) {
+            return [];
+        }
+
         return WorkoutRequest::where('sender_id', $user->id)
             ->pluck('intent_id')
             ->toArray();
