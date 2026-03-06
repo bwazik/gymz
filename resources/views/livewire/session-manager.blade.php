@@ -197,12 +197,12 @@
 
                     <template x-if="canEnd">
                         <p class="text-xs text-gray-500 dark:text-gray-400 mb-4">
-                            خلصتوا تمرينة؟ اضغط عشان تاخد ١٠ Glutes 💪
+                            خلصتوا تمرينة؟ اضغط عشان تاخد ١٠ جلوتس 💪
                         </p>
                     </template>
 
                     <button wire:loading.attr="disabled"
-                        @click="if (canEnd) { $dispatch('open-ios-alert', { title: 'إنهاء التمرينة', message: 'متأكد إنك عايز تنهي التمرينة وتستلم الـ ١٠ Glutes؟', action: 'endSession', params: {{ $session->id }}, componentId: $wire.$id }) }"
+                        @click="if (canEnd) { $dispatch('open-ios-alert', { title: 'إنهاء التمرينة', message: 'متأكد إنك عايز تنهي التمرينة وتستلم الـ ١٠ جلوتس', action: 'endSession', params: {{ $session->id }}, componentId: $wire.$id }) }"
                         class="w-full py-3.5 rounded-2xl font-bold text-sm transition-all active:scale-95 disabled:opacity-50"
                         :class="canEnd
                             ?
@@ -210,7 +210,7 @@
                             'bg-gray-200 dark:bg-white/10 text-gray-400 dark:text-white/30 cursor-not-allowed'"
                         :disabled="!canEnd">
                         <span wire:loading.remove wire:target="endSession({{ $session->id }})">إنهاء التمرينة واستلام
-                            ١٠ Glutes 🏆</span>
+                            ١٠ جلوتس 🍑</span>
                         <span wire:loading wire:target="endSession({{ $session->id }})">جاري...</span>
                     </button>
                 </div>

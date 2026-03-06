@@ -100,7 +100,7 @@ class SessionManager extends Component
 
         unset($this->activeSessions);
         $this->dispatch('session-completed');
-        $this->dispatch('toast', message: 'تم استلام ١٠ Glutes 🏆 عاش يا بطل!', type: 'success');
+        $this->dispatch('toast', message: 'تم استلام ١٠ جلوتس 🍑 عاش يا بطل!', type: 'success');
     }
 
     public function render()

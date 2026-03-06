@@ -23,7 +23,6 @@ new class extends Component {
             ]);
         } catch (ValidationException $e) {
             $this->reset('current_password', 'password', 'password_confirmation');
-
             throw $e;
         }
 
@@ -33,49 +32,56 @@ new class extends Component {
 
         $this->reset('current_password', 'password', 'password_confirmation');
 
-        $this->dispatch('password-updated');
+        $this->dispatch('toast', message: 'تم تغيير كلمة السر بنجاح! 🔒', type: 'success');
     }
 }; ?>
 
 <section>
-    <header>
-        <h2 class="text-lg font-medium text-white">
-            {{ __('Update Password') }}
+    <header class="mb-4 text-center">
+        <h2 class="text-lg font-bold text-gray-900 dark:text-white">
+            كلمة السر
         </h2>
-
-        <p class="mt-1 text-sm text-white/50">
-            {{ __('Ensure your account is using a long, random password to stay secure.') }}
-        </p>
     </header>
 
-    <form wire:submit="updatePassword" class="mt-6 space-y-6">
-        <div>
-            <x-input-label for="update_password_current_password" :value="__('Current Password')" />
-            <x-text-input wire:model="current_password" id="update_password_current_password" name="current_password"
-                type="password" class="mt-1 block w-full" autocomplete="current-password" />
-            <x-input-error :messages="$errors->get('current_password')" class="mt-2" />
+    <form wire:submit="updatePassword" class="space-y-4">
+        {{-- Glass Container for Fields --}}
+        <div
+            class="bg-white/70 dark:bg-[#1c1c1e]/70 backdrop-blur-3xl border border-black/5 dark:border-white/10 rounded-3xl overflow-hidden shadow-sm">
+
+            {{-- Current Password --}}
+            <div class="relative border-b border-black/5 dark:border-white/10 flex items-center px-4">
+                <span class="text-gray-400 dark:text-white/40 w-24 text-sm font-medium">الحالية</span>
+                <input wire:model="current_password" id="current_password" type="password"
+                    class="flex-1 bg-transparent border-0 focus:ring-0 text-gray-900 dark:text-white px-2 py-4 text-sm font-bold placeholder-gray-400 text-left"
+                    dir="ltr" required autocomplete="current-password">
+            </div>
+
+            {{-- New Password --}}
+            <div class="relative border-b border-black/5 dark:border-white/10 flex items-center px-4">
+                <span class="text-gray-400 dark:text-white/40 w-24 text-sm font-medium">الجديدة</span>
+                <input wire:model="password" id="password" type="password"
+                    class="flex-1 bg-transparent border-0 focus:ring-0 text-gray-900 dark:text-white px-2 py-4 text-sm font-bold placeholder-gray-400 text-left"
+                    dir="ltr" required autocomplete="new-password">
+            </div>
+
+            {{-- Confirm Password --}}
+            <div class="relative flex items-center px-4">
+                <span class="text-gray-400 dark:text-white/40 w-24 text-sm font-medium">تأكيد</span>
+                <input wire:model="password_confirmation" id="password_confirmation" type="password"
+                    class="flex-1 bg-transparent border-0 focus:ring-0 text-gray-900 dark:text-white px-2 py-4 text-sm font-bold placeholder-gray-400 text-left"
+                    dir="ltr" required autocomplete="new-password">
+            </div>
+
         </div>
 
-        <div>
-            <x-input-label for="update_password_password" :value="__('New Password')" />
-            <x-text-input wire:model="password" id="update_password_password" name="password" type="password"
-                class="mt-1 block w-full" autocomplete="new-password" />
-            <x-input-error :messages="$errors->get('password')" class="mt-2" />
-        </div>
+        <x-input-error class="mt-2" :messages="$errors->get('current_password')" />
+        <x-input-error class="mt-2" :messages="$errors->get('password')" />
+        <x-input-error class="mt-2" :messages="$errors->get('password_confirmation')" />
 
-        <div>
-            <x-input-label for="update_password_password_confirmation" :value="__('Confirm Password')" />
-            <x-text-input wire:model="password_confirmation" id="update_password_password_confirmation"
-                name="password_confirmation" type="password" class="mt-1 block w-full" autocomplete="new-password" />
-            <x-input-error :messages="$errors->get('password_confirmation')" class="mt-2" />
-        </div>
-
-        <div class="flex items-center gap-4">
-            <x-primary-button>{{ __('Save') }}</x-primary-button>
-
-            <x-action-message class="me-3" on="password-updated">
-                {{ __('Saved.') }}
-            </x-action-message>
-        </div>
+        <button type="submit" wire:loading.attr="disabled"
+            class="w-full mt-4 py-3.5 rounded-2xl bg-gymz-accent text-white font-bold active:scale-95 transition-all shadow-lg shadow-gymz-accent/20 disabled:opacity-50">
+            <span wire:loading.remove wire:target="updatePassword">تغيير كلمة السر</span>
+            <span wire:loading wire:target="updatePassword">جاري الحفظ...</span>
+        </button>
     </form>
 </section>
