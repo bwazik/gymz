@@ -84,6 +84,19 @@
     <!-- Bottom Navigation -->
     <x-bottom-nav />
 
+    {{-- Session Toasts --}}
+    @if (session()->has('toast'))
+        <script>
+            document.addEventListener('DOMContentLoaded', () => {
+                setTimeout(() => {
+                    window.dispatchEvent(new CustomEvent('toast', {
+                        detail: @json(session('toast'))
+                    }));
+                }, 100);
+            });
+        </script>
+    @endif
+
     <!-- Service Worker -->
     <script>
         if ('serviceWorker' in navigator) {
