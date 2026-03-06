@@ -28,6 +28,7 @@ class RequestsManager extends Component
             ->whereHas('workoutIntent', function ($q) {
                 $q->where('user_id', Auth::id());
             })
+            ->has('sender')
             ->latest()
             ->get();
     }
@@ -37,6 +38,7 @@ class RequestsManager extends Component
     {
         return WorkoutRequest::with(['workoutIntent.user', 'workoutIntent.gym', 'workoutIntent.workoutTarget'])
             ->where('sender_id', Auth::id())
+            ->has('workoutIntent.user')
             ->latest()
             ->get();
     }
