@@ -44,7 +44,7 @@ class GoogleAuthController extends Controller
                 return redirect()->route('onboarding');
             }
 
-            return redirect()->route('home');
+            return redirect()->intended(route('home'));
 
         } catch (\Exception $e) {
             return redirect('/')->with('error', 'حصلت مشكلة في تسجيل الدخول بجوجل.');
