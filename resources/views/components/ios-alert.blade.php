@@ -4,18 +4,18 @@
     message: '',
     action: '',
     params: null,
-    wire: null,
+    componentId: null,
     open(data) {
         this.title = data.title || '';
         this.message = data.message || '';
         this.action = data.action || '';
         this.params = data.params ?? null;
-        this.wire = data.wire || null;
+        this.componentId = data.componentId || null;
         this.show = true;
     },
     confirm() {
-        if (this.wire && this.action) {
-            this.wire.call(this.action, this.params);
+        if (this.componentId && this.action) {
+            Livewire.find(this.componentId).call(this.action, this.params);
         }
         this.show = false;
     },

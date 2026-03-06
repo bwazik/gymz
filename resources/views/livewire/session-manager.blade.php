@@ -202,7 +202,7 @@
                     </template>
 
                     <button wire:loading.attr="disabled"
-                        @click="if (canEnd) { $dispatch('open-ios-alert', { title: 'إنهاء التمرينة', message: 'متأكد إنك عايز تنهي التمرينة وتستلم الـ ١٠ Glutes؟', action: 'endSession', params: {{ $session->id }}, wire: $wire }) }"
+                        @click="if (canEnd) { $dispatch('open-ios-alert', { title: 'إنهاء التمرينة', message: 'متأكد إنك عايز تنهي التمرينة وتستلم الـ ١٠ Glutes؟', action: 'endSession', params: {{ $session->id }}, componentId: $wire.$id }) }"
                         class="w-full py-3.5 rounded-2xl font-bold text-sm transition-all active:scale-95 disabled:opacity-50"
                         :class="canEnd
                             ?
