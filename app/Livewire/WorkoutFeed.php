@@ -31,6 +31,7 @@ class WorkoutFeed extends Component
             ->exists();
 
         if ($alreadySent) {
+            $this->dispatch('toast', message: 'بعت طلب قبل كدى', type: 'error');
             return;
         }
 
@@ -41,6 +42,7 @@ class WorkoutFeed extends Component
         ]);
 
         $this->dispatch('request-sent');
+        $this->dispatch('toast', message: 'تم إرسال الطلب بنجاح! 💪', type: 'success');
     }
 
     public function render()

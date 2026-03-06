@@ -73,6 +73,7 @@ class RequestsManager extends Component
         });
 
         unset($this->incomingRequests);
+        $this->dispatch('toast', message: 'تم قبول الطلب! الجلسة اتعملت 🔥', type: 'success');
     }
 
     public function rejectRequest(int $requestId): void
@@ -87,6 +88,7 @@ class RequestsManager extends Component
         $request->update(['status' => RequestStatus::Rejected]);
 
         unset($this->incomingRequests);
+        $this->dispatch('toast', message: 'تم رفض الطلب', type: 'success');
     }
 
     public function render()
