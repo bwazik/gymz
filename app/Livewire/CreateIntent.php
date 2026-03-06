@@ -16,13 +16,13 @@ class CreateIntent extends Component
 {
     public bool $showModal = false;
 
-    #[Validate('required|exists:gyms,id')]
+    #[Validate('required|integer|exists:gyms,id')]
     public $gym_id = '';
 
-    #[Validate('required|exists:workout_categories,id')]
+    #[Validate('required|integer|exists:workout_categories,id')]
     public $workout_category_id = '';
 
-    #[Validate('required|exists:workout_targets,id')]
+    #[Validate('required|integer|exists:workout_targets,id')]
     public $workout_target_id = '';
 
     #[Validate('required|date|after:now')]

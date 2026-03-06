@@ -1,14 +1,33 @@
 <div>
     {{-- Section Title --}}
-    <div class="flex items-center justify-between mb-5">
-        <h2 class="text-xl font-bold text-gray-900 dark:text-white tracking-tight">🔥 التمارين الجاية</h2>
-        <span class="text-xs text-gray-500 dark:text-gray-400">خلال ٢٤ ساعة</span>
+    <div class="mb-5 mt-4">
+        <span class="text-xs font-bold text-gray-400 dark:text-gray-500 tracking-wider">
+            {{ now()->locale('ar')->translatedFormat('l، j F') }}
+        </span>
+        <div class="flex items-center justify-between mt-0.5">
+            <h2 class="text-2xl font-black text-gray-900 dark:text-white tracking-tighter">تمارين النهاردة</h2>
+            <span class="text-[11px] font-semibold text-gymz-accent bg-gymz-accent/10 px-2.5 py-1 rounded-full">٢٤
+                ساعة</span>
+        </div>
     </div>
 
     @forelse ($intents as $intent)
         {{-- Apple Glass Card --}}
         <div
-            class="bg-white/70 dark:bg-[#1c1c1e]/70 backdrop-blur-2xl border border-black/5 dark:border-white/10 shadow-sm rounded-[2rem] p-5 mb-4 transition-all duration-300">
+            class="relative overflow-hidden bg-white/70 dark:bg-[#1c1c1e]/70 backdrop-blur-2xl border border-black/5 dark:border-white/10 shadow-sm rounded-[2rem] p-5 mb-4 transition-all duration-300">
+
+            {{-- Guest Pass Ribbon (Top Left Corner) --}}
+            @if ($intent->has_invitation)
+                <span
+                    class="absolute top-4 left-4 inline-flex items-center gap-1 px-3 py-1 rounded-full text-[11px] font-bold bg-amber-500/10 text-amber-600 dark:bg-amber-500/15 dark:text-amber-400">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
+                        stroke="currentColor" class="w-3 h-3">
+                        <path stroke-linecap="round" stroke-linejoin="round"
+                            d="M16.5 6v.75m0 3v.75m0 3v.75m0 3V18m-9-5.25h5.25M7.5 15h3M3.375 5.25c-.621 0-1.125.504-1.125 1.125v3.026a2.999 2.999 0 010 5.198v3.026c0 .621.504 1.125 1.125 1.125h17.25c.621 0 1.125-.504 1.125-1.125v-3.026a2.999 2.999 0 010-5.198V6.375c0-.621-.504-1.125-1.125-1.125H3.375z" />
+                    </svg>
+                    معايا انفايت
+                </span>
+            @endif
 
             {{-- Header: Avatar + Name --}}
             <div class="flex items-center gap-3 mb-4">
@@ -56,18 +75,6 @@
                         <span>{{ $intent->start_time->diffForHumans() }}</span>
                     </div>
 
-                    {{-- Guest Pass Badge --}}
-                    @if ($intent->has_invitation)
-                        <span
-                            class="inline-flex items-center gap-1 px-3 py-1 rounded-full text-[11px] font-bold bg-amber-500/10 text-amber-600 dark:bg-amber-500/15 dark:text-amber-400">
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
-                                stroke="currentColor" class="w-3 h-3">
-                                <path stroke-linecap="round" stroke-linejoin="round"
-                                    d="M16.5 6v.75m0 3v.75m0 3v.75m0 3V18m-9-5.25h5.25M7.5 15h3M3.375 5.25c-.621 0-1.125.504-1.125 1.125v3.026a2.999 2.999 0 010 5.198v3.026c0 .621.504 1.125 1.125 1.125h17.25c.621 0 1.125-.504 1.125-1.125v-3.026a2.999 2.999 0 010-5.198V6.375c0-.621-.504-1.125-1.125-1.125H3.375z" />
-                            </svg>
-                            معايا انفايت
-                        </span>
-                    @endif
                 </div>
 
                 {{-- Action Button --}}
