@@ -22,43 +22,53 @@
 </head>
 
 <body
-    class="font-tajawal antialiased bg-gray-100 dark:bg-[#0a0a0a] text-gray-900 dark:text-gray-100 flex justify-center min-h-screen">
+    class="font-tajawal antialiased bg-[#e9ecef] dark:bg-[#050505] text-gray-900 dark:text-gray-100 flex justify-center min-h-screen selection:bg-gray-300 dark:selection:bg-white/20"
+    x-data="{
+        rotateX: 0,
+        rotateY: 0,
+        handleMove(e) {
+            let clientX = e.clientX || (e.touches && e.touches[0].clientX) || 0;
+            let clientY = e.clientY || (e.touches && e.touches[0].clientY) || 0;
+            let centerX = window.innerWidth / 2;
+            let centerY = window.innerHeight / 2;
+            this.rotateY = ((clientX - centerX) / centerX) * 8;
+            this.rotateX = -((clientY - centerY) / centerY) * 8;
+        },
+        resetMove() {
+            this.rotateX = 0;
+            this.rotateY = 0;
+        }
+    }"
+    @mousemove.window="handleMove($event)"
+    @touchmove.window="handleMove($event)"
+    @mouseleave.window="resetMove()"
+    @touchend.window="resetMove()"
+>
 
     <!-- Strict Mobile Container (Phone Frame) -->
     <div
-        class="w-full max-w-md bg-white/50 dark:bg-[#121212]/80 min-h-screen relative overflow-x-hidden shadow-2xl ring-1 ring-gray-900/5 dark:ring-white/10 flex flex-col">
-
-        <!-- Liquid Glass Animated Blobs -->
-        <div class="fixed inset-0 w-full max-w-md mx-auto pointer-events-none overflow-hidden z-0">
-            <div
-                class="absolute top-[-10%] left-[-10%] w-72 h-72 bg-blue-400/30 dark:bg-blue-600/20 rounded-full mix-blend-multiply dark:mix-blend-screen filter blur-[80px] opacity-70 animate-blob">
-            </div>
-            <div
-                class="absolute top-[20%] right-[-10%] w-72 h-72 bg-cyan-400/30 dark:bg-cyan-500/20 rounded-full mix-blend-multiply dark:mix-blend-screen filter blur-[80px] opacity-70 animate-blob animation-delay-2000">
-            </div>
-            <div
-                class="absolute bottom-[-10%] left-[20%] w-80 h-80 bg-purple-400/30 dark:bg-purple-600/20 rounded-full mix-blend-multiply dark:mix-blend-screen filter blur-[80px] opacity-70 animate-blob animation-delay-4000">
-            </div>
-        </div>
+        class="w-full max-w-md bg-[#fafafa] dark:bg-[#121212] min-h-screen relative overflow-x-hidden shadow-[0_0_50px_rgba(0,0,0,0.1)] dark:shadow-[0_0_50px_rgba(0,0,0,0.5)] sm:border-x border-gray-200/50 dark:border-white/5 flex flex-col">
 
         <!-- Sticky Glassmorphic Top Bar -->
         <header
-            class="sticky top-0 z-50 w-full bg-white/40 dark:bg-[#1a1a1a]/40 backdrop-blur-2xl border-b border-white/20 dark:border-white/10 px-6 py-4 flex justify-between items-center">
-            <div class="font-bold text-xl tracking-tight">GymZ</div>
-            <button class="active:scale-90 transition-transform duration-300 relative">
-                <svg class="w-6 h-6 text-gray-600 dark:text-gray-300" fill="none" stroke="currentColor"
+            class="sticky top-0 z-50 w-full bg-[#fafafa]/70 dark:bg-[#121212]/70 backdrop-blur-2xl border-b border-black/5 dark:border-white/5 px-6 py-4 flex justify-between items-center transition-transform duration-100 ease-out"
+            :style="`transform: perspective(1000px) translateZ(10px) rotateX(${rotateX}deg) rotateY(${rotateY}deg);`">
+            <div class="font-bold text-xl tracking-tight text-gray-900 dark:text-white">GymZ</div>
+            <button class="active:scale-95 transition-transform duration-300 relative group">
+                <svg class="w-6 h-6 text-gray-600 dark:text-gray-300 group-hover:text-gray-900 dark:group-hover:text-white transition-colors" fill="none" stroke="currentColor"
                     viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                         d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9">
                     </path>
                 </svg>
                 <span
-                    class="absolute top-0 right-0 block h-2.5 w-2.5 rounded-full bg-red-500 border-2 border-white dark:border-gray-900"></span>
+                    class="absolute top-0 right-0 block h-2 w-2 rounded-full bg-red-500 shadow-[0_0_8px_rgba(239,68,68,0.8)]"></span>
             </button>
         </header>
 
         <!-- Page Content -->
-        <main class="relative z-10 flex-1 pb-28 pt-6 px-4">
+        <main class="relative z-10 flex-1 pb-32 pt-6 px-4 snap-y snap-mandatory overflow-y-auto transition-transform duration-100 ease-out"
+              :style="`transform: perspective(1000px) translateZ(0px) rotateX(${rotateX * 0.2}deg) rotateY(${rotateY * 0.2}deg);`">
             {{ $slot }}
         </main>
 
