@@ -9,14 +9,18 @@
     </button>
 
     {{-- Modal Overlay --}}
-    <div x-data="{ open: @entangle('showModal') }" x-show="open"
-        x-effect="if (open) { $dispatch('hide-bottom-nav') } else { $dispatch('show-bottom-nav') }"
-        style="display: none;" x-transition:enter="transition ease-out duration-300"
-        x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100"
-        x-transition:leave="transition ease-out duration-300" x-transition:leave-start="opacity-100"
+    <div x-data="{ open: @entangle('showModal').live }"
+        x-show="open"
+        x-init="$watch('open', val => $dispatch(val ? 'hide-bottom-nav' : 'show-bottom-nav'))"
+        style="display: none;"
+        x-transition:enter="transition ease-out duration-300"
+        x-transition:enter-start="opacity-0"
+        x-transition:enter-end="opacity-100"
+        x-transition:leave="transition ease-out duration-300"
+        x-transition:leave-start="opacity-100"
         x-transition:leave-end="opacity-0"
         class="fixed inset-0 z-50 bg-black/40 backdrop-blur-md flex items-end justify-center"
-        @click.self="open = false; $dispatch('show-bottom-nav')">
+        @click.self="open = false">
         {{-- Bottom Sheet Modal --}}
         <div x-show="open" x-transition:enter="transition ease-out duration-300"
             x-transition:enter-start="translate-y-full" x-transition:enter-end="translate-y-0"
@@ -153,12 +157,12 @@
                         <span wire:loading.remove wire:target="save">انشر التمرينة</span>
                         <span wire:loading wire:target="save">جاري النشر...</span>
                     </button>
-                    <button type="button" @click="open = false; $dispatch('show-bottom-nav')"
+                    <button type="button" @click="open = false"
                         class="px-6 py-3.5 rounded-2xl bg-gray-200/50 dark:bg-white/10 text-gray-700 dark:text-white/70 font-bold text-sm active:scale-95 transition-all">
                         إلغاء
                     </button>
-                </div>
-            </form>
+                    </div>
+                </form>
         </div>
     </div>
 </div>
