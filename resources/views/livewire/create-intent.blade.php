@@ -21,7 +21,7 @@
                 x-transition:enter-start="translate-y-full" x-transition:enter-end="translate-y-0"
                 x-transition:leave="transition ease-in duration-200" x-transition:leave-start="translate-y-0"
                 x-transition:leave-end="translate-y-full"
-                class="bg-white/80 dark:bg-[#1c1c1e]/80 backdrop-blur-3xl border-t border-white/50 dark:border-white/10 p-6 rounded-t-[2rem] w-full max-w-md shadow-2xl pb-[calc(3rem+env(safe-area-inset-bottom))] max-h-[85vh] overflow-y-auto"
+                class="bg-white/80 dark:bg-[#1c1c1e]/80 backdrop-blur-3xl border-t border-white/50 dark:border-white/10 p-6 rounded-t-[2rem] w-full max-w-md shadow-2xl pb-[calc(1.5rem+env(safe-area-inset-bottom))]"
                 @click.stop>
                 {{-- Drag Handle --}}
                 <div class="flex justify-center mb-4">
@@ -42,23 +42,7 @@
                     {{-- Gym Select --}}
                     <div>
                         <label class="block text-xs font-medium text-gray-600 dark:text-white/60 mb-1.5">الجيم</label>
-                        <div class="relative">
-                            <select wire:model="gym_id"
-                                class="appearance-none w-full rounded-2xl bg-gray-100 dark:bg-[#2c2c2e] border border-transparent text-gray-900 dark:text-white text-sm px-4 py-3.5 focus:bg-white dark:focus:bg-[#3a3a3c] focus:border-gymz-accent/50 focus:ring-2 focus:ring-gymz-accent/20 transition-all cursor-pointer">
-                                <option value="" class="bg-white text-gray-900 dark:bg-[#1c1c1e] dark:text-white">
-                                    اختار الجيم...</option>
-                                @foreach ($gyms as $gym)
-                                    <option value="{{ $gym->id }}"
-                                        class="bg-white text-gray-900 dark:bg-[#1c1c1e] dark:text-white">
-                                        {{ $gym->name }}</option>
-                                @endforeach
-                            </select>
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
-                                stroke="currentColor"
-                                class="w-4 h-4 absolute left-4 top-1/2 -translate-y-1/2 pointer-events-none text-gray-400">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
-                            </svg>
-                        </div>
+                        <x-ios-select wire:model="gym_id" :options="$gyms->pluck('name', 'id')" placeholder="اختار الجيم..." />
                         @error('gym_id')
                             <span
                                 class="flex items-center gap-1 text-red-500 dark:text-red-400 text-[11px] font-bold mt-1.5">
@@ -76,23 +60,7 @@
                     <div>
                         <label class="block text-xs font-medium text-gray-600 dark:text-white/60 mb-1.5">نوع
                             التمرين</label>
-                        <div class="relative">
-                            <select wire:model.live="workout_category_id"
-                                class="appearance-none w-full rounded-2xl bg-gray-100 dark:bg-[#2c2c2e] border border-transparent text-gray-900 dark:text-white text-sm px-4 py-3.5 focus:bg-white dark:focus:bg-[#3a3a3c] focus:border-gymz-accent/50 focus:ring-2 focus:ring-gymz-accent/20 transition-all cursor-pointer">
-                                <option value="" class="bg-white text-gray-900 dark:bg-[#1c1c1e] dark:text-white">
-                                    اختار النوع...</option>
-                                @foreach ($categories as $category)
-                                    <option value="{{ $category->id }}"
-                                        class="bg-white text-gray-900 dark:bg-[#1c1c1e] dark:text-white">
-                                        {{ $category->name }}</option>
-                                @endforeach
-                            </select>
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
-                                stroke="currentColor"
-                                class="w-4 h-4 absolute left-4 top-1/2 -translate-y-1/2 pointer-events-none text-gray-400">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
-                            </svg>
-                        </div>
+                        <x-ios-select wire:model.live="workout_category_id" :options="$categories->pluck('name', 'id')" placeholder="اختار النوع..." />
                         @error('workout_category_id')
                             <span
                                 class="flex items-center gap-1 text-red-500 dark:text-red-400 text-[11px] font-bold mt-1.5">
@@ -110,24 +78,7 @@
                     <div>
                         <label class="block text-xs font-medium text-gray-600 dark:text-white/60 mb-1.5">العضلة /
                             الهدف</label>
-                        <div class="relative">
-                            <select wire:model="workout_target_id"
-                                class="appearance-none w-full rounded-2xl bg-gray-100 dark:bg-[#2c2c2e] border border-transparent text-gray-900 dark:text-white text-sm px-4 py-3.5 focus:bg-white dark:focus:bg-[#3a3a3c] focus:border-gymz-accent/50 focus:ring-2 focus:ring-gymz-accent/20 transition-all cursor-pointer disabled:opacity-40 disabled:cursor-not-allowed"
-                                @if ($targets->isEmpty()) disabled @endif>
-                                <option value="" class="bg-white text-gray-900 dark:bg-[#1c1c1e] dark:text-white">
-                                    {{ $targets->isEmpty() ? 'اختار النوع الأول...' : 'اختار الهدف...' }}</option>
-                                @foreach ($targets as $target)
-                                    <option value="{{ $target->id }}"
-                                        class="bg-white text-gray-900 dark:bg-[#1c1c1e] dark:text-white">
-                                        {{ $target->name }}</option>
-                                @endforeach
-                            </select>
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
-                                stroke="currentColor"
-                                class="w-4 h-4 absolute left-4 top-1/2 -translate-y-1/2 pointer-events-none text-gray-400">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
-                            </svg>
-                        </div>
+                        <x-ios-select wire:model="workout_target_id" :options="$targets->pluck('name', 'id')" placeholder="{{ $targets->isEmpty() ? 'اختار النوع الأول...' : 'اختار الهدف...' }}" />
                         @error('workout_target_id')
                             <span
                                 class="flex items-center gap-1 text-red-500 dark:text-red-400 text-[11px] font-bold mt-1.5">
@@ -147,7 +98,7 @@
                             التمرين</label>
                         <div class="relative">
                             <input type="datetime-local" wire:model="start_time"
-                                class="w-full rounded-2xl bg-gray-100 dark:bg-[#2c2c2e] border border-transparent text-gray-900 dark:text-white text-sm px-4 py-3.5 focus:bg-white dark:focus:bg-[#3a3a3c] focus:border-gymz-accent/50 focus:ring-2 focus:ring-gymz-accent/20 transition-all dark:[color-scheme:dark]">
+                                class="w-full rounded-2xl bg-black/5 dark:bg-white/10 border-0 text-gray-900 dark:text-white text-sm px-4 py-3.5 focus:bg-white dark:focus:bg-[#3a3a3c] focus:ring-2 focus:ring-gymz-accent/50 transition-all dark:[color-scheme:dark]">
                         </div>
                         @error('start_time')
                             <span
@@ -182,7 +133,7 @@
                         <label class="block text-xs font-medium text-gray-600 dark:text-white/60 mb-1.5">ملاحظات <span
                                 class="text-gray-400 dark:text-white/30">(اختياري)</span></label>
                         <textarea wire:model="note" rows="2" placeholder="محتاج spotter، عايز أكسر PR النهاردة..."
-                            class="w-full rounded-2xl bg-gray-100 dark:bg-[#2c2c2e] border border-transparent text-gray-900 dark:text-white text-sm px-4 py-3.5 focus:bg-white dark:focus:bg-[#3a3a3c] focus:border-gymz-accent/50 focus:ring-2 focus:ring-gymz-accent/20 transition-all placeholder-gray-400 dark:placeholder-white/20 resize-none"></textarea>
+                            class="w-full rounded-2xl bg-black/5 dark:bg-white/10 border-0 text-gray-900 dark:text-white text-sm px-4 py-3 focus:bg-white dark:focus:bg-[#3a3a3c] focus:ring-2 focus:ring-gymz-accent/50 transition-all resize-none placeholder-gray-400 dark:placeholder-white/30"></textarea>
                         @error('note')
                             <span
                                 class="flex items-center gap-1 text-red-500 dark:text-red-400 text-[11px] font-bold mt-1.5">
