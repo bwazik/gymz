@@ -99,6 +99,22 @@
         }
         document.addEventListener('livewire:navigated', applyDarkMode);
     </script>
+
+    <!-- Global Alpine Store: nav visibility (survives Livewire re-renders) -->
+    <script>
+        document.addEventListener('alpine:init', () => {
+            Alpine.store('nav', {
+                hidden: false
+            });
+        });
+        // Listen at the document level — these fire regardless of component re-renders
+        document.addEventListener('hide-bottom-nav', () => {
+            if (window.Alpine) Alpine.store('nav').hidden = true;
+        });
+        document.addEventListener('show-bottom-nav', () => {
+            if (window.Alpine) Alpine.store('nav').hidden = false;
+        });
+    </script>
 </body>
 
 </html>
