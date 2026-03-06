@@ -77,19 +77,27 @@
                 </div>
 
                 {{-- Action Button --}}
-                @if (in_array($intent->id, $sentRequestIntentIds))
-                    <span
-                        class="px-5 py-2 text-xs font-bold rounded-full bg-black/5 dark:bg-white/10 text-gray-500 dark:text-gray-400 cursor-default">
-                        تم الإرسال
-                    </span>
-                @else
-                    <button wire:click="sendRequest({{ $intent->id }})" wire:loading.attr="disabled"
-                        wire:target="sendRequest({{ $intent->id }})"
-                        class="px-5 py-2 text-xs font-bold rounded-full bg-gymz-accent text-white active:scale-95 transition-transform duration-200 disabled:opacity-50">
-                        <span wire:loading.remove wire:target="sendRequest({{ $intent->id }})">ممكن نتمرن؟</span>
-                        <span wire:loading wire:target="sendRequest({{ $intent->id }})">بيتبعت...</span>
-                    </button>
-                @endif
+                @auth
+                    @if (in_array($intent->id, $sentRequestIntentIds))
+                        <span
+                            class="px-5 py-2 text-xs font-bold rounded-full bg-black/5 dark:bg-white/10 text-gray-500 dark:text-gray-400 cursor-default">
+                            تم الإرسال
+                        </span>
+                    @else
+                        <button wire:click="sendRequest({{ $intent->id }})" wire:loading.attr="disabled"
+                            wire:target="sendRequest({{ $intent->id }})"
+                            class="px-5 py-2 text-xs font-bold rounded-full bg-gymz-accent text-white active:scale-95 transition-transform duration-200 disabled:opacity-50">
+                            <span wire:loading.remove wire:target="sendRequest({{ $intent->id }})">ممكن نتمرن؟</span>
+                            <span wire:loading wire:target="sendRequest({{ $intent->id }})">بيتبعت...</span>
+                        </button>
+                    @endif
+                @endauth
+                
+                @guest
+                    <a href="{{ route('google.login') }}" class="px-5 py-2 text-xs font-bold rounded-full bg-gymz-accent text-white active:scale-95 transition-transform duration-200">
+                        سجل دخول لتنضم 🚀
+                    </a>
+                @endguest
             </div>
         </x-glass-card>
     @empty
