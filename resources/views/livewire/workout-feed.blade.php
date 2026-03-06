@@ -1,14 +1,14 @@
 <div>
     {{-- Section Title --}}
     <div class="flex items-center justify-between mb-5">
-        <h2 class="text-xl font-bold text-white tracking-tight">🔥 Upcoming Workouts</h2>
-        <span class="text-xs text-white/50">Next 24h</span>
+        <h2 class="text-xl font-bold text-gray-900 dark:text-white tracking-tight">🔥 Upcoming Workouts</h2>
+        <span class="text-xs text-gray-500 dark:text-white/50">Next 24h</span>
     </div>
 
     @forelse ($intents as $intent)
         {{-- Liquid Glass Card --}}
         <div
-            class="bg-white/10 backdrop-blur-lg border border-white/20 rounded-3xl p-5 mb-4 shadow-[0_4px_30px_rgba(0,0,0,0.1)] text-white transition-all duration-300 hover:bg-white/15 hover:border-white/30">
+            class="bg-white/80 dark:bg-white/10 backdrop-blur-lg border border-gray-200 dark:border-white/20 rounded-3xl p-5 mb-4 shadow-[0_4px_30px_rgba(0,0,0,0.05)] dark:shadow-[0_4px_30px_rgba(0,0,0,0.1)] text-gray-900 dark:text-white transition-all duration-300 hover:bg-white dark:hover:bg-white/15 hover:border-gray-300 dark:hover:border-white/30">
 
             {{-- Header: Avatar + Name --}}
             <div class="flex items-center gap-3 mb-4">
@@ -25,14 +25,14 @@
                 @endif
                 <div>
                     <p class="font-semibold text-sm">{{ $intent->user->name }}</p>
-                    <p class="text-xs text-white/50">{{ $intent->user->level?->getLabel() }}</p>
+                    <p class="text-xs text-gray-500 dark:text-white/50">{{ $intent->user->level?->getLabel() }}</p>
                 </div>
             </div>
 
             {{-- Body: Gym + Target --}}
             <div class="flex items-center gap-4 mb-4">
                 {{-- Gym --}}
-                <div class="flex items-center gap-1.5 text-sm text-white/70">
+                <div class="flex items-center gap-1.5 text-sm text-gray-600 dark:text-white/70">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                         stroke="currentColor" class="w-4 h-4 text-gymz-accent">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M15 10.5a3 3 0 11-6 0 3 3 0 016 0z" />
@@ -53,21 +53,21 @@
             <div class="flex items-center justify-between">
                 <div class="flex items-center gap-3">
                     {{-- Time --}}
-                    <div class="flex items-center gap-1 text-xs text-white/60">
+                    <div class="flex items-center gap-1 text-xs text-gray-600 dark:text-white/60">
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                             stroke="currentColor" class="w-3.5 h-3.5">
                             <path stroke-linecap="round" stroke-linejoin="round"
                                 d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z" />
                         </svg>
                         <span>{{ $intent->start_time->format('g:i A') }}</span>
-                        <span class="text-white/30">·</span>
+                        <span class="text-gray-300 dark:text-white/30">·</span>
                         <span>{{ $intent->start_time->diffForHumans() }}</span>
                     </div>
 
                     {{-- Guest Pass Badge --}}
                     @if ($intent->has_invitation)
                         <span
-                            class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-semibold bg-amber-500/15 text-amber-400 border border-amber-500/30">
+                            class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-semibold bg-amber-500/15 text-amber-600 dark:text-amber-400 border border-amber-500/30">
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
                                 stroke="currentColor" class="w-3 h-3">
                                 <path stroke-linecap="round" stroke-linejoin="round"
@@ -81,13 +81,13 @@
                 {{-- Action Button --}}
                 @if (in_array($intent->id, $sentRequestIntentIds))
                     <span
-                        class="px-4 py-1.5 text-xs font-semibold rounded-full bg-white/10 text-white/40 border border-white/10 cursor-default">
+                        class="px-4 py-1.5 text-xs font-semibold rounded-full bg-gray-100 dark:bg-white/10 text-gray-500 dark:text-white/40 border border-gray-200 dark:border-white/10 cursor-default">
                         Request Sent
                     </span>
                 @else
                     <button wire:click="sendRequest({{ $intent->id }})" wire:loading.attr="disabled"
                         wire:target="sendRequest({{ $intent->id }})"
-                        class="px-4 py-1.5 text-xs font-semibold rounded-full bg-gymz-accent text-gymz-dark hover:bg-gymz-accent/90 transition-all duration-200 shadow-lg shadow-gymz-accent/25 disabled:opacity-50">
+                        class="px-4 py-1.5 text-xs font-semibold rounded-full bg-gymz-accent text-white hover:bg-gymz-accent/90 transition-all duration-200 shadow-lg shadow-gymz-accent/25 disabled:opacity-50">
                         <span wire:loading.remove wire:target="sendRequest({{ $intent->id }})">Send Request</span>
                         <span wire:loading wire:target="sendRequest({{ $intent->id }})">Sending...</span>
                     </button>
@@ -96,16 +96,16 @@
         </div>
     @empty
         {{-- Empty State --}}
-        <div class="bg-white/5 backdrop-blur-lg border border-white/10 rounded-3xl p-8 text-center shadow-glass">
-            <div class="w-16 h-16 mx-auto mb-4 rounded-full bg-white/5 flex items-center justify-center">
+        <div class="bg-white/50 dark:bg-white/5 backdrop-blur-lg border border-gray-200 dark:border-white/10 rounded-3xl p-8 text-center shadow-glass">
+            <div class="w-16 h-16 mx-auto mb-4 rounded-full bg-gray-100 dark:bg-white/5 flex items-center justify-center">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                    stroke="currentColor" class="w-8 h-8 text-white/30">
+                    stroke="currentColor" class="w-8 h-8 text-gray-400 dark:text-white/30">
                     <path stroke-linecap="round" stroke-linejoin="round"
                         d="M15.182 16.318A4.486 4.486 0 0012.016 15a4.486 4.486 0 00-3.198 1.318M21 12a9 9 0 11-18 0 9 9 0 0118 0zM9.75 9.75c0 .414-.168.75-.375.75S9 10.164 9 9.75 9.168 9 9.375 9s.375.336.375.75zm-.375 0h.008v.015h-.008V9.75zm5.625 0c0 .414-.168.75-.375.75s-.375-.336-.375-.75.168-.75.375-.75.375.336.375.75zm-.375 0h.008v.015h-.008V9.75z" />
                 </svg>
             </div>
-            <h3 class="text-white/70 font-medium mb-1">No workouts nearby</h3>
-            <p class="text-sm text-white/40">No one has posted a workout intent in the next 24 hours yet. Be the first!
+            <h3 class="text-gray-700 dark:text-white/70 font-medium mb-1">No workouts nearby</h3>
+            <p class="text-sm text-gray-500 dark:text-white/40">No one has posted a workout intent in the next 24 hours yet. Be the first!
             </p>
         </div>
     @endforelse
