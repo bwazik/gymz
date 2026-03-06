@@ -78,7 +78,7 @@
                     <div>
                         <label class="block text-xs font-medium text-gray-600 dark:text-white/60 mb-1.5">العضلة /
                             الهدف</label>
-                        <x-ios-select wire:model="workout_target_id" :options="$targets->pluck('name', 'id')" placeholder="{{ $targets->isEmpty() ? 'اختار النوع الأول...' : 'اختار الهدف...' }}" />
+                        <x-ios-select wire:model="workout_target_id" :options="$targets->pluck('name', 'id')" placeholder="{{ $targets->isEmpty() ? 'اختار النوع الأول...' : 'اختار الهدف...' }}" :disabled="$targets->isEmpty()" />
                         @error('workout_target_id')
                             <span
                                 class="flex items-center gap-1 text-red-500 dark:text-red-400 text-[11px] font-bold mt-1.5">
