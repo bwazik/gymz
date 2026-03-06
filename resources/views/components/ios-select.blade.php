@@ -7,13 +7,13 @@
         value: @entangle($attributes->wire('model')),
         get options() {
             try {
-                return JSON.parse($el.dataset.options || '{}');
+                return JSON.parse(this.$el.dataset.options || '{}');
             } catch (e) {
                 return {};
             }
         },
         getLabel() {
-            return this.options[this.value] ?? $el.dataset.placeholder;
+            return this.options[this.value] ?? this.$el.dataset.placeholder;
         },
         toggle() {
             this.open = !this.open;
