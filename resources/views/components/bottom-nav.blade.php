@@ -1,16 +1,14 @@
 @php
     $navItems = [
         [
-            'route' => 'dashboard',
+            'route' => 'home',
             'label' => 'الرئيسية',
-            'icon' =>
-                'M3 10.5 12 3l9 7.5V20a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1v-9.5Z', // Home icon
+            'icon' => 'M3 10.5 12 3l9 7.5V20a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1v-9.5Z', // Home icon
         ],
         [
             'route' => 'requests',
             'label' => 'الطلبات',
-            'icon' =>
-                'M4 6h16a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2zm0 2l8 5 8-5', // Bell icon
+            'icon' => 'M4 6h16a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2zm0 2l8 5 8-5', // Bell icon
         ],
         [
             'route' => 'sessions',
