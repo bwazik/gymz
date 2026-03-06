@@ -40,7 +40,7 @@
     @foreach ($navItems as $item)
         @php $isActive = request()->routeIs($item['route']); @endphp
 
-        <a href="{{ route($item['route']) }}" wire:navigate data-route="{{ $item['route'] }}"
+        <a href="{{ route($item['route']) }}" @auth wire:navigate @endauth data-route="{{ $item['route'] }}"
             data-active="{{ $isActive ? 'true' : 'false' }}"
             class="flex-1 flex flex-col items-center justify-center py-2 relative z-10 transition-colors duration-200
             {{ $isActive ? 'text-gymz-accent' : 'text-gray-500 dark:text-gray-400' }}">
@@ -61,104 +61,109 @@
 <script>
     document.addEventListener('alpine:init', () => {
         Alpine.data('dockPill', () => ({
-            tabs: [],
-            pill: null,
-            isDragging: false,
-            startX: 0,
-            currentTranslateX: 0,
-            initialTranslateX: 0,
+                tabs: [],
+                pill: null,
+                isDragging: false,
+                startX: 0,
+                currentTranslateX: 0,
+                initialTranslateX: 0,
 
-            init() {
-                this.tabs = Array.from(this.$el.querySelectorAll('a[data-route]'));
-                this.pill = this.$refs.pill;
+                init() {
+                    this.tabs = Array.from(this.$el.querySelectorAll('a[data-route]'));
+                    this.pill = this.$refs.pill;
 
-                setTimeout(() => {
-                    const activeTab = this.tabs.find(t => t.dataset.active === 'true') ||
-                        this.tabs[0];
-                    this.snapTo(activeTab, true);
-                }, 50);
-
-                window.addEventListener('resize', () => {
-                    const activeTab = this.tabs.find(t => t.dataset.active === 'true') ||
-                        this.tabs[0];
-                    this.snapTo(activeTab, true);
-                });
-
-                this.tabs.forEach(tab => {
-                    tab.addEventListener('click', () => {
-                        this.snapTo(tab, false);
-                    });
-                });
-            },
-
-            snapTo(targetEl, instant = false) {
-                if (!targetEl || !this.pill) return;
-                const parentRect = this.$el.getBoundingClientRect();
-                const elRect = targetEl.getBoundingClientRect();
-
-                if (instant) {
-                    this.pill.style.transition = 'none';
-                } else {
-                    this.pill.style.transition =
-                        'transform 0.4s cubic-bezier(0.32,0.72,0,1), width 0.4s cubic-bezier(0.32,0.72,0,1)';
-                }
-
-                this.pill.style.width = `${elRect.width}px`;
-
-                const offset = parentRect.right - elRect.right;
-                this.currentTranslateX = -offset;
-                this.initialTranslateX = -offset;
-
-                this.pill.style.transform = `translateX(${this.currentTranslateX}px)`;
-            },
-
-            touchStart(e) {
-                this.isDragging = true;
-                this.startX = e.touches[0].clientX;
-                this.pill.style.transition = 'none';
-            },
-
-            touchMove(e) {
-                if (!this.isDragging) return;
-                const deltaX = e.touches[0].clientX - this.startX;
-                this.currentTranslateX = this.initialTranslateX + deltaX;
-
-                const padding = 6;
-                const maxRight = -padding;
-                const maxLeft = -(this.$el.getBoundingClientRect().width - this.tabs[this.tabs
-                    .length - 1].getBoundingClientRect().width - padding);
-                this.currentTranslateX = Math.min(maxRight, Math.max(maxLeft, this
-                    .currentTranslateX));
-
-                this.pill.style.transform = `translateX(${this.currentTranslateX}px)`;
-            },
-
-            touchEnd(e) {
-                if (!this.isDragging) return;
-                this.isDragging = false;
-
-                const pillRect = this.pill.getBoundingClientRect();
-                const pillCenter = pillRect.left + (pillRect.width / 2);
-
-                let closestTab = this.tabs[0];
-                let minDistance = Infinity;
-
-                this.tabs.forEach((tab) => {
-                    const tabRect = tab.getBoundingClientRect();
-                    const tabCenter = tabRect.left + (tabRect.width / 2);
-                    const distance = Math.abs(tabCenter - pillCenter);
-                    if (distance < minDistance) {
-                        minDistance = distance;
-                        closestTab = tab;
-                    }
-                });
-
-                this.snapTo(closestTab, false);
-
-                if (closestTab.dataset.active !== 'true') {
                     setTimeout(() => {
-                        window.Livewire.navigate(closestTab.getAttribute('href'));
-                    }, 150);
+                        const activeTab = this.tabs.find(t => t.dataset.active === 'true') ||
+                            this.tabs[0];
+                        this.snapTo(activeTab, true);
+                    }, 50);
+
+                    window.addEventListener('resize', () => {
+                        const activeTab = this.tabs.find(t => t.dataset.active === 'true') ||
+                            this.tabs[0];
+                        this.snapTo(activeTab, true);
+                    });
+
+                    this.tabs.forEach(tab => {
+                        tab.addEventListener('click', () => {
+                            this.snapTo(tab, false);
+                        });
+                    });
+                },
+
+                snapTo(targetEl, instant = false) {
+                    if (!targetEl || !this.pill) return;
+                    const parentRect = this.$el.getBoundingClientRect();
+                    const elRect = targetEl.getBoundingClientRect();
+
+                    if (instant) {
+                        this.pill.style.transition = 'none';
+                    } else {
+                        this.pill.style.transition =
+                            'transform 0.4s cubic-bezier(0.32,0.72,0,1), width 0.4s cubic-bezier(0.32,0.72,0,1)';
+                    }
+
+                    this.pill.style.width = `${elRect.width}px`;
+
+                    const offset = parentRect.right - elRect.right;
+                    this.currentTranslateX = -offset;
+                    this.initialTranslateX = -offset;
+
+                    this.pill.style.transform = `translateX(${this.currentTranslateX}px)`;
+                },
+
+                touchStart(e) {
+                    this.isDragging = true;
+                    this.startX = e.touches[0].clientX;
+                    this.pill.style.transition = 'none';
+                },
+
+                touchMove(e) {
+                    if (!this.isDragging) return;
+                    const deltaX = e.touches[0].clientX - this.startX;
+                    this.currentTranslateX = this.initialTranslateX + deltaX;
+
+                    const padding = 6;
+                    const maxRight = -padding;
+                    const maxLeft = -(this.$el.getBoundingClientRect().width - this.tabs[this.tabs
+                        .length - 1].getBoundingClientRect().width - padding);
+                    this.currentTranslateX = Math.min(maxRight, Math.max(maxLeft, this
+                        .currentTranslateX));
+
+                    this.pill.style.transform = `translateX(${this.currentTranslateX}px)`;
+                },
+
+                touchEnd(e) {
+                    if (!this.isDragging) return;
+                    this.isDragging = false;
+
+                    const pillRect = this.pill.getBoundingClientRect();
+                    const pillCenter = pillRect.left + (pillRect.width / 2);
+
+                    let closestTab = this.tabs[0];
+                    let minDistance = Infinity;
+
+                    this.tabs.forEach((tab) => {
+                        const tabRect = tab.getBoundingClientRect();
+                        const tabCenter = tabRect.left + (tabRect.width / 2);
+                        const distance = Math.abs(tabCenter - pillCenter);
+                        if (distance < minDistance) {
+                            minDistance = distance;
+                            closestTab = tab;
+                        }
+                    });
+
+                    this.snapTo(closestTab, false);
+
+                    if (closestTab.dataset.active !== 'true') {
+                        setTimeout(() => {
+                                const href = closestTab.getAttribute('href');
+                                @auth
+                                window.Livewire.navigate(href);
+                            @else
+                                window.location.href = href;
+                            @endauth
+                        }, 150);
                 }
             }
         }));

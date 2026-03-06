@@ -110,7 +110,7 @@
                 @endauth
 
                 @guest
-                    <a href="{{ route('google.login') }}"
+                    <a href="{{ route('login') }}"
                         class="px-5 py-2 text-[11px] font-bold rounded-full bg-gymz-accent text-white active:scale-95 transition-transform duration-200 shadow-lg shadow-gymz-accent/20">
                         سجل واتمرن معاهم 🚀
                     </a>
