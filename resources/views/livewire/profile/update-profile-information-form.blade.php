@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\ValidationException;
+use App\Enums\RequestStatus;
 use Livewire\Volt\Component;
 use Livewire\WithFileUploads;
 
@@ -92,6 +93,33 @@ new class extends Component {
 
         $this->dispatch('toast', message: 'تم تحديث البيانات بنجاح!', type: 'success');
         $this->photo = null; // Clear photo to prevent re-upload on next submit
+    }
+
+    /**
+     * Delete an active workout intent.
+     */
+    public function deleteIntent(int $intentId): void
+    {
+        $intent = Auth::user()->workoutIntents()->find($intentId);
+
+        if (!$intent) {
+            return;
+        }
+
+        $hasAccepted = $intent->workoutRequests()->where('status', RequestStatus::Accepted)->exists();
+
+        if ($hasAccepted) {
+            $user = Auth::user();
+            $user->reliability_score = max(0, $user->reliability_score - 5);
+            $user->save();
+
+            $this->dispatch('toast', message: 'تم إلغاء التمرينة وخصم 5% من الموثوقية لإلغاء اتفاق مؤكد.', type: 'error');
+        } else {
+            $this->dispatch('toast', message: 'تم إلغاء التمرينة بنجاح.', type: 'success');
+        }
+
+        $intent->workoutRequests()->delete();
+        $intent->delete();
     }
 
     /**
@@ -224,7 +252,39 @@ new class extends Component {
         </div>
     </div>
 
-    <header class="mb-4 text-center">
+    {{-- My Active Workouts Section --}}
+    <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-4 mt-8">تمريناتي الحالية</h3>
+
+    @forelse (auth()->user()->workoutIntents()->where('start_time', '>=', now())->orderBy('start_time')->get() as $myIntent)
+        <div
+            class="bg-white/70 dark:bg-[#1c1c1e]/70 backdrop-blur-3xl border border-black/5 dark:border-white/10 rounded-2xl p-4 mb-3 flex items-center justify-between">
+            <div class="flex flex-col">
+                <span
+                    class="font-bold text-sm text-gray-900 dark:text-white">{{ $myIntent->workoutTarget?->name ?? 'تمرينة عامة' }}</span>
+                <span class="text-xs text-gray-500 dark:text-gray-400">
+                    {{ $myIntent->gym?->name ?? 'أي جيم' }} • {{ $myIntent->start_time->format('g:i A') }}
+                </span>
+            </div>
+
+            <button type="button"
+                @click="$dispatch('open-ios-alert', { title: 'إلغاء التمرينة', message: 'متأكد إنك عايز تلغي التمرينة دي؟', action: 'deleteIntent', params: {{ $myIntent->id }}, componentId: $wire.$id })"
+                class="text-red-500 bg-red-50 dark:bg-red-500/10 rounded-full p-2 active:scale-95 transition-all">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
+                    stroke="currentColor" class="w-5 h-5">
+                    <path stroke-linecap="round" stroke-linejoin="round"
+                        d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0" />
+                </svg>
+            </button>
+        </div>
+    @empty
+        <div
+            class="bg-white/50 dark:bg-white/5 backdrop-blur-xl border border-black/5 dark:border-white/10 rounded-2xl p-6 text-center mb-6">
+            <p class="text-sm font-medium text-gray-500 dark:text-gray-400">معندكش تمارين جاية.. انزل الجيم يابطل! 💪
+            </p>
+        </div>
+    @endforelse
+
+    <header class="mb-4 mt-8 text-center">
         <h2 class="text-lg font-bold text-gray-900 dark:text-white">
             المعلومات الأساسية
         </h2>
