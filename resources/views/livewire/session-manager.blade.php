@@ -164,7 +164,7 @@
                 {{-- In Progress: Anti-Cheat Timer + End Button --}}
                 @php
                     $scannedAt = $session->scanned_at;
-                    $minutesPassed = $scannedAt ? max(0, (int) now()->diffInMinutes($scannedAt, false)) : 0;
+                    $minutesPassed = $scannedAt ? max(0, (int) $scannedAt->diffInMinutes(now(), false)) : 0;
 
                     // Calculate remaining (capped between 0 and 90)
                     $remainingMinutes = max(0, 90 - $minutesPassed);
