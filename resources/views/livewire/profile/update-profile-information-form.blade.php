@@ -1,5 +1,6 @@
 <?php
 
+use Illuminate\Support\Collection;
 use App\Models\User;
 use App\Models\WorkoutSession;
 use App\Enums\SessionStatus;
@@ -10,6 +11,7 @@ use Illuminate\Support\Facades\Session;
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\ValidationException;
 use App\Enums\RequestStatus;
+use Livewire\Attributes\Computed;
 use Livewire\Volt\Component;
 use Livewire\WithFileUploads;
 
@@ -109,19 +111,16 @@ new class extends Component {
             return;
         }
 
-        $hasAccepted = $intent->workoutRequests()->where('status', RequestStatus::Accepted)->exists();
+        $session = WorkoutSession::where('intent_id', $intent->id)
+            ->whereIn('status', [SessionStatus::Scheduled, SessionStatus::InProgress])
+            ->first();
 
-        if ($hasAccepted) {
+        if ($session) {
+            $session->update(['status' => SessionStatus::Cancelled_By_Host]);
+
             $user = Auth::user();
             $user->reliability_score = max(0, $user->reliability_score - 5);
             $user->save();
-
-            // Mark associated Scheduled session as Cancelled_By_Host
-            $session = WorkoutSession::where('intent_id', $intent->id)->where('status', SessionStatus::Scheduled)->first();
-
-            if ($session) {
-                $session->update(['status' => SessionStatus::Cancelled_By_Host]);
-            }
 
             $this->dispatch('toast', message: 'تم إلغاء التمرينة وخصم 5% من الموثوقية لإلغاء اتفاق مؤكد.', type: 'error');
         } else {
@@ -130,6 +129,50 @@ new class extends Component {
 
         $intent->workoutRequests()->delete();
         $intent->delete();
+    }
+
+    #[Computed]
+    public function historyItems(): Collection
+    {
+        $userId = Auth::id();
+
+        // 1. Intents where user is host, time passed, NO session exists
+        $intentsWithoutSessions = Auth::user()->workoutIntents()
+            ->where('start_time', '<', now())
+            ->doesntHave('workoutSession')
+            ->with(['gym', 'workoutTarget'])
+            ->get()
+            ->map(function ($intent) {
+                return (object) [
+                    'target_name' => $intent->workoutTarget?->name ?? 'تمرينة عامة',
+                    'gym_name' => $intent->gym?->name ?? 'أي جيم',
+                    'start_time' => $intent->start_time,
+                    'badge_status' => 'no_show_host'
+                ];
+            });
+
+        // 2. Sessions where user is involved, safely loading soft-deleted intents
+        $sessions = \App\Models\WorkoutSession::with(['workoutIntent' => fn($q) => $q->withTrashed()->with(['gym', 'workoutTarget'])])
+            ->where(function ($q) use ($userId) {
+                $q->where('user_a_id', $userId)->orWhere('user_b_id', $userId);
+            })
+            ->whereHas('workoutIntent', function ($q) {
+                $q->withTrashed()->where('start_time', '<', now());
+            })
+            ->get()
+            ->map(function ($session) {
+                $intent = $session->workoutIntent;
+                return (object) [
+                    'target_name' => $intent->workoutTarget?->name ?? 'تمرينة عامة',
+                    'gym_name' => $intent->gym?->name ?? 'أي جيم',
+                    'start_time' => $intent->start_time,
+                    'badge_status' => $session->status
+                ];
+            });
+
+        return $intentsWithoutSessions->concat($sessions)
+            ->sortByDesc('start_time')
+            ->take(15);
     }
 
     /**
@@ -380,46 +423,35 @@ new class extends Component {
 
             {{-- History List --}}
             <div class="overflow-y-auto space-y-3 pb-4">
-                @forelse (auth()->user()->workoutIntents()->where('start_time', '<', now())->orderBy('start_time', 'desc')->take(15)->get() as $pastIntent)
+                @forelse ($this->historyItems as $item)
                     @php
-                        $session = \App\Models\WorkoutSession::where('intent_id', $pastIntent->id)->latest()->first();
-
-                        $badgeText = 'لم تكتمل';
+                        $badgeText = 'غير معروف';
                         $badgeColors = 'bg-gray-200 dark:bg-white/10 text-gray-600 dark:text-gray-300';
                         $icon = '<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-3 h-3"><path stroke-linecap="round" stroke-linejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" /></svg>';
 
-                        if ($session) {
-                            if ($session->status === \App\Enums\SessionStatus::Completed) {
-                                $badgeText = 'تمت';
-                                $badgeColors = 'bg-green-500/10 text-green-500';
-                                $icon = '<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-3 h-3"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5" /></svg>';
-                            } elseif ($session->status === \App\Enums\SessionStatus::Missed) {
-                                $badgeText = 'فائتة (عقوبة)';
-                                $badgeColors = 'bg-red-500/10 text-red-500';
-                                $icon = '<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-3 h-3"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" /></svg>';
-                            } elseif ($session->status === \App\Enums\SessionStatus::Cancelled_By_Host) {
-                                $badgeText = 'إلغاء منك';
-                                $badgeColors = 'bg-red-500/10 text-red-500';
-                                $icon = '<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-3 h-3"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" /></svg>';
-                            } elseif ($session->status === \App\Enums\SessionStatus::Cancelled_By_Guest) {
-                                $badgeText = 'الضيف انسحب';
-                                $badgeColors = 'bg-gray-200 dark:bg-white/10 text-gray-600 dark:text-gray-300';
-                                $icon = '<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-3 h-3"><path stroke-linecap="round" stroke-linejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" /></svg>';
-                            }
-                        } else {
+                        if ($item->badge_status === 'no_show_host') {
                             $badgeText = 'محدش انضم';
+                        } elseif ($item->badge_status === \App\Enums\SessionStatus::Completed) {
+                            $badgeText = 'تمت';
+                            $badgeColors = 'bg-green-500/10 text-green-500';
+                            $icon = '<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-3 h-3"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5" /></svg>';
+                        } elseif ($item->badge_status === \App\Enums\SessionStatus::Missed) {
+                            $badgeText = 'فائتة ❌';
+                            $badgeColors = 'bg-red-500/10 text-red-500';
+                        } elseif ($item->badge_status === \App\Enums\SessionStatus::Cancelled_By_Host) {
+                            $badgeText = 'إلغاء الكابتن';
+                            $badgeColors = 'bg-red-500/10 text-red-500';
+                        } elseif ($item->badge_status === \App\Enums\SessionStatus::Cancelled_By_Guest) {
+                            $badgeText = 'إلغاء الضيف';
                         }
                     @endphp
                     <x-glass-card class="flex items-center justify-between opacity-80 !mb-0 !p-4">
                         <div class="flex flex-col">
-                            <span
-                                class="font-bold text-sm text-gray-900 dark:text-white">{{ $pastIntent->workoutTarget?->name ?? 'تمرينة عامة' }}</span>
+                            <span class="font-bold text-sm text-gray-900 dark:text-white">{{ $item->target_name }}</span>
                             <span class="text-xs text-gray-500 dark:text-gray-400">
-                                {{ $pastIntent->gym?->name ?? 'أي جيم' }} •
-                                {{ $pastIntent->start_time->format('d M Y - g:i A') }}
+                                {{ $item->gym_name }} • {{ \Carbon\Carbon::parse($item->start_time)->format('d M Y - g:i A') }}
                             </span>
                         </div>
-
                         <span class="text-[10px] font-bold px-3 py-1.5 rounded-full flex items-center gap-1 shrink-0 {{ $badgeColors }}">
                             {!! $icon !!} {{ $badgeText }}
                         </span>
