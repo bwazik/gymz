@@ -44,6 +44,8 @@ class MarkMissedSessions extends Command
         foreach ($missedSessions as $session) {
             $session->update(['status' => SessionStatus::Missed]);
 
+            // TODO: [NOTIFICATION] - Notify BOTH users that the session was marked as Missed due to no-show
+
             // Penalize both users for ghosting
             foreach ([$session->user_a_id, $session->user_b_id] as $userId) {
                 $user = User::find($userId);

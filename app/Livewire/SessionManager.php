@@ -72,6 +72,8 @@ class SessionManager extends Component
                 'status' => SessionStatus::InProgress,
                 'scanned_at' => now(),
             ]);
+
+            // TODO: [NOTIFICATION] - Notify BOTH users that the session has officially started
         });
 
         unset($this->activeSessions);
@@ -126,6 +128,8 @@ class SessionManager extends Component
                     'description' => $description,
                 ]);
             }
+
+            // TODO: [NOTIFICATION] - Notify BOTH users of the reward - 10 Glutes & Reliability increase
         });
 
         unset($this->activeSessions);
@@ -174,6 +178,8 @@ class SessionManager extends Component
             ]);
 
             $session->update(['status' => SessionStatus::Missed]);
+
+            // TODO: [NOTIFICATION] - Notify the ABSENT user about the penalty and the REPORTER that it's processed
         });
 
         unset($this->activeSessions);

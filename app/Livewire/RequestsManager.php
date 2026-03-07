@@ -89,6 +89,8 @@ class RequestsManager extends Component
                 'qr_token' => Str::random(32),
                 'status' => SessionStatus::Scheduled,
             ]);
+
+            // TODO: [NOTIFICATION] - Notify GUEST that their request was accepted
         });
 
         unset($this->incomingRequests);
@@ -119,6 +121,8 @@ class RequestsManager extends Component
 
         $request->update(['status' => RequestStatus::Rejected]);
 
+        // TODO: [NOTIFICATION] - Notify GUEST that their request was rejected
+
         unset($this->incomingRequests);
         $this->dispatch('toast', message: 'تم رفض الطلب', type: 'success');
     }
@@ -146,6 +150,8 @@ class RequestsManager extends Component
 
         if ($request->status === RequestStatus::Pending) {
             $request->delete();
+
+            // TODO: [NOTIFICATION] - Notify HOST that the guest withdrew their request
             $this->dispatch('toast', message: 'تم سحب الطلب بنجاح', type: 'success');
         } elseif ($request->status === RequestStatus::Accepted) {
             /** @var \App\Models\User $user */
@@ -167,6 +173,8 @@ class RequestsManager extends Component
             $request->workoutIntent->update(['status' => IntentStatus::Active]);
 
             $request->delete();
+
+            // TODO: [NOTIFICATION] - Notify HOST that the guest cancelled the confirmed session
             $this->dispatch('toast', message: 'تم إلغاء الانضمام وخصم 5% من الموثوقية لأن الطلب كان مقبول.', type: 'error');
         }
 

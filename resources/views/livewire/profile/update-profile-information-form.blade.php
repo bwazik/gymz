@@ -118,6 +118,8 @@ new class extends Component {
         if ($session) {
             $session->update(['status' => SessionStatus::Cancelled_By_Host]);
 
+            // TODO: [NOTIFICATION] - Notify the GUEST that the host cancelled the session
+
             $user = Auth::user();
             $user->reliability_score = max(0, $user->reliability_score - 5);
             $user->save();
