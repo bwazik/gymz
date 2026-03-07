@@ -14,14 +14,17 @@ use Illuminate\Validation\Rule;
 use Illuminate\Validation\Rules\Enum;
 use Illuminate\Validation\ValidationException;
 use Livewire\Component;
+use Livewire\WithFileUploads;
 
 class Onboarding extends Component
 {
-    use WithToast, WithRateLimiting;
+    use WithToast, WithRateLimiting, WithFileUploads;
+
     public string $phone = '';
     public string $gender = '';
     public $dob = '';
     public string $level = '';
+    public $photo;
 
     public function messages(): array
     {
@@ -32,6 +35,9 @@ class Onboarding extends Component
             'dob.required' => 'تاريخ ميلادك مهم للتوثيق',
             'dob.before' => 'مش معقول تكون اتولدت في المستقبل! 😄',
             'level.required' => 'حدد مستواك عشان نضبط لك التمرين',
+            'photo.image' => 'الملف لازم يكون صورة',
+            'photo.mimes' => 'الصورة لازم تكون بصيغة jpeg, png, أو webp',
+            'photo.max' => 'حجم الصورة لازم ما يتخطاش 3 ميجابايت',
         ];
     }
 
@@ -54,6 +60,7 @@ class Onboarding extends Component
                 'gender' => ['required', new Enum(Gender::class)],
                 'dob' => ['required', 'date', 'before:today'],
                 'level' => ['required', new Enum(UserLevel::class)],
+                'photo' => ['nullable', 'image', 'mimes:jpeg,png,webp', 'max:3072'],
             ]);
 
             /** @var \App\Models\User $user */
@@ -64,6 +71,7 @@ class Onboarding extends Component
                 'gender' => $this->gender,
                 'dob' => $this->dob,
                 'level' => $this->level,
+                'photo' => $this->photo,
             ]);
 
         } catch (ValidationException $e) {

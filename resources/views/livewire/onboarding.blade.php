@@ -1,6 +1,11 @@
 <div x-data x-init="$dispatch('hide-bottom-nav')" class="min-h-screen flex flex-col items-center justify-center p-6">
+    <div class="mb-6">
+        <x-photo-upload :user="auth()->user()" :photo="$photo" sizeClasses="w-24 h-24 shadow-xl" />
+    </div>
+
     <div class="w-full max-w-md text-center mb-4">
-        <h1 class="text-3xl font-black text-gray-900 dark:text-white mb-2">أهلاً بيك يا {{ explode(' ', auth()->user()->name)[0] }}! 🏋🏽</h1>
+        <h1 class="text-3xl font-black text-gray-900 dark:text-white mb-2">أهلاً بيك يا
+            {{ explode(' ', auth()->user()->name)[0] }}! 🏋🏽</h1>
         <p class="text-gray-500 dark:text-gray-400">خطوة واحدة وتبقى جاهز تتمرن.</p>
     </div>
 
@@ -9,7 +14,8 @@
         <div>
             <label class="block text-xs font-medium text-gray-600 dark:text-white/60 mb-1.5">الموبايل</label>
             <div class="relative">
-                <input id="phone" type="tel" wire:model="phone" dir="ltr" placeholder="01xxxxxxxxx" required
+                <input id="phone" type="tel" wire:model="phone" dir="ltr" placeholder="01xxxxxxxxx"
+                    required
                     class="w-full rounded-2xl bg-black/5 dark:bg-white/10 border-0 text-gray-900 dark:text-white text-sm px-4 py-3.5 focus:bg-white dark:focus:bg-[#3a3a3c] focus:ring-2 focus:ring-gymz-accent/50 transition-all text-left">
             </div>
         </div>

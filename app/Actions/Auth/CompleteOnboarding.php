@@ -15,6 +15,11 @@ class CompleteOnboarding
      */
     public function execute(User $user, array $data): void
     {
+        if (isset($data['photo']) && $data['photo']) {
+            $path = $data['photo']->store('avatars', 'public');
+            $user->image_path = $path;
+        }
+
         $user->update([
             'phone' => $data['phone'],
             'gender' => (int) $data['gender'],
