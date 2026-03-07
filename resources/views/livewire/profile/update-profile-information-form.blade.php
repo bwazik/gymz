@@ -18,6 +18,7 @@ new class extends Component {
     public string $email = '';
     public string $phone = '';
     public $photo;
+    public bool $showHistoryModal = false;
 
     /**
      * Mount the component.
@@ -253,7 +254,13 @@ new class extends Component {
     </div>
 
     {{-- My Active Workouts Section --}}
-    <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-4 mt-8">تمريناتي الحالية</h3>
+    <div class="flex items-center justify-between mb-4 mt-8">
+        <h3 class="text-lg font-bold text-gray-900 dark:text-white">تمريناتي الحالية</h3>
+        <button type="button" wire:click="$set('showHistoryModal', true)"
+            class="text-xs font-bold text-gymz-accent bg-gymz-accent/10 px-3 py-1.5 rounded-full active:scale-95 transition-all">
+            السجل
+        </button>
+    </div>
 
     @forelse (auth()->user()->workoutIntents()->where('start_time', '>=', now())->orderBy('start_time')->get() as $myIntent)
         <div
@@ -283,6 +290,8 @@ new class extends Component {
             </p>
         </div>
     @endforelse
+
+
 
     <header class="mb-4 mt-8 text-center">
         <h2 class="text-lg font-bold text-gray-900 dark:text-white">
@@ -329,4 +338,63 @@ new class extends Component {
 
         <x-ios-button target="updateProfileInformation" wire:loading.attr="disabled">حفظ البيانات</x-ios-button>
     </form>
+    {{-- History Modal Overlay --}}
+    <div x-data="{ open: @entangle('showHistoryModal').live }" x-show="open" x-init="$watch('open', val => $dispatch(val ? 'hide-bottom-nav' : 'show-bottom-nav'))" style="display: none;"
+        x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0"
+        x-transition:enter-end="opacity-100" x-transition:leave="transition ease-out duration-300"
+        x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0"
+        class="fixed inset-0 z-50 bg-black/40 backdrop-blur-md flex items-end justify-center"
+        @click.self="open = false">
+        {{-- Bottom Sheet Modal --}}
+        <div x-show="open" x-transition:enter="transition ease-out duration-300"
+            x-transition:enter-start="translate-y-full" x-transition:enter-end="translate-y-0"
+            x-transition:leave="transition ease-out duration-300" x-transition:leave-start="translate-y-0"
+            x-transition:leave-end="translate-y-full"
+            class="bg-white/80 dark:bg-[#1c1c1e]/80 backdrop-blur-3xl border-t border-white/50 dark:border-white/10 p-6 rounded-t-[2rem] w-full max-w-md shadow-2xl pb-[calc(1.5rem+env(safe-area-inset-bottom))] max-h-[85vh] flex flex-col"
+            @click.stop>
+            {{-- Drag Handle --}}
+            <div class="flex justify-center mb-4 shrink-0">
+                <div class="w-10 h-1 rounded-full bg-gray-300 dark:bg-white/20"></div>
+            </div>
+
+            {{-- Title & Close Button --}}
+            <div class="flex items-center justify-between mb-5 shrink-0">
+                <h3 class="text-lg font-bold text-gray-900 dark:text-white">سجل التمارين</h3>
+                <button @click="open = false" type="button"
+                    class="p-2 bg-gray-100 dark:bg-white/10 text-gray-500 dark:text-white/70 rounded-full active:scale-95 transition-all">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
+                        stroke="currentColor" class="w-4 h-4">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                </button>
+            </div>
+
+            {{-- History List --}}
+            <div class="overflow-y-auto space-y-3 pb-4">
+                @forelse (auth()->user()->workoutIntents()->where('start_time', '<', now())->orderBy('start_time', 'desc')->take(15)->get() as $pastIntent)
+                    <x-glass-card class="flex items-center justify-between opacity-80 !mb-0 !p-4">
+                        <div class="flex flex-col">
+                            <span
+                                class="font-bold text-sm text-gray-900 dark:text-white">{{ $pastIntent->workoutTarget?->name ?? 'تمرينة عامة' }}</span>
+                            <span class="text-xs text-gray-500 dark:text-gray-400">
+                                {{ $pastIntent->gym?->name ?? 'أي جيم' }} •
+                                {{ $pastIntent->start_time->format('d M Y - g:i A') }}
+                            </span>
+                        </div>
+
+                        <span
+                            class="text-[10px] font-bold bg-gray-200 dark:bg-white/10 text-gray-600 dark:text-gray-300 px-3 py-1.5 rounded-full flex items-center gap-1 shrink-0">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                stroke-width="2.5" stroke="currentColor" class="w-3 h-3 text-green-500">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5" />
+                            </svg> تمت
+                        </span>
+                    </x-glass-card>
+                @empty
+                    <div class="text-center py-6 text-sm text-gray-500 dark:text-gray-400">لسه معندكش تاريخ رياضي..
+                        ابدأ أول تمرينة ليك! 🏋️‍♂️</div>
+                @endforelse
+            </div>
+        </div>
+    </div>
 </section>
