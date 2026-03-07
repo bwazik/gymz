@@ -110,6 +110,50 @@ class RequestsManager extends Component
         $this->dispatch('toast', message: 'تم رفض الطلب', type: 'success');
     }
 
+    public function cancelSentRequest(int $requestId): void
+    {
+        $key = 'manage-request:' . Auth::id();
+        if (RateLimiter::tooManyAttempts($key, 5)) {
+            $seconds = RateLimiter::availableIn($key);
+            $this->dispatch('toast', message: "حاولت كتير! استنى {$seconds} ثانية ⏳", type: 'error');
+            return;
+        }
+        RateLimiter::hit($key, 60);
+
+        $request = WorkoutRequest::where('sender_id', Auth::id())->findOrFail($requestId);
+
+        if ($request->status === RequestStatus::Rejected) {
+            return; // Do nothing
+        }
+
+        if ($request->status === RequestStatus::Pending) {
+            $request->delete();
+            $this->dispatch('toast', message: 'تم سحب الطلب بنجاح', type: 'success');
+        } elseif ($request->status === RequestStatus::Accepted) {
+            $user = Auth::user();
+            $user->reliability_score = max(0, $user->reliability_score - 5);
+            $user->save();
+
+            // Make the session obsolete and intent available again
+            $session = WorkoutSession::where('intent_id', $request->intent_id)
+                ->where('user_b_id', Auth::id())
+                ->where('status', SessionStatus::Scheduled)
+                ->first();
+
+            if ($session) {
+                $session->delete();
+            }
+
+            // Mark intent as active again so someone else can match
+            $request->workoutIntent->update(['status' => IntentStatus::Active]);
+
+            $request->delete();
+            $this->dispatch('toast', message: 'تم إلغاء الانضمام وخصم 5% من الموثوقية لأن الطلب كان مقبول.', type: 'error');
+        }
+
+        unset($this->outgoingRequests);
+    }
+
     public function render()
     {
         return view('livewire.requests-manager');

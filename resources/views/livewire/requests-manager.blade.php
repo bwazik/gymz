@@ -149,6 +149,28 @@
                     <span class="text-gray-300 dark:text-white/20">·</span>
                     <span>{{ $request->workoutIntent->start_time->format('g:i A') }}</span>
                 </div>
+
+                {{-- Action: Withdraw (for Pending or Accepted) --}}
+                @if (in_array($request->status, [\App\Enums\RequestStatus::Pending, \App\Enums\RequestStatus::Accepted]))
+                    <div class="mt-4 pt-3 border-t border-black/5 dark:border-white/5">
+                        @php
+                            if ($request->status === \App\Enums\RequestStatus::Pending) {
+                                $alertTitle = 'سحب الطلب';
+                                $alertMessage = 'متأكد إنك عايز تلغي طلب الانضمام للتمرينة دي؟';
+                            } else {
+                                $alertTitle = 'إلغاء اتفاق مؤكد ⚠️';
+                                $alertMessage =
+                                    'الكابتن وافق عليك خلاص! لو لغيت دلوقتي هيتخصم 5% من الموثوقية بتاعتك.. متأكد؟';
+                            }
+                        @endphp
+
+                        <button type="button"
+                            @click="$dispatch('open-ios-alert', { title: '{{ $alertTitle }}', message: '{{ $alertMessage }}', action: 'cancelSentRequest', params: {{ $request->id }}, componentId: $wire.$id })"
+                            class="w-full py-2.5 rounded-xl bg-red-50 dark:bg-red-500/10 text-red-500 font-bold text-sm active:scale-95 transition-all">
+                            سحب الطلب
+                        </button>
+                    </div>
+                @endif
             </x-glass-card>
         @empty
             <x-glass-card class="p-8 text-center">
