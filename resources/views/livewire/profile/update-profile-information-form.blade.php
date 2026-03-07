@@ -114,6 +114,13 @@ new class extends Component {
             $user->reliability_score = max(0, $user->reliability_score - 5);
             $user->save();
 
+            // Mark associated Scheduled session as Cancelled_By_Host
+            $session = WorkoutSession::where('intent_id', $intent->id)->where('status', SessionStatus::Scheduled)->first();
+
+            if ($session) {
+                $session->update(['status' => SessionStatus::Cancelled_By_Host]);
+            }
+
             $this->dispatch('toast', message: 'تم إلغاء التمرينة وخصم 5% من الموثوقية لإلغاء اتفاق مؤكد.', type: 'error');
         } else {
             $this->dispatch('toast', message: 'تم إلغاء التمرينة بنجاح.', type: 'success');
