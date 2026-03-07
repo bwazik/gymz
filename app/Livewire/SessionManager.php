@@ -146,6 +146,11 @@ class SessionManager extends Component
             return;
         }
 
+        if (!$session->workoutIntent) {
+            $this->dispatch('toast', message: 'التمرينة مش موجودة', type: 'error');
+            return;
+        }
+
         $sessionStartTime = $session->workoutIntent->start_time;
         if (now() < $sessionStartTime->copy()->addMinutes(15)) {
             $this->dispatch('toast', message: 'لازم تستنى 15 دقيقة من ميعاد التمرينة', type: 'error');

@@ -152,7 +152,7 @@
                 @endif
 
                 {{-- Report No-Show Button (15-min grace period) --}}
-                @if (now() >= $session->workoutIntent->start_time->copy()->addMinutes(15))
+                @if ($session->workoutIntent && now() >= $session->workoutIntent->start_time->copy()->addMinutes(15))
                     <div class="mt-4 pt-4 border-t border-black/5 dark:border-white/5">
                         <button type="button"
                             @click="$dispatch('open-ios-alert', { title: 'إلغاء التمرينة للغياب', message: 'متأكد إن الطرف التاني مجاش؟ هيتخصم منه نقط.', action: 'reportNoShow', params: {{ $session->id }}, componentId: $wire.$id })"
