@@ -3,6 +3,7 @@
 namespace App\Livewire;
 
 use App\Actions\Auth\CompleteOnboarding;
+use App\Actions\User\UpdateProfilePhoto;
 use App\Enums\Gender;
 use App\Enums\UserLevel;
 use App\Models\User;
@@ -48,7 +49,7 @@ class Onboarding extends Component
         }
     }
 
-    public function save(CompleteOnboarding $action)
+    public function save(CompleteOnboarding $action, UpdateProfilePhoto $updatePhotoAction)
     {
         if ($this->isRateLimited('onboarding', 3)) {
             return;
@@ -72,7 +73,7 @@ class Onboarding extends Component
                 'dob' => $this->dob,
                 'level' => $this->level,
                 'photo' => $this->photo,
-            ]);
+            ], $updatePhotoAction);
 
         } catch (ValidationException $e) {
             $this->toastError(collect($e->errors())->flatten()->first());

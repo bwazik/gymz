@@ -2,6 +2,7 @@
 
 namespace App\Livewire;
 
+use App\Actions\User\UpdateProfilePhoto;
 use App\Actions\Workout\CancelWorkoutIntent;
 use App\Models\User;
 use App\Models\WorkoutSession;
@@ -52,7 +53,7 @@ class ProfileManager extends Component
         ];
     }
 
-    public function updateProfileInformation(): void
+    public function updateProfileInformation(UpdateProfilePhoto $updatePhotoAction): void
     {
         if ($this->isRateLimited('update-profile', 3)) {
             return;
@@ -81,8 +82,7 @@ class ProfileManager extends Component
         ]);
 
         if ($this->photo) {
-            $path = $this->photo->store('avatars', 'public');
-            $user->image_path = $path;
+            $updatePhotoAction->execute($user, $this->photo);
         }
 
         if ($user->isDirty('email')) {

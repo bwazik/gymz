@@ -2,6 +2,7 @@
 
 namespace App\Actions\Auth;
 
+use App\Actions\User\UpdateProfilePhoto;
 use App\Models\User;
 
 class CompleteOnboarding
@@ -13,11 +14,10 @@ class CompleteOnboarding
      * @param array $data Contains phone, gender, dob, and level.
      * @return void
      */
-    public function execute(User $user, array $data): void
+    public function execute(User $user, array $data, UpdateProfilePhoto $updatePhotoAction): void
     {
         if (isset($data['photo']) && $data['photo']) {
-            $path = $data['photo']->store('avatars', 'public');
-            $user->image_path = $path;
+            $updatePhotoAction->execute($user, $data['photo']);
         }
 
         $user->update([
