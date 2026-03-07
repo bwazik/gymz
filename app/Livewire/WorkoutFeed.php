@@ -41,6 +41,8 @@ class WorkoutFeed extends Component
             'status' => RequestStatus::Pending,
         ]);
 
+        // TODO: [NOTIFICATION] - Notify HOST that a new workout request was received
+
         $this->dispatch('request-sent');
         $this->dispatch('toast', message: 'تم إرسال الطلب بنجاح! 💪', type: 'success');
     }
@@ -62,7 +64,7 @@ class WorkoutFeed extends Component
             ->upcoming();
 
         if ($user && $user->gender) {
-            $query->whereHas('user', function($q) use ($user) {
+            $query->whereHas('user', function ($q) use ($user) {
                 $q->where('gender', $user->gender);
             });
             $query->where('user_id', '!=', $user->id);
@@ -76,7 +78,7 @@ class WorkoutFeed extends Component
         if (!$user) {
             return [];
         }
-        
+
         return WorkoutRequest::where('sender_id', $user->id)
             ->pluck('intent_id')
             ->toArray();
