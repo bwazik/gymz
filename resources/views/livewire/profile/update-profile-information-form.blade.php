@@ -50,7 +50,7 @@ new class extends Component {
     {
         $key = 'update-profile:' . Auth::id();
 
-        if (RateLimiter::tooManyAttempts($key, 5)) {
+        if (RateLimiter::tooManyAttempts($key, 3)) {
             $seconds = RateLimiter::availableIn($key);
             $this->dispatch('toast', message: "محاولات كتير! استنى {$seconds} ثانية ⏳", type: 'error');
             return;
@@ -151,7 +151,7 @@ new class extends Component {
                 <h3 class="text-xl font-bold text-gray-900 dark:text-white">{{ auth()->user()->name }}</h3>
                 <p class="text-sm text-gray-500 dark:text-gray-400">{{ auth()->user()->email }}</p>
                 @if (auth()->user()->phone)
-                    <p class="text-sm text-gray-500 dark:text-gray-400" dir="ltr">{{ auth()->user()->phone }}</p>
+                    <p class="text-sm text-gray-500 dark:text-gray-400">{{ auth()->user()->phone }}</p>
                 @endif
             </div>
         </div>

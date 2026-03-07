@@ -66,7 +66,7 @@
                     <button wire:click="acceptRequest({{ $request->id }})" wire:loading.attr="disabled"
                         class="flex-1 py-2.5 rounded-xl bg-gymz-accent text-white font-bold text-sm active:scale-95 transition-all disabled:opacity-50">
                         <span wire:loading.remove wire:target="acceptRequest({{ $request->id }})">قبول</span>
-                        <span wire:loading wire:target="acceptRequest({{ $request->id }})">جاري...</span>
+                        <span wire:loading wire:target="acceptRequest({{ $request->id }})">اتقل...</span>
                     </button>
                     <button
                         @click="$dispatch('open-ios-alert', { title: 'رفض الطلب', message: 'متأكد إنك عايز ترفض الطلب ده؟', action: 'rejectRequest', params: {{ $request->id }}, componentId: $wire.$id })"

@@ -210,7 +210,7 @@
                         :disabled="!canEnd">
                         <span wire:loading.remove wire:target="endSession({{ $session->id }})">إنهاء التمرينة واستلام
                             ١٠ جلوتس 🍑</span>
-                        <span wire:loading wire:target="endSession({{ $session->id }})">جاري...</span>
+                        <span wire:loading wire:target="endSession({{ $session->id }})">اتقل...</span>
                     </button>
                 </div>
             @endif

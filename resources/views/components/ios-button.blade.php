@@ -4,7 +4,7 @@
     @if($target)
         <span wire:loading.remove wire:target="{{ $target }}">{{ $slot }}</span>
         <span wire:loading wire:target="{{ $target }}" class="w-5 h-5 border-2 border-white border-t-transparent flex rounded-full animate-spin"></span>
-        <span wire:loading wire:target="{{ $target }}">جاري الحفظ...</span>
+        <span wire:loading wire:target="{{ $target }}">اتقل...</span>
     @else
         {{ $slot }}
     @endif

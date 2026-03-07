@@ -104,13 +104,15 @@
                 </div>
 
                 {{-- Guest Pass Toggle --}}
-                <x-ios-toggle label="معايا دعوة (Guest Pass)" description="تقدر تدخل حد معندوش اشتراك في الجيم" wire:model="form.has_invitation" />
+                <x-ios-toggle label="معايا دعوة (Guest Pass)" description="تقدر تدخل حد معندوش اشتراك في الجيم"
+                    wire:model="form.has_invitation" />
 
                 {{-- Note --}}
                 <div>
                     <label class="block text-xs font-medium text-gray-600 dark:text-white/60 mb-1.5">ملاحظات <span
                             class="text-gray-400 dark:text-white/30">(اختياري)</span></label>
-                    <x-ios-textarea wire:model="form.note" rows="2" placeholder="محتاج spotter، عايز أكسر PR النهاردة..." />
+                    <x-ios-textarea wire:model="form.note" rows="2"
+                        placeholder="محتاج spotter، عايز أكسر PR النهاردة..." />
                     @error('form.note')
                         <span class="flex items-center gap-1 text-red-500 dark:text-red-400 text-[11px] font-bold mt-1.5">
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
@@ -128,7 +130,7 @@
                     <button type="submit"
                         class="flex-1 py-3.5 rounded-2xl bg-gymz-accent text-white font-bold text-sm active:scale-95 transition-all shadow-md disabled:opacity-50">
                         <span wire:loading.remove wire:target="save">انشر التمرينة</span>
-                        <span wire:loading wire:target="save">جاري النشر...</span>
+                        <span wire:loading wire:target="save">اتقل...</span>
                     </button>
                     <button type="button" @click="open = false"
                         class="px-6 py-3.5 rounded-2xl bg-gray-200/50 dark:bg-white/10 text-gray-700 dark:text-white/70 font-bold text-sm active:scale-95 transition-all">

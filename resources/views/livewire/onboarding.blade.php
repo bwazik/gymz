@@ -1,7 +1,7 @@
 <div x-data x-init="$dispatch('hide-bottom-nav')" class="min-h-screen flex flex-col items-center justify-center p-6">
     <div class="w-full max-w-md text-center mb-4">
         <h1 class="text-3xl font-black text-gray-900 dark:text-white mb-2">أهلاً بيك يا {{ explode(' ', auth()->user()->name)[0] }}! 🏋🏽</h1>
-        <p class="text-gray-500 dark:text-gray-400">خطوة واحدة وتبقى جاهز تنزل الملعب.</p>
+        <p class="text-gray-500 dark:text-gray-400">خطوة واحدة وتبقى جاهز تتمرن.</p>
     </div>
 
     <form wire:submit="save" class="w-full max-w-md space-y-4">

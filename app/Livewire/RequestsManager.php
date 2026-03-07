@@ -46,7 +46,7 @@ class RequestsManager extends Component
     public function acceptRequest(int $requestId): void
     {
         $key = 'manage-request:' . Auth::id();
-        if (RateLimiter::tooManyAttempts($key, 10)) {
+        if (RateLimiter::tooManyAttempts($key, 5)) {
             $seconds = RateLimiter::availableIn($key);
             $this->dispatch('toast', message: "حاولت كتير! استنى {$seconds} ثانية ⏳", type: 'error');
             return;
@@ -90,7 +90,7 @@ class RequestsManager extends Component
     public function rejectRequest(int $requestId): void
     {
         $key = 'manage-request:' . Auth::id();
-        if (RateLimiter::tooManyAttempts($key, 10)) {
+        if (RateLimiter::tooManyAttempts($key, 5)) {
             $seconds = RateLimiter::availableIn($key);
             $this->dispatch('toast', message: "حاولت كتير! استنى {$seconds} ثانية ⏳", type: 'error');
             return;

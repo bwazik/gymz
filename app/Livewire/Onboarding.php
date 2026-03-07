@@ -43,7 +43,7 @@ class Onboarding extends Component
     {
         $key = 'onboarding:' . Auth::id();
 
-        if (RateLimiter::tooManyAttempts($key, 5)) {
+        if (RateLimiter::tooManyAttempts($key, 3)) {
             $seconds = RateLimiter::availableIn($key);
             $this->dispatch('toast', message: "محاولات كتير! استنى {$seconds} ثانية ⏳", type: 'error');
             return;
