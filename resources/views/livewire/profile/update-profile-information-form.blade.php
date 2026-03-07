@@ -381,6 +381,35 @@ new class extends Component {
             {{-- History List --}}
             <div class="overflow-y-auto space-y-3 pb-4">
                 @forelse (auth()->user()->workoutIntents()->where('start_time', '<', now())->orderBy('start_time', 'desc')->take(15)->get() as $pastIntent)
+                    @php
+                        $session = \App\Models\WorkoutSession::where('intent_id', $pastIntent->id)->latest()->first();
+
+                        $badgeText = 'لم تكتمل';
+                        $badgeColors = 'bg-gray-200 dark:bg-white/10 text-gray-600 dark:text-gray-300';
+                        $icon = '<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-3 h-3"><path stroke-linecap="round" stroke-linejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" /></svg>';
+
+                        if ($session) {
+                            if ($session->status === \App\Enums\SessionStatus::Completed) {
+                                $badgeText = 'تمت';
+                                $badgeColors = 'bg-green-500/10 text-green-500';
+                                $icon = '<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-3 h-3"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5" /></svg>';
+                            } elseif ($session->status === \App\Enums\SessionStatus::Missed) {
+                                $badgeText = 'فائتة (عقوبة)';
+                                $badgeColors = 'bg-red-500/10 text-red-500';
+                                $icon = '<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-3 h-3"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" /></svg>';
+                            } elseif ($session->status === \App\Enums\SessionStatus::Cancelled_By_Host) {
+                                $badgeText = 'إلغاء منك';
+                                $badgeColors = 'bg-red-500/10 text-red-500';
+                                $icon = '<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-3 h-3"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" /></svg>';
+                            } elseif ($session->status === \App\Enums\SessionStatus::Cancelled_By_Guest) {
+                                $badgeText = 'الضيف انسحب';
+                                $badgeColors = 'bg-gray-200 dark:bg-white/10 text-gray-600 dark:text-gray-300';
+                                $icon = '<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-3 h-3"><path stroke-linecap="round" stroke-linejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" /></svg>';
+                            }
+                        } else {
+                            $badgeText = 'محدش انضم';
+                        }
+                    @endphp
                     <x-glass-card class="flex items-center justify-between opacity-80 !mb-0 !p-4">
                         <div class="flex flex-col">
                             <span
@@ -391,12 +420,8 @@ new class extends Component {
                             </span>
                         </div>
 
-                        <span
-                            class="text-[10px] font-bold bg-gray-200 dark:bg-white/10 text-gray-600 dark:text-gray-300 px-3 py-1.5 rounded-full flex items-center gap-1 shrink-0">
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                                stroke-width="2.5" stroke="currentColor" class="w-3 h-3 text-green-500">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5" />
-                            </svg> تمت
+                        <span class="text-[10px] font-bold px-3 py-1.5 rounded-full flex items-center gap-1 shrink-0 {{ $badgeColors }}">
+                            {!! $icon !!} {{ $badgeText }}
                         </span>
                     </x-glass-card>
                 @empty
