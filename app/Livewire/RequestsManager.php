@@ -84,7 +84,7 @@ class RequestsManager extends Component
         });
 
         unset($this->incomingRequests);
-        $this->dispatch('toast', message: 'تم قبول الطلب! الجلسة اتعملت 🔥', type: 'success');
+        $this->dispatch('toast', message: 'تم قبول الطلب! روح لصفحة التمارين عشان تبدأ 🔥', type: 'success');
     }
 
     public function rejectRequest(int $requestId): void

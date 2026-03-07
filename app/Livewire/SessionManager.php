@@ -49,7 +49,7 @@ class SessionManager extends Component
 
         // Ensure session is still Scheduled
         if ($session->status !== SessionStatus::Scheduled) {
-            $this->dispatch('toast', message: 'الجلسة دي مش في حالة مجدولة', type: 'error');
+            $this->dispatch('toast', message: 'التمرين دا مش في حالة مجدولة', type: 'error');
             return;
         }
 
