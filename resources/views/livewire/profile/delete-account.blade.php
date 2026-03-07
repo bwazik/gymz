@@ -1,53 +1,3 @@
-<?php
-
-use App\Livewire\Actions\Logout;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\RateLimiter;
-use Illuminate\Validation\ValidationException;
-use Livewire\Volt\Component;
-
-new class extends Component {
-    public string $password = '';
-
-    public function messages(): array
-    {
-        return [
-            'password.required' => 'لازم تكتب كلمة السر للتأكيد',
-            'password.current_password' => 'كلمة السر غلط',
-        ];
-    }
-
-    /**
-     * Delete the currently authenticated user.
-     */
-    public function deleteUser(Logout $logout): void
-    {
-        $key = 'delete-account:' . Auth::id();
-
-        if (RateLimiter::tooManyAttempts($key, 3)) {
-            $seconds = RateLimiter::availableIn($key);
-            $this->dispatch('toast', message: "محاولات كتير! استنى {$seconds} ثانية ⏳", type: 'error');
-            return;
-        }
-
-        RateLimiter::hit($key, 60);
-
-        try {
-            $this->validate([
-                'password' => ['required', 'string', 'current_password'],
-            ]);
-        } catch (ValidationException $e) {
-            $firstError = collect($e->errors())->flatten()->first();
-            $this->dispatch('toast', message: $firstError, type: 'error');
-            throw $e;
-        }
-
-        tap(Auth::user(), $logout(...))->delete();
-
-        $this->redirect('/', navigate: true);
-    }
-}; ?>
-
 <section class="space-y-4">
     <header class="mb-4 text-center">
         <h2 class="text-lg font-bold text-red-500">
@@ -92,8 +42,6 @@ new class extends Component {
                         class="w-full bg-transparent border-0 focus:ring-0 text-gray-900 dark:text-white px-2 py-2 text-[13px] font-bold placeholder-gray-400 text-center [&:-webkit-autofill]:[transition:background-color_9999999s_ease-in-out_0s] [&:-webkit-autofill]:[-webkit-text-fill-color:inherit] dark:[&:-webkit-autofill]:[-webkit-text-fill-color:#fff]"
                         dir="ltr" required placeholder="كلمة السر">
                 </div>
-
-
             </div>
 
             <div class="border-t border-black/5 dark:border-white/10 flex">

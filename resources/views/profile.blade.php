@@ -8,8 +8,8 @@
     {{-- Settings Sections --}}
     <div class="mt-6 space-y-6">
         <livewire:profile-manager />
-        <livewire:profile.update-password-form />
-        <livewire:profile.delete-user-form />
+        <livewire:profile.update-password />
+        <livewire:profile.delete-account />
 
         {{-- Logout Button --}}
         <div class="px-4 pb-12">
