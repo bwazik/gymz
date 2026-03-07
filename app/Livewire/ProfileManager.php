@@ -97,7 +97,9 @@ class ProfileManager extends Component
 
     public function deleteIntent(int $intentId, CancelWorkoutIntent $action): void
     {
-        $intent = Auth::user()->workoutIntents()->find($intentId);
+        /** @var \App\Models\User $user */
+        $user = Auth::user();
+        $intent = $user->workoutIntents()->find($intentId);
 
         if (!$intent) {
             return;
@@ -119,10 +121,12 @@ class ProfileManager extends Component
     #[Computed]
     public function historyItems(): Collection
     {
-        $userId = Auth::id();
+        /** @var \App\Models\User $user */
+        $user = Auth::user();
+        $userId = $user->id;
 
         // 1. Intents where user is host, time passed, NO session exists
-        $intentsWithoutSessions = Auth::user()
+        $intentsWithoutSessions = $user
             ->workoutIntents()
             ->where('start_time', '<', now())
             ->doesntHave('workoutSession')
@@ -175,9 +179,12 @@ class ProfileManager extends Component
 
     public function render()
     {
+        /** @var \App\Models\User $user */
+        $user = Auth::user();
+
         return view('livewire.profile-manager', [
-            'user' => Auth::user(),
-            'activeIntents' => Auth::user()->workoutIntents()->where('start_time', '>=', now())->orderBy('start_time')->get()
+            'user' => $user,
+            'activeIntents' => $user->workoutIntents()->where('start_time', '>=', now())->orderBy('start_time')->get()
         ]);
     }
 }
