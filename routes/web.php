@@ -2,11 +2,10 @@
 
 use App\Http\Controllers\Auth\GoogleAuthController;
 use App\Livewire\Onboarding;
+use App\Livewire\WorkoutFeed;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', function () {
-    return view('livewire.workout-feed');
-})->name('home')->middleware('onboarded');
+Route::get('/', WorkoutFeed::class)->name('home')->middleware('onboarded');
 
 Route::view('offline', 'offline')->name('offline');
 
