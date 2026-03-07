@@ -1,6 +1,8 @@
 <?php
 
 use App\Models\User;
+use App\Models\WorkoutSession;
+use App\Enums\SessionStatus;
 use App\Rules\PhoneNumber;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\RateLimiter;

@@ -106,6 +106,10 @@ class SessionManager extends Component
             foreach ([$session->user_a_id, $session->user_b_id] as $userId) {
                 User::where('id', $userId)->increment('glutes_balance', 10);
 
+                User::where('id', $userId)->update([
+                    'reliability_score' => DB::raw('LEAST(100, reliability_score + 3)')
+                ]);
+
                 GlutesTransaction::create([
                     'user_id' => $userId,
                     'type' => TransactionType::Earned,
@@ -118,6 +122,48 @@ class SessionManager extends Component
         unset($this->activeSessions);
         $this->dispatch('session-completed');
         $this->dispatch('toast', message: 'تم استلام ١٠ جلوتس 🍑 عاش يا بطل!', type: 'success');
+    }
+
+    public function reportNoShow(int $sessionId): void
+    {
+        $key = 'report-noshow:' . Auth::id();
+        if (RateLimiter::tooManyAttempts($key, 3)) {
+            $seconds = RateLimiter::availableIn($key);
+            $this->dispatch('toast', message: "محاولات كتير! استنى {$seconds} ثانية ⏳", type: 'error');
+            return;
+        }
+        RateLimiter::hit($key, 60);
+
+        $session = WorkoutSession::with('workoutIntent')->findOrFail($sessionId);
+
+        // Ensure user is part of this session
+        if ($session->user_a_id !== Auth::id() && $session->user_b_id !== Auth::id()) {
+            return;
+        }
+
+        if ($session->status !== SessionStatus::Scheduled) {
+            $this->dispatch('toast', message: 'التمرين دا مش مجدول', type: 'error');
+            return;
+        }
+
+        $sessionStartTime = $session->workoutIntent->start_time;
+        if (now() < $sessionStartTime->copy()->addMinutes(15)) {
+            $this->dispatch('toast', message: 'لازم تستنى 15 دقيقة من ميعاد التمرينة', type: 'error');
+            return;
+        }
+
+        $absentUserId = ($session->user_a_id === Auth::id()) ? $session->user_b_id : $session->user_a_id;
+
+        DB::transaction(function () use ($session, $absentUserId) {
+            User::where('id', $absentUserId)->update([
+                'reliability_score' => DB::raw('GREATEST(0, reliability_score - 5)')
+            ]);
+
+            $session->update(['status' => SessionStatus::Missed]);
+        });
+
+        unset($this->activeSessions);
+        $this->dispatch('toast', message: 'تم الإبلاغ وإلغاء التمرينة.. حقك علينا!', type: 'success');
     }
 
     public function render()
