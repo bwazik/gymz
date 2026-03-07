@@ -244,7 +244,7 @@
                 </svg>
             </div>
             <h3 class="font-bold text-gray-700 dark:text-white/70 mb-1">مفيش جلسات حالياً</h3>
-            <p class="text-sm text-gray-500 dark:text-gray-500">ابدأ تمرينة جديدة من الفيد!</p>
+            <p class="text-sm text-gray-500 dark:text-gray-500">ابدأ تمرينة جديدة من الرئيسية!</p>
         </x-glass-card>
     @endforelse
 </div>

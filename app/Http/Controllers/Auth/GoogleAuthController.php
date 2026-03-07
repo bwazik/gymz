@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 use Laravel\Socialite\Facades\Socialite;
 
 class GoogleAuthController extends Controller
@@ -48,7 +49,8 @@ class GoogleAuthController extends Controller
             return redirect()->intended(route('home'));
 
         } catch (\Exception $e) {
-            return redirect('/')->with('error', 'حصلت مشكلة في تسجيل الدخول بجوجل.');
+            Log::error('Google Auth Error: ' . $e->getMessage(), ['trace' => $e->getTraceAsString()]);
+            return redirect('/')->with('error', 'حصلت مشكلة في تسجيل الدخول بجوجل: ' . $e->getMessage());
         }
     }
 
