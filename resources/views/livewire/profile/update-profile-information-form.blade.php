@@ -137,7 +137,8 @@ new class extends Component {
         $userId = Auth::id();
 
         // 1. Intents where user is host, time passed, NO session exists
-        $intentsWithoutSessions = Auth::user()->workoutIntents()
+        $intentsWithoutSessions = Auth::user()
+            ->workoutIntents()
             ->where('start_time', '<', now())
             ->doesntHave('workoutSession')
             ->with(['gym', 'workoutTarget'])
@@ -147,7 +148,7 @@ new class extends Component {
                     'target_name' => $intent->workoutTarget?->name ?? 'تمرينة عامة',
                     'gym_name' => $intent->gym?->name ?? 'أي جيم',
                     'start_time' => $intent->start_time,
-                    'badge_status' => 'no_show_host'
+                    'badge_status' => 'no_show_host',
                 ];
             });
 
@@ -166,13 +167,11 @@ new class extends Component {
                     'target_name' => $intent->workoutTarget?->name ?? 'تمرينة عامة',
                     'gym_name' => $intent->gym?->name ?? 'أي جيم',
                     'start_time' => $intent->start_time,
-                    'badge_status' => $session->status
+                    'badge_status' => $session->status,
                 ];
             });
 
-        return $intentsWithoutSessions->concat($sessions)
-            ->sortByDesc('start_time')
-            ->take(15);
+        return $intentsWithoutSessions->concat($sessions)->sortByDesc('start_time')->take(15);
     }
 
     /**
@@ -427,14 +426,16 @@ new class extends Component {
                     @php
                         $badgeText = 'غير معروف';
                         $badgeColors = 'bg-gray-200 dark:bg-white/10 text-gray-600 dark:text-gray-300';
-                        $icon = '<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-3 h-3"><path stroke-linecap="round" stroke-linejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" /></svg>';
+                        $icon =
+                            '<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-3 h-3"><path stroke-linecap="round" stroke-linejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" /></svg>';
 
                         if ($item->badge_status === 'no_show_host') {
                             $badgeText = 'محدش انضم';
                         } elseif ($item->badge_status === \App\Enums\SessionStatus::Completed) {
                             $badgeText = 'تمت';
                             $badgeColors = 'bg-green-500/10 text-green-500';
-                            $icon = '<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-3 h-3"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5" /></svg>';
+                            $icon =
+                                '<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-3 h-3"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5" /></svg>';
                         } elseif ($item->badge_status === \App\Enums\SessionStatus::Missed) {
                             $badgeText = 'فائتة ❌';
                             $badgeColors = 'bg-red-500/10 text-red-500';
@@ -447,12 +448,15 @@ new class extends Component {
                     @endphp
                     <x-glass-card class="flex items-center justify-between opacity-80 !mb-0 !p-4">
                         <div class="flex flex-col">
-                            <span class="font-bold text-sm text-gray-900 dark:text-white">{{ $item->target_name }}</span>
+                            <span
+                                class="font-bold text-sm text-gray-900 dark:text-white">{{ $item->target_name }}</span>
                             <span class="text-xs text-gray-500 dark:text-gray-400">
-                                {{ $item->gym_name }} • {{ \Carbon\Carbon::parse($item->start_time)->format('d M Y - g:i A') }}
+                                {{ $item->gym_name }} •
+                                {{ \Carbon\Carbon::parse($item->start_time)->translatedFormat('j F Y - g:i A') }}
                             </span>
                         </div>
-                        <span class="text-[10px] font-bold px-3 py-1.5 rounded-full flex items-center gap-1 shrink-0 {{ $badgeColors }}">
+                        <span
+                            class="text-[10px] font-bold px-3 py-1.5 rounded-full flex items-center gap-1 shrink-0 {{ $badgeColors }}">
                             {!! $icon !!} {{ $badgeText }}
                         </span>
                     </x-glass-card>
