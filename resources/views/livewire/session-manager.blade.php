@@ -75,7 +75,6 @@
                                     (decodedText) => {
                                         this.scanner.stop().then(() => {
                                             this.scanning = false;
-                                            this.verified = true;
                                             $wire.verifyToken(decodedText, {{ $session->id }});
                                         });
                                     },
@@ -165,23 +164,28 @@
                 {{-- In Progress: Anti-Cheat Timer + End Button --}}
                 @php
                     $scannedAt = $session->scanned_at;
-                    $minutesPassed = $scannedAt ? (int) now()->diffInMinutes($scannedAt) : 0;
-                    $canEnd = $minutesPassed >= 90;
+                    $minutesPassed = $scannedAt ? max(0, (int) now()->diffInMinutes($scannedAt, false)) : 0;
+
+                    // Calculate remaining (capped between 0 and 90)
                     $remainingMinutes = max(0, 90 - $minutesPassed);
+                    $canEnd = $remainingMinutes === 0;
                 @endphp
 
                 <div class="bg-black/5 dark:bg-white/5 rounded-2xl p-6 text-center" x-data="{
                     remaining: {{ $remainingMinutes }},
                     canEnd: {{ $canEnd ? 'true' : 'false' }},
                     init() {
-                        if (!this.canEnd) {
+                        if (this.remaining > 0) {
                             this.timer = setInterval(() => {
                                 this.remaining--;
                                 if (this.remaining <= 0) {
+                                    this.remaining = 0;
                                     this.canEnd = true;
                                     clearInterval(this.timer);
                                 }
                             }, 60000);
+                        } else {
+                            this.canEnd = true;
                         }
                     }
                 }">
