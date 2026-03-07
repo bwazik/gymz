@@ -51,15 +51,16 @@
 
     {{-- Stats Grid --}}
     <div class="grid grid-cols-2 gap-3">
-        {{-- Glutes Balance --}}
-        <div class="bg-black/5 dark:bg-white/5 rounded-2xl p-4 text-center">
+        {{-- Glutes Balance (Clickable Wallet Link) --}}
+        <a href="{{ route('wallet') }}" wire:navigate
+            class="block bg-black/5 dark:bg-white/5 rounded-2xl p-4 text-center hover:bg-black/10 dark:hover:bg-white/10 active:scale-95 transition-all text-gray-900 border border-transparent hover:border-gymz-accent/30 cursor-pointer">
             <div class="flex items-center justify-center gap-1.5 mb-2">
                 <img src="{{ asset('images/peach.svg') }}" class="w-4 h-4 scale-125" alt="glutes">
-                <span class="text-xs text-gray-500 dark:text-gray-400 font-bold">الجلوتس</span>
+                <span class="text-xs text-gray-500 dark:text-gray-400 font-bold">المحفظة</span>
             </div>
             <p class="text-xl font-black text-gray-900 dark:text-white">
                 {{ number_format($user->glutes_balance) }}</p>
-        </div>
+        </a>
 
         {{-- Reliability Score --}}
         @php

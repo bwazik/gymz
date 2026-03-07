@@ -4,6 +4,7 @@ use App\Http\Controllers\Auth\GoogleAuthController;
 use App\Livewire\Onboarding;
 use App\Livewire\RequestsManager;
 use App\Livewire\SessionManager;
+use App\Livewire\WalletManager;
 use App\Livewire\WorkoutFeed;
 use Illuminate\Support\Facades\Route;
 
@@ -28,6 +29,7 @@ Route::get('/', WorkoutFeed::class)->name('home')->middleware('onboarded');
 // Group: Authenticated & Onboarded Users
 Route::middleware(['auth', 'onboarded'])->group(function () {
     Route::view('profile', 'profile')->name('profile');
+    Route::get('wallet', WalletManager::class)->name('wallet');
     Route::get('requests', RequestsManager::class)->name('requests');
     Route::get('sessions', SessionManager::class)->name('sessions');
 });
