@@ -7,7 +7,7 @@
 
     {{-- Settings Sections --}}
     <div class="mt-6 space-y-6">
-        <livewire:profile.update-profile-information-form />
+        <livewire:profile-manager />
         <livewire:profile.update-password-form />
         <livewire:profile.delete-user-form />
 
