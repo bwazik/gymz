@@ -40,7 +40,7 @@ class RequestsManager extends Component
     public function outgoingRequests()
     {
         return WorkoutRequest::with(['workoutIntent.user', 'workoutIntent.gym', 'workoutIntent.workoutTarget'])
-            ->where('user_id', Auth::id())
+            ->where('sender_id', Auth::id())
             ->has('workoutIntent.user')
             ->whereHas('workoutIntent', function ($q) {
                 $q->where('start_time', '>=', now());
