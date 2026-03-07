@@ -32,7 +32,7 @@
             <div class="flex items-center gap-3 mb-4">
                 @auth
                     <img src="{{ $intent->user->image_path ? (Str::startsWith($intent->user->image_path, 'http') ? $intent->user->image_path : Storage::url($intent->user->image_path)) : asset('images/default.jpg') }}"
-                        alt="{{ $intent->user->name }}"
+                        referrerpolicy="no-referrer" alt="{{ $intent->user->name }}"
                         class="w-11 h-11 rounded-full object-cover border border-black/5 dark:border-white/10">
                     <div>
                         <p class="font-semibold text-sm text-gray-900 dark:text-white">{{ $intent->user->name }}</p>
@@ -112,7 +112,7 @@
                 @guest
                     <a href="{{ route('login') }}"
                         class="px-5 py-2 text-[11px] font-bold rounded-full bg-gymz-accent text-white active:scale-95 transition-transform duration-200 shadow-lg shadow-gymz-accent/20">
-                        سجل واتمرن معاهم 🚀
+                        سجل واتمرن معاهم 🏋🏽
                     </a>
                 @endguest
             </div>

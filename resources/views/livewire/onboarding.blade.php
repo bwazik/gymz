@@ -1,6 +1,6 @@
 <div x-data x-init="$dispatch('hide-bottom-nav')" class="min-h-screen flex flex-col items-center justify-center p-6">
     <div class="w-full max-w-md text-center mb-4">
-        <h1 class="text-3xl font-black text-gray-900 dark:text-white mb-2">أهلاً بيك يا {{ explode(' ', auth()->user()->name)[0] }}! 🚀</h1>
+        <h1 class="text-3xl font-black text-gray-900 dark:text-white mb-2">أهلاً بيك يا {{ explode(' ', auth()->user()->name)[0] }}! 🏋🏽</h1>
         <p class="text-gray-500 dark:text-gray-400">خطوة واحدة وتبقى جاهز تنزل الملعب.</p>
     </div>
 
@@ -24,9 +24,9 @@
         <div class="relative z-20">
             <label class="block text-xs font-medium text-gray-600 dark:text-white/60 mb-1.5">مستواك في الجيم</label>
             <x-ios-select wire:model="level" :options="[
-                \App\Enums\UserLevel::Beginner->value => 'مبتدأ (بتمرن بقالي من 4 شهور ل سنة)',
-                \App\Enums\UserLevel::Mid->value => 'متوسط (بتمرن بقالي من سنة ل 3 سنين)',
-                \App\Enums\UserLevel::Pro->value => 'محترف (بتمرن بقالي اكتر من 3 سنين)',
+                \App\Enums\UserLevel::Beginner->value => 'قطة (بتمرن بقالي من 4 شهور ل سنة)',
+                \App\Enums\UserLevel::Mid->value => 'أسد (بتمرن بقالي من سنة ل 3 سنين)',
+                \App\Enums\UserLevel::Pro->value => 'فحل (بتمرن بقالي اكتر من 3 سنين)',
             ]" placeholder="حدد مستواك..." required />
         </div>
 

@@ -29,7 +29,7 @@
                 {{-- Sender Info --}}
                 <div class="flex items-center gap-3 mb-3">
                     <img src="{{ $request->sender->image_path ? (Str::startsWith($request->sender->image_path, 'http') ? $request->sender->image_path : Storage::url($request->sender->image_path)) : asset('images/default.jpg') }}"
-                        alt="{{ $request->sender->name }}"
+                        referrerpolicy="no-referrer" alt="{{ $request->sender->name }}"
                         class="w-11 h-11 rounded-full object-cover border border-black/5 dark:border-white/10">
                     <div class="flex-1">
                         <p class="font-semibold text-sm text-gray-900 dark:text-white">{{ $request->sender->name }}</p>
@@ -98,7 +98,7 @@
                 {{-- Intent Owner Info --}}
                 <div class="flex items-center gap-3 mb-3">
                     <img src="{{ $request->workoutIntent->user->image_path ? (Str::startsWith($request->workoutIntent->user->image_path, 'http') ? $request->workoutIntent->user->image_path : Storage::url($request->workoutIntent->user->image_path)) : asset('images/default.jpg') }}"
-                        alt="{{ $request->workoutIntent->user->name }}"
+                        referrerpolicy="no-referrer" alt="{{ $request->workoutIntent->user->name }}"
                         class="w-11 h-11 rounded-full object-cover border border-black/5 dark:border-white/10">
                     <div class="flex-1">
                         <p class="font-semibold text-sm text-gray-900 dark:text-white">

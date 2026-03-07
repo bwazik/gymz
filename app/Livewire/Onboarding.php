@@ -7,8 +7,10 @@ use App\Enums\UserLevel;
 use App\Models\User;
 use App\Rules\PhoneNumber;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\Rules\Enum;
+use Illuminate\Validation\ValidationException;
 use Livewire\Component;
 
 class Onboarding extends Component
@@ -39,6 +41,16 @@ class Onboarding extends Component
 
     public function save()
     {
+        $key = 'onboarding:' . Auth::id();
+
+        if (RateLimiter::tooManyAttempts($key, 5)) {
+            $seconds = RateLimiter::availableIn($key);
+            $this->dispatch('toast', message: "محاولات كتير! استنى {$seconds} ثانية ⏳", type: 'error');
+            return;
+        }
+
+        RateLimiter::hit($key, 60);
+
         try {
             $this->validate([
                 'phone' => ['required', 'string', 'max:255', new PhoneNumber(), Rule::unique(User::class)->ignore(Auth::id())],
@@ -46,7 +58,7 @@ class Onboarding extends Component
                 'dob' => ['required', 'date', 'before:today'],
                 'level' => ['required', new Enum(UserLevel::class)],
             ]);
-        } catch (\Illuminate\Validation\ValidationException $e) {
+        } catch (ValidationException $e) {
             $firstError = collect($e->errors())->flatten()->first();
             $this->dispatch('toast', message: $firstError, type: 'error');
             throw $e;
@@ -64,7 +76,7 @@ class Onboarding extends Component
         ]);
 
         session()->flash('toast', [
-            'message' => 'أهلاً بيك في GymZ! 🚀',
+            'message' => 'أهلاً بيك في GymZ! 🏋🏽',
             'type' => 'success'
         ]);
 

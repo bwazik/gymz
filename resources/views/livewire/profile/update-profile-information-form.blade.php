@@ -124,6 +124,7 @@ new class extends Component {
                     <img src="{{ $photo->temporaryUrl() }}" class="w-full h-full object-cover">
                 @else
                     <img src="{{ auth()->user()->image_path ? (Str::startsWith(auth()->user()->image_path, 'http') ? auth()->user()->image_path : Storage::url(auth()->user()->image_path)) : asset('images/default.jpg') }}"
+                        referrerpolicy="no-referrer"
                         class="w-full h-full object-cover group-hover:opacity-50 transition-opacity">
                 @endif
 
