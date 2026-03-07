@@ -4,6 +4,7 @@ namespace App\Livewire;
 
 use App\Actions\Workout\CancelWorkoutIntent;
 use App\Models\User;
+use App\Models\WorkoutSession;
 use App\Rules\PhoneNumber;
 use App\Traits\Livewire\WithRateLimiting;
 use App\Traits\Livewire\WithToast;
