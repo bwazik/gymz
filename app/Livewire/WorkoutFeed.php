@@ -2,10 +2,11 @@
 
 namespace App\Livewire;
 
-use App\Enums\RequestStatus;
+use App\Actions\Workout\SendWorkoutRequest;
 use App\Models\User;
 use App\Models\WorkoutIntent;
 use App\Models\WorkoutRequest;
+use App\Traits\Livewire\WithRateLimiting;
 use App\Traits\Livewire\WithToast;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Attributes\On;
@@ -13,40 +14,26 @@ use Livewire\Component;
 
 class WorkoutFeed extends Component
 {
-    use WithToast;
+    use WithToast, WithRateLimiting;
     #[On('intent-created')]
     public function refreshFeed(): void
     {
         // Re-render is triggered automatically by Livewire
     }
 
-    public function sendRequest(int $intentId): void
+    public function sendRequest(int $intentId, SendWorkoutRequest $action): void
     {
-        $intent = WorkoutIntent::findOrFail($intentId);
-
-        if ($intent->user_id === Auth::id()) {
+        if ($this->isRateLimited('send-request', 5, 30)) {
             return;
         }
 
-        $alreadySent = WorkoutRequest::where('intent_id', $intentId)
-            ->where('sender_id', Auth::id())
-            ->exists();
-
-        if ($alreadySent) {
-            $this->toastError('بعت طلب قبل كدى');
-            return;
+        try {
+            $message = $action->execute($intentId);
+            $this->dispatch('request-sent');
+            $this->toastSuccess($message);
+        } catch (\Exception $e) {
+            $this->toastError($e->getMessage());
         }
-
-        WorkoutRequest::create([
-            'intent_id' => $intentId,
-            'sender_id' => Auth::id(),
-            'status' => RequestStatus::Pending,
-        ]);
-
-        // TODO: [NOTIFICATION] - Notify HOST that a new workout request was received
-
-        $this->dispatch('request-sent');
-        $this->toastSuccess('تم إرسال الطلب بنجاح! 💪');
     }
 
     public function render()

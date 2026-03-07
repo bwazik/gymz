@@ -2,9 +2,6 @@
 
 namespace App\Livewire\Forms;
 
-use App\Enums\IntentStatus;
-use App\Models\WorkoutIntent;
-use Illuminate\Support\Facades\Auth;
 use Livewire\Form;
 
 class IntentForm extends Form
@@ -45,23 +42,5 @@ class IntentForm extends Form
             'start_time.after' => 'الميعاد لازم يكون في المستقبل',
             'note.max' => 'الملاحظات لازم تكون أقل من ٢٥٥ حرف',
         ];
-    }
-
-    public function store(): void
-    {
-        $this->validate();
-
-        WorkoutIntent::create([
-            'user_id' => Auth::id(),
-            'gym_id' => $this->gym_id,
-            'workout_category_id' => $this->workout_category_id,
-            'workout_target_id' => $this->workout_target_id,
-            'start_time' => $this->start_time,
-            'has_invitation' => $this->has_invitation,
-            'note' => $this->note ?: null,
-            'status' => IntentStatus::Active,
-        ]);
-
-        $this->reset();
     }
 }

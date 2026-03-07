@@ -2,12 +2,14 @@
 
 namespace App\Livewire;
 
+use App\Actions\Auth\CompleteOnboarding;
 use App\Enums\Gender;
 use App\Enums\UserLevel;
 use App\Models\User;
 use App\Rules\PhoneNumber;
+use App\Traits\Livewire\WithRateLimiting;
+use App\Traits\Livewire\WithToast;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\Rules\Enum;
 use Illuminate\Validation\ValidationException;
@@ -15,6 +17,7 @@ use Livewire\Component;
 
 class Onboarding extends Component
 {
+    use WithToast, WithRateLimiting;
     public string $phone = '';
     public string $gender = '';
     public $dob = '';
@@ -39,17 +42,11 @@ class Onboarding extends Component
         }
     }
 
-    public function save()
+    public function save(CompleteOnboarding $action)
     {
-        $key = 'onboarding:' . Auth::id();
-
-        if (RateLimiter::tooManyAttempts($key, 3)) {
-            $seconds = RateLimiter::availableIn($key);
-            $this->dispatch('toast', message: "محاولات كتير! استنى {$seconds} ثانية ⏳", type: 'error');
+        if ($this->isRateLimited('onboarding', 3)) {
             return;
         }
-
-        RateLimiter::hit($key, 60);
 
         try {
             $this->validate([
@@ -58,22 +55,21 @@ class Onboarding extends Component
                 'dob' => ['required', 'date', 'before:today'],
                 'level' => ['required', new Enum(UserLevel::class)],
             ]);
+
+            /** @var \App\Models\User $user */
+            $user = Auth::user();
+
+            $action->execute($user, [
+                'phone' => $this->phone,
+                'gender' => $this->gender,
+                'dob' => $this->dob,
+                'level' => $this->level,
+            ]);
+
         } catch (ValidationException $e) {
-            $firstError = collect($e->errors())->flatten()->first();
-            $this->dispatch('toast', message: $firstError, type: 'error');
+            $this->toastError(collect($e->errors())->flatten()->first());
             throw $e;
         }
-
-        /** @var \App\Models\User $user */
-        $user = Auth::user();
-
-        $user->update([
-            'phone' => $this->phone,
-            'gender' => (int) $this->gender,
-            'dob' => $this->dob,
-            'level' => (int) $this->level,
-            'is_onboarded' => true
-        ]);
 
         session()->flash('toast', [
             'message' => 'أهلاً بيك في GymZ! 🏋🏽',
