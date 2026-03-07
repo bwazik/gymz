@@ -26,7 +26,8 @@ class RequestsManager extends Component
         return WorkoutRequest::with(['sender', 'workoutIntent.gym', 'workoutIntent.workoutTarget'])
             ->where('status', RequestStatus::Pending)
             ->whereHas('workoutIntent', function ($q) {
-                $q->where('user_id', Auth::id());
+                $q->where('user_id', Auth::id())
+                    ->where('start_time', '>=', now());
             })
             ->has('sender')
             ->latest()
@@ -37,8 +38,10 @@ class RequestsManager extends Component
     public function outgoingRequests()
     {
         return WorkoutRequest::with(['workoutIntent.user', 'workoutIntent.gym', 'workoutIntent.workoutTarget'])
-            ->where('sender_id', Auth::id())
             ->has('workoutIntent.user')
+            ->whereHas('workoutIntent', function ($q) {
+                $q->where('start_time', '>=', now());
+            })
             ->latest()
             ->get();
     }
@@ -57,6 +60,11 @@ class RequestsManager extends Component
 
         // Ensure this request belongs to the current user's intent
         if ($request->workoutIntent->user_id !== Auth::id()) {
+            return;
+        }
+
+        if ($request->workoutIntent->start_time < now()) {
+            $this->dispatch('toast', message: 'متقدرش تاخد أكشن لتمرينة وقتها عدى!', type: 'error');
             return;
         }
 
@@ -104,6 +112,11 @@ class RequestsManager extends Component
             return;
         }
 
+        if ($request->workoutIntent->start_time < now()) {
+            $this->dispatch('toast', message: 'متقدرش تاخد أكشن لتمرينة وقتها عدى!', type: 'error');
+            return;
+        }
+
         $request->update(['status' => RequestStatus::Rejected]);
 
         unset($this->incomingRequests);
@@ -120,7 +133,12 @@ class RequestsManager extends Component
         }
         RateLimiter::hit($key, 60);
 
-        $request = WorkoutRequest::where('sender_id', Auth::id())->findOrFail($requestId);
+        $request = WorkoutRequest::with('workoutIntent')->where('sender_id', Auth::id())->findOrFail($requestId);
+
+        if ($request->workoutIntent && $request->workoutIntent->start_time < now()) {
+            $this->dispatch('toast', message: 'متقدرش تلغي طلب لتمرينة وقتها عدى!', type: 'error');
+            return;
+        }
 
         if ($request->status === RequestStatus::Rejected) {
             return; // Do nothing
@@ -130,6 +148,7 @@ class RequestsManager extends Component
             $request->delete();
             $this->dispatch('toast', message: 'تم سحب الطلب بنجاح', type: 'success');
         } elseif ($request->status === RequestStatus::Accepted) {
+            /** @var \App\Models\User $user */
             $user = Auth::user();
             $user->reliability_score = max(0, $user->reliability_score - 5);
             $user->save();
