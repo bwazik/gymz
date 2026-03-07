@@ -164,28 +164,31 @@
                 {{-- In Progress: Anti-Cheat Timer + End Button --}}
                 @php
                     $scannedAt = $session->scanned_at;
-                    $minutesPassed = $scannedAt ? max(0, (int) $scannedAt->diffInMinutes(now(), false)) : 0;
 
-                    // Calculate remaining (capped between 0 and 90)
-                    $remainingMinutes = max(0, 90 - $minutesPassed);
-                    $canEnd = $remainingMinutes === 0;
+                    // Strict elapsed seconds calculation. If scanned in the future, elapsed is 0.
+                    $elapsedSeconds = $scannedAt && $scannedAt->isPast() ? $scannedAt->diffInSeconds(now()) : 0;
+
+                    // Remaining seconds (Max 90 minutes = 5400 seconds)
+                    $remainingSeconds = max(0, 5400 - $elapsedSeconds);
+                    $canEnd = $remainingSeconds === 0;
                 @endphp
 
                 <div class="bg-black/5 dark:bg-white/5 rounded-2xl p-6 text-center" x-data="{
-                    remaining: {{ $remainingMinutes }},
+                    remainingSeconds: {{ $remainingSeconds }},
                     canEnd: {{ $canEnd ? 'true' : 'false' }},
+                    get remainingMinutes() {
+                        return Math.ceil(this.remainingSeconds / 60);
+                    },
                     init() {
-                        if (this.remaining > 0) {
-                            this.timer = setInterval(() => {
-                                this.remaining--;
-                                if (this.remaining <= 0) {
-                                    this.remaining = 0;
+                        if (this.remainingSeconds > 0) {
+                            let endTimer = setInterval(() => {
+                                this.remainingSeconds--;
+                                if (this.remainingSeconds <= 0) {
+                                    this.remainingSeconds = 0;
                                     this.canEnd = true;
-                                    clearInterval(this.timer);
+                                    clearInterval(endTimer);
                                 }
-                            }, 60000);
-                        } else {
-                            this.canEnd = true;
+                            }, 1000);
                         }
                     }
                 }">
@@ -204,7 +207,8 @@
                                 عاش يا وحوش! استمروا 🏋️
                             </p>
                             <p class="text-sm font-bold text-gray-900 dark:text-white">
-                                متبقي <span x-text="remaining" class="text-gymz-accent"></span> دقيقة لتفعيل زر النقط
+                                متبقي <span x-text="remainingMinutes" class="text-gymz-accent"></span> دقيقة لتفعيل زر
+                                النقط
                             </p>
                         </div>
                     </template>

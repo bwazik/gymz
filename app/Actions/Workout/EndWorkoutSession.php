@@ -27,7 +27,11 @@ class EndWorkoutSession
         }
 
         // ANTI-CHEAT: Minimum 90 minutes
-        if ($session->scanned_at && $session->scanned_at->diffInMinutes(now(), false) < 90) {
+        $minutesPassed = $session->scanned_at && $session->scanned_at->isPast()
+            ? $session->scanned_at->diffInMinutes(now())
+            : 0;
+
+        if ($minutesPassed < 90) {
             throw new Exception('التمرينة لازم تكون ٩٠ دقيقة على الأقل عشان تاخد النقط 🏋️');
         }
 
