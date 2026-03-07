@@ -101,7 +101,7 @@ class SessionManager extends Component
         }
 
         // ANTI-CHEAT: Minimum 90 minutes
-        if ($session->scanned_at && now()->diffInMinutes($session->scanned_at) < 90) {
+        if ($session->scanned_at && $session->scanned_at->diffInMinutes(now(), false) < 90) {
             $this->dispatch('toast', message: 'التمرينة لازم تكون ٩٠ دقيقة على الأقل عشان تاخد النقط 🏋️', type: 'error');
             return;
         }
