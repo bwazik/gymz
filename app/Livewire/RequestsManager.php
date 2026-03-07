@@ -141,7 +141,7 @@ class RequestsManager extends Component
                 ->first();
 
             if ($session) {
-                $session->delete();
+                $session->update(['status' => SessionStatus::Cancelled_By_Guest]);
             }
 
             // Mark intent as active again so someone else can match
