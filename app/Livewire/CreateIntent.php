@@ -9,6 +9,7 @@ use App\Models\WorkoutTarget;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\RateLimiter;
+use Illuminate\Validation\ValidationException;
 use Livewire\Component;
 
 class CreateIntent extends Component
@@ -46,7 +47,13 @@ class CreateIntent extends Component
         }
         RateLimiter::hit($key, 60);
 
-        $this->form->store();
+        try {
+            $this->form->store();
+        } catch (ValidationException $e) {
+            $firstError = collect($e->errors())->flatten()->first();
+            $this->dispatch('toast', message: $firstError, type: 'error');
+            throw $e;
+        }
 
         $this->dispatch('intent-created');
         $this->targets = collect();

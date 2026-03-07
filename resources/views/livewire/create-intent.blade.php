@@ -35,16 +35,6 @@
                 <div class="relative z-30">
                     <label class="block text-xs font-medium text-gray-600 dark:text-white/60 mb-1.5">الجيم</label>
                     <x-ios-select wire:model="form.gym_id" :options="$gyms->pluck('name', 'id')" placeholder="اختار الجيم..." />
-                    @error('form.gym_id')
-                        <span class="flex items-center gap-1 text-red-500 dark:text-red-400 text-[11px] font-bold mt-1.5">
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
-                                stroke="currentColor" class="w-3 h-3">
-                                <path stroke-linecap="round" stroke-linejoin="round"
-                                    d="M12 9v3.75m9-.75a9 9 0 11-18 0 9 9 0 0118 0zm-9 3.75h.008v.008H12v-.008z" />
-                            </svg>
-                            {{ $message }}
-                        </span>
-                    @enderror
                 </div>
 
                 {{-- Category Select --}}
@@ -53,16 +43,6 @@
                         التمرين</label>
                     <x-ios-select wire:model.live="form.workout_category_id" :options="$categories->pluck('name', 'id')"
                         placeholder="اختار النوع..." />
-                    @error('form.workout_category_id')
-                        <span class="flex items-center gap-1 text-red-500 dark:text-red-400 text-[11px] font-bold mt-1.5">
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
-                                stroke="currentColor" class="w-3 h-3">
-                                <path stroke-linecap="round" stroke-linejoin="round"
-                                    d="M12 9v3.75m9-.75a9 9 0 11-18 0 9 9 0 0118 0zm-9 3.75h.008v.008H12v-.008z" />
-                            </svg>
-                            {{ $message }}
-                        </span>
-                    @enderror
                 </div>
 
                 {{-- Target Select (dynamic) --}}
@@ -72,16 +52,6 @@
                     <x-ios-select wire:model="form.workout_target_id" :options="$targets->pluck('name', 'id')"
                         placeholder="{{ $targets->isEmpty() ? 'اختار النوع الأول...' : 'اختار الهدف...' }}"
                         :disabled="$targets->isEmpty()" />
-                    @error('form.workout_target_id')
-                        <span class="flex items-center gap-1 text-red-500 dark:text-red-400 text-[11px] font-bold mt-1.5">
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
-                                stroke="currentColor" class="w-3 h-3">
-                                <path stroke-linecap="round" stroke-linejoin="round"
-                                    d="M12 9v3.75m9-.75a9 9 0 11-18 0 9 9 0 0118 0zm-9 3.75h.008v.008H12v-.008z" />
-                            </svg>
-                            {{ $message }}
-                        </span>
-                    @enderror
                 </div>
 
                 {{-- Start Time --}}
@@ -91,16 +61,6 @@
                     <div class="relative">
                         <x-ios-datetime wire:model="form.start_time" />
                     </div>
-                    @error('form.start_time')
-                        <span class="flex items-center gap-1 text-red-500 dark:text-red-400 text-[11px] font-bold mt-1.5">
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
-                                stroke="currentColor" class="w-3 h-3">
-                                <path stroke-linecap="round" stroke-linejoin="round"
-                                    d="M12 9v3.75m9-.75a9 9 0 11-18 0 9 9 0 0118 0zm-9 3.75h.008v.008H12v-.008z" />
-                            </svg>
-                            {{ $message }}
-                        </span>
-                    @enderror
                 </div>
 
                 {{-- Guest Pass Toggle --}}
@@ -113,16 +73,6 @@
                             class="text-gray-400 dark:text-white/30">(اختياري)</span></label>
                     <x-ios-textarea wire:model="form.note" rows="2"
                         placeholder="محتاج spotter، عايز أكسر PR النهاردة..." />
-                    @error('form.note')
-                        <span class="flex items-center gap-1 text-red-500 dark:text-red-400 text-[11px] font-bold mt-1.5">
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
-                                stroke="currentColor" class="w-3 h-3">
-                                <path stroke-linecap="round" stroke-linejoin="round"
-                                    d="M12 9v3.75m9-.75a9 9 0 11-18 0 9 9 0 0118 0zm-9 3.75h.008v.008H12v-.008z" />
-                            </svg>
-                            {{ $message }}
-                        </span>
-                    @enderror
                 </div>
 
                 {{-- Actions --}}

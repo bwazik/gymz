@@ -20,12 +20,15 @@ class SessionManager extends Component
     #[Computed]
     public function activeSessions()
     {
-        return WorkoutSession::with(['workoutIntent.gym', 'userA', 'userB'])
+        return WorkoutSession::with(['workoutIntent' => fn($q) => $q->withTrashed()->with('gym'), 'userA', 'userB'])
             ->where(function ($q) {
                 $q->where('user_a_id', Auth::id())
                     ->orWhere('user_b_id', Auth::id());
             })
             ->whereIn('status', [SessionStatus::Scheduled, SessionStatus::InProgress])
+            ->whereHas('workoutIntent', function ($q) {
+                $q->whereNull('deleted_at'); // STRICT: Intent must not be deleted
+            })
             ->latest()
             ->get();
     }
@@ -50,6 +53,12 @@ class SessionManager extends Component
         // Ensure session is still Scheduled
         if ($session->status !== SessionStatus::Scheduled) {
             $this->dispatch('toast', message: 'التمرين دا مش في حالة مجدولة', type: 'error');
+            return;
+        }
+
+        $sessionStartTime = $session->workoutIntent->start_time;
+        if (now() < $sessionStartTime->copy()->subMinutes(15)) {
+            $this->dispatch('toast', message: 'لسه بدري! تقدر تعمل سكان قبل التمرينة بـ 15 دقيقة بس.', type: 'error');
             return;
         }
 

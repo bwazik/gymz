@@ -20,8 +20,6 @@ class DatabaseSeeder extends Seeder
             WorkoutCategorySeeder::class,
             UserSeeder::class,
             WorkoutIntentSeeder::class,
-            WorkoutRequestSeeder::class,
-            WorkoutSessionSeeder::class,
         ]);
     }
 }
