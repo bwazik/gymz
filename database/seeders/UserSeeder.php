@@ -19,6 +19,7 @@ class UserSeeder extends Seeder
             'name' => 'عبدالله محمد',
             'email' => 'bwazik@outlook.com',
             'password' => Hash::make('bwazik@outlook.com'),
+            'dob' => fake()->dateTimeBetween('-50 years', '-18 years'),
             'is_admin' => true,
         ]);
 

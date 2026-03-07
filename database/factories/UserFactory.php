@@ -32,6 +32,7 @@ class UserFactory extends Factory
             'password' => static::$password ??= Hash::make('password'),
             'remember_token' => Str::random(10),
             'gender' => fake()->randomElement([0, 1]),
+            'dob' => fake()->dateTimeBetween('-50 years', '-18 years'),
             'level' => fake()->randomElement([0, 1, 2]),
             'reliability_score' => fake()->numberBetween(50, 100),
             'glutes_balance' => fake()->numberBetween(0, 500),
