@@ -2,22 +2,24 @@
 
 namespace App\Livewire;
 
-use App\Enums\IntentStatus;
+use App\Actions\Workout\AcceptWorkoutRequest;
+use App\Actions\Workout\CancelSentWorkoutRequest;
+use App\Actions\Workout\RejectWorkoutRequest;
 use App\Enums\RequestStatus;
-use App\Enums\SessionStatus;
 use App\Models\WorkoutRequest;
-use App\Models\WorkoutSession;
+use App\Traits\Livewire\WithRateLimiting;
+use App\Traits\Livewire\WithToast;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\RateLimiter;
-use Illuminate\Support\Str;
 use Livewire\Attributes\Computed;
 use Livewire\Attributes\Layout;
 use Livewire\Component;
+use Exception;
 
 #[Layout('layouts.app')]
 class RequestsManager extends Component
 {
+    use WithToast, WithRateLimiting;
+
     public string $activeTab = 'incoming';
 
     #[Computed]
@@ -46,15 +48,11 @@ class RequestsManager extends Component
             ->get();
     }
 
-    public function acceptRequest(int $requestId): void
+    public function acceptRequest(int $requestId, AcceptWorkoutRequest $action): void
     {
-        $key = 'manage-request:' . Auth::id();
-        if (RateLimiter::tooManyAttempts($key, 5)) {
-            $seconds = RateLimiter::availableIn($key);
-            $this->dispatch('toast', message: "حاولت كتير! استنى {$seconds} ثانية ⏳", type: 'error');
+        if ($this->isRateLimited('manage-request')) {
             return;
         }
-        RateLimiter::hit($key, 60);
 
         $request = WorkoutRequest::with('workoutIntent')->findOrFail($requestId);
 
@@ -63,49 +61,20 @@ class RequestsManager extends Component
             return;
         }
 
-        if ($request->workoutIntent->start_time < now()) {
-            $this->dispatch('toast', message: 'متقدرش تاخد أكشن لتمرينة وقتها عدى!', type: 'error');
-            return;
+        try {
+            $action->execute($request);
+            unset($this->incomingRequests);
+            $this->toastSuccess('تم قبول الطلب! روح لصفحة التمارين عشان تبدأ 🔥');
+        } catch (Exception $e) {
+            $this->toastError($e->getMessage());
         }
-
-        DB::transaction(function () use ($request) {
-            // Accept this request
-            $request->update(['status' => RequestStatus::Accepted]);
-
-            // Mark intent as Matched
-            $request->workoutIntent->update(['status' => IntentStatus::Matched]);
-
-            // Reject all other pending requests for this intent
-            WorkoutRequest::where('intent_id', $request->intent_id)
-                ->where('id', '!=', $request->id)
-                ->where('status', RequestStatus::Pending)
-                ->update(['status' => RequestStatus::Rejected]);
-
-            // Create a WorkoutSession
-            WorkoutSession::create([
-                'intent_id' => $request->intent_id,
-                'user_a_id' => $request->workoutIntent->user_id,
-                'user_b_id' => $request->sender_id,
-                'qr_token' => Str::random(32),
-                'status' => SessionStatus::Scheduled,
-            ]);
-
-            // TODO: [NOTIFICATION] - Notify GUEST that their request was accepted
-        });
-
-        unset($this->incomingRequests);
-        $this->dispatch('toast', message: 'تم قبول الطلب! روح لصفحة التمارين عشان تبدأ 🔥', type: 'success');
     }
 
-    public function rejectRequest(int $requestId): void
+    public function rejectRequest(int $requestId, RejectWorkoutRequest $action): void
     {
-        $key = 'manage-request:' . Auth::id();
-        if (RateLimiter::tooManyAttempts($key, 5)) {
-            $seconds = RateLimiter::availableIn($key);
-            $this->dispatch('toast', message: "حاولت كتير! استنى {$seconds} ثانية ⏳", type: 'error');
+        if ($this->isRateLimited('manage-request')) {
             return;
         }
-        RateLimiter::hit($key, 60);
 
         $request = WorkoutRequest::findOrFail($requestId);
 
@@ -114,71 +83,38 @@ class RequestsManager extends Component
             return;
         }
 
-        if ($request->workoutIntent->start_time < now()) {
-            $this->dispatch('toast', message: 'متقدرش تاخد أكشن لتمرينة وقتها عدى!', type: 'error');
-            return;
+        try {
+            $action->execute($request);
+            unset($this->incomingRequests);
+            $this->toastSuccess('تم رفض الطلب');
+        } catch (Exception $e) {
+            $this->toastError($e->getMessage());
         }
-
-        $request->update(['status' => RequestStatus::Rejected]);
-
-        // TODO: [NOTIFICATION] - Notify GUEST that their request was rejected
-
-        unset($this->incomingRequests);
-        $this->dispatch('toast', message: 'تم رفض الطلب', type: 'success');
     }
 
-    public function cancelSentRequest(int $requestId): void
+    public function cancelSentRequest(int $requestId, CancelSentWorkoutRequest $action): void
     {
-        $key = 'manage-request:' . Auth::id();
-        if (RateLimiter::tooManyAttempts($key, 5)) {
-            $seconds = RateLimiter::availableIn($key);
-            $this->dispatch('toast', message: "حاولت كتير! استنى {$seconds} ثانية ⏳", type: 'error');
+        if ($this->isRateLimited('manage-request')) {
             return;
         }
-        RateLimiter::hit($key, 60);
 
         $request = WorkoutRequest::with('workoutIntent')->where('sender_id', Auth::id())->findOrFail($requestId);
 
-        if ($request->workoutIntent && $request->workoutIntent->start_time < now()) {
-            $this->dispatch('toast', message: 'متقدرش تلغي طلب لتمرينة وقتها عدى!', type: 'error');
-            return;
-        }
+        try {
+            $message = $action->execute($request);
+            unset($this->outgoingRequests);
 
-        if ($request->status === RequestStatus::Rejected) {
-            return; // Do nothing
-        }
-
-        if ($request->status === RequestStatus::Pending) {
-            $request->delete();
-
-            // TODO: [NOTIFICATION] - Notify HOST that the guest withdrew their request
-            $this->dispatch('toast', message: 'تم سحب الطلب بنجاح', type: 'success');
-        } elseif ($request->status === RequestStatus::Accepted) {
-            /** @var \App\Models\User $user */
-            $user = Auth::user();
-            $user->reliability_score = max(0, $user->reliability_score - 5);
-            $user->save();
-
-            // Make the session obsolete and intent available again
-            $session = WorkoutSession::where('intent_id', $request->intent_id)
-                ->where('user_b_id', Auth::id())
-                ->where('status', SessionStatus::Scheduled)
-                ->first();
-
-            if ($session) {
-                $session->update(['status' => SessionStatus::Cancelled_By_Guest]);
+            if ($message) {
+                // Determine if it was pending vs accepted cancelation
+                if (str_contains($message, 'مقبول')) {
+                    $this->toastError($message);
+                } else {
+                    $this->toastSuccess($message);
+                }
             }
-
-            // Mark intent as active again so someone else can match
-            $request->workoutIntent->update(['status' => IntentStatus::Active]);
-
-            $request->delete();
-
-            // TODO: [NOTIFICATION] - Notify HOST that the guest cancelled the confirmed session
-            $this->dispatch('toast', message: 'تم إلغاء الانضمام وخصم 5% من الموثوقية لأن الطلب كان مقبول.', type: 'error');
+        } catch (Exception $e) {
+            $this->toastError($e->getMessage());
         }
-
-        unset($this->outgoingRequests);
     }
 
     public function render()

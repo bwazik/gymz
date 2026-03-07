@@ -6,12 +6,14 @@ use App\Enums\RequestStatus;
 use App\Models\User;
 use App\Models\WorkoutIntent;
 use App\Models\WorkoutRequest;
+use App\Traits\Livewire\WithToast;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Attributes\On;
 use Livewire\Component;
 
 class WorkoutFeed extends Component
 {
+    use WithToast;
     #[On('intent-created')]
     public function refreshFeed(): void
     {
@@ -31,7 +33,7 @@ class WorkoutFeed extends Component
             ->exists();
 
         if ($alreadySent) {
-            $this->dispatch('toast', message: 'بعت طلب قبل كدى', type: 'error');
+            $this->toastError('بعت طلب قبل كدى');
             return;
         }
 
@@ -44,7 +46,7 @@ class WorkoutFeed extends Component
         // TODO: [NOTIFICATION] - Notify HOST that a new workout request was received
 
         $this->dispatch('request-sent');
-        $this->dispatch('toast', message: 'تم إرسال الطلب بنجاح! 💪', type: 'success');
+        $this->toastSuccess('تم إرسال الطلب بنجاح! 💪');
     }
 
     public function render()
