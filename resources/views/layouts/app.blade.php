@@ -111,8 +111,14 @@
 
         .shepherd-element.shepherd-centered {
             position: fixed !important;
-            top: 35% !important;
-            right: 5% !important;
+            top: 50% !important;
+            left: 50% !important;
+            transform: translate(-50%, -50%) !important;
+            margin: 0 !important;
+            max-width: calc(100vw - 2rem) !important;
+            width: 100% !important;
+            right: auto !important;
+            bottom: auto !important;
         }
     </style>
 
