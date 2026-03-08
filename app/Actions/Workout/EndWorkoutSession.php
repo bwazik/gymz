@@ -3,6 +3,7 @@
 namespace App\Actions\Workout;
 
 use App\Enums\SessionStatus;
+use App\Models\User;
 use App\Models\WorkoutSession;
 use App\Services\GamificationService;
 use Exception;
@@ -50,6 +51,21 @@ class EndWorkoutSession
             }
 
             // TODO: [NOTIFICATION] - Notify BOTH users of the reward - 10 Glutes & Reliability increase
+
+            // Proof of Sweat: If this is their very first completed session, trigger referral rewards
+            foreach ([$session->user_a_id, $session->user_b_id] as $userId) {
+                // Check total completed sessions for this user
+                $completedSessionsCount = WorkoutSession::where(function ($q) use ($userId) {
+                    $q->where('user_a_id', $userId)->orWhere('user_b_id', $userId);
+                })->where('status', SessionStatus::Completed)->count();
+
+                if ($completedSessionsCount === 1) {
+                    $user = User::find($userId);
+                    if ($user && $user->referred_by) {
+                        $this->gamificationService->processReferralReward($user);
+                    }
+                }
+            }
         });
     }
 }

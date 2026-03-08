@@ -4,6 +4,7 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use App\Enums\Gender;
+use App\Enums\SessionStatus;
 use App\Enums\UserLevel;
 use App\Observers\UserObserver;
 use Filament\Models\Contracts\FilamentUser;
@@ -11,6 +12,7 @@ use Filament\Panel;
 use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -58,8 +60,8 @@ class User extends Authenticatable implements FilamentUser
         'name',
         'email',
         'phone',
-        'password',
         'is_admin',
+        'password',
         'gender',
         'dob',
         'level',
@@ -68,6 +70,8 @@ class User extends Authenticatable implements FilamentUser
         'image_path',
         'google_id',
         'is_onboarded',
+        'referral_code',
+        'referred_by',
     ];
 
     /**
@@ -114,6 +118,28 @@ class User extends Authenticatable implements FilamentUser
     public function workoutRequests(): HasMany
     {
         return $this->hasMany(WorkoutRequest::class, 'sender_id');
+    }
+
+    public function inActiveSession(): bool
+    {
+        return $this->workoutSessionsAsUserA()->where('status', SessionStatus::InProgress)->exists()
+            || $this->workoutSessionsAsUserB()->where('status', SessionStatus::InProgress)->exists();
+    }
+
+    /**
+     * Get the user who referred this user.
+     */
+    public function referrer(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'referred_by');
+    }
+
+    /**
+     * Get the users referred by this user.
+     */
+    public function referrals(): HasMany
+    {
+        return $this->hasMany(User::class, 'referred_by');
     }
 
     public function workoutSessionsAsUserA(): HasMany

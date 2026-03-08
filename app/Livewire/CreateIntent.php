@@ -20,6 +20,10 @@ class CreateIntent extends Component
     public IntentForm $form;
 
     public bool $showModal = false;
+    public bool $showShareScreen = false;
+    public ?string $shareUrl = null;
+    public ?string $shareMessage = null;
+
     public Collection $gyms;
     public Collection $categories;
     public Collection $targets;
@@ -70,7 +74,14 @@ class CreateIntent extends Component
 
         $this->dispatch('intent-created');
         $this->targets = collect();
-        $this->showModal = false;
+
+        // 🚀 Viral Share Hook: Instead of closing, show the share screen
+        /** @var \App\Models\User $user */
+        $user = \Illuminate\Support\Facades\Auth::user();
+        $this->shareUrl = url('/login?ref=' . $user->referral_code);
+        $this->shareMessage = "أنا نازل تمرين.. مين وحش هيقبل التحدي؟ سجل من هنا وهنكسب إحنا الاتنين نقط!";
+
+        $this->showShareScreen = true;
 
         $this->toastSuccess('التمرينة اتنشرت بنجاح! 🔥');
     }

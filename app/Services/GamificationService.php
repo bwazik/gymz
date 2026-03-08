@@ -90,4 +90,39 @@ class GamificationService
 
         return true;
     }
+
+    /**
+     * Process referral rewards for a new user's first completed session.
+     * Both the newbie and the referrer get 50 Glutes.
+     *
+     * @param User $newbie
+     * @return void
+     */
+    public function processReferralReward(User $newbie): void
+    {
+        if (!$newbie->referred_by) {
+            return;
+        }
+
+        $referrer = User::find($newbie->referred_by);
+        if (!$referrer) {
+            return;
+        }
+
+        DB::transaction(function () use ($newbie, $referrer) {
+            // Reward Newbie
+            $this->awardGlutes(
+                $newbie->id,
+                10,
+                "بونص ترحيب: أول تمرينة مع GymZ 🚀"
+            );
+
+            // Reward Referrer
+            $this->awardGlutes(
+                $referrer->id,
+                10,
+                "مكافأة دعوة: {$newbie->name} نزل أول تمرينة 🤝"
+            );
+        });
+    }
 }

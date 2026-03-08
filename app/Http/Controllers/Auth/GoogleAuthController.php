@@ -11,8 +11,11 @@ use Laravel\Socialite\Facades\Socialite;
 
 class GoogleAuthController extends Controller
 {
-    public function redirect()
+    public function redirect(Request $request)
     {
+        if ($request->has('ref')) {
+            $request->session()->put('referral_code', $request->query('ref'));
+        }
         return Socialite::driver('google')->redirect();
     }
 
@@ -24,6 +27,16 @@ class GoogleAuthController extends Controller
             $user = User::where('email', $googleUser->getEmail())->first();
 
             if (!$user) {
+                $referredBy = null;
+                $refCode = request()->session()->pull('referral_code');
+
+                if ($refCode) {
+                    $referrer = User::where('referral_code', $refCode)->first();
+                    if ($referrer) {
+                        $referredBy = $referrer->id;
+                    }
+                }
+
                 $user = User::create([
                     'name' => $googleUser->getName(),
                     'email' => $googleUser->getEmail(),
@@ -31,6 +44,7 @@ class GoogleAuthController extends Controller
                     'is_onboarded' => false,
                     'password' => null,
                     'image_path' => $googleUser->getAvatar(),
+                    'referred_by' => $referredBy,
                 ]);
             } elseif (!$user->google_id) {
                 // Link account if they previously signed up without Google (or if we import users)
