@@ -1,7 +1,14 @@
 import Shepherd from "shepherd.js";
 
 document.addEventListener("DOMContentLoaded", () => {
-    if (!localStorage.getItem("gymz_tour_completed")) {
+    // Only run tour if user is authenticated, completed onboarding, is on the home feed, and hasn't seen it yet
+    const shouldRunTour =
+        window.GymZ?.isAuthenticated &&
+        window.GymZ?.hasCompletedOnboarding &&
+        window.GymZ?.currentRoute === "home" &&
+        !localStorage.getItem("gymz_tour_completed");
+
+    if (shouldRunTour) {
         const tour = new Shepherd.Tour({
             useModalOverlay: true,
             defaultStepOptions: {

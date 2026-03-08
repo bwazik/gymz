@@ -53,6 +53,14 @@
         }
     </script>
 
+    <script>
+        window.GymZ = {
+            isAuthenticated: @json(auth()->check()),
+            currentRoute: @json(Route::currentRouteName()),
+            hasCompletedOnboarding: @json(auth()->check() ? auth()->user()->has_completed_onboarding : false)
+        };
+    </script>
+
     @vite(['resources/css/app.css', 'resources/js/app.js', 'resources/js/tour.js'])
 </head>
 
