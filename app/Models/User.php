@@ -71,6 +71,7 @@ class User extends Authenticatable implements FilamentUser
         'is_onboarded',
         'referral_code',
         'referred_by',
+        'fcm_token',
     ];
 
     /**

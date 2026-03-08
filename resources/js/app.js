@@ -20,6 +20,21 @@ window.requestFCMToken = async () => {
 
             if (currentToken) {
                 console.log("FCM Token:", currentToken);
+
+                // Send token to our Laravel Backend
+                try {
+                    await axios.post("/fcm-token", {
+                        token: currentToken,
+                    });
+                    console.log(
+                        "Token synchronized with backend successfully.",
+                    );
+                } catch (backendError) {
+                    console.error(
+                        "Failed to sync token with backend.",
+                        backendError,
+                    );
+                }
             } else {
                 console.log(
                     "No registration token available. Request permission to generate one.",

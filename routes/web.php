@@ -32,4 +32,11 @@ Route::middleware(['auth', 'onboarded'])->group(function () {
     Route::get('wallet', WalletManager::class)->name('wallet');
     Route::get('requests', RequestsManager::class)->name('requests');
     Route::get('sessions', SessionManager::class)->name('sessions');
+
+    // FCM Token Registration
+    Route::post('/fcm-token', function (\Illuminate\Http\Request $request) {
+        $request->validate(['token' => 'required|string']);
+        $request->user()->update(['fcm_token' => $request->token]);
+        return response()->json(['message' => 'Token saved successfully']);
+    })->name('fcm.token');
 });
