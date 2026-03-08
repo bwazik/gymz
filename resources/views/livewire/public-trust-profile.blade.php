@@ -1,7 +1,9 @@
 <div>
     {{-- Modal Overlay --}}
-    <div x-data="{ open: @entangle('showModal').live }" x-show="open" x-init="$watch('open', val => { if (!val) setTimeout(() => $wire.set('targetUser', null), 300);
-        $dispatch(val ? 'hide-bottom-nav' : 'show-bottom-nav') })" style="display: none;"
+    <div x-data="{ open: @entangle('showModal').live }" x-show="open" x-init="$watch('open', val => {
+        if (!val) setTimeout(() => $wire.set('targetUser', null), 300);
+        $dispatch(val ? 'hide-bottom-nav' : 'show-bottom-nav')
+    })" style="display: none;"
         x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0"
         x-transition:enter-end="opacity-100" x-transition:leave="transition ease-out duration-300"
         x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0"
@@ -34,10 +36,10 @@
                             {{-- Quick Trust Shield --}}
                             <div
                                 class="absolute -bottom-1 -right-1 bg-gymz-accent text-white rounded-full p-1.5 shadow-md border-2 border-white dark:border-[#1c1c1e]">
-                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"
                                     class="w-5 h-5">
                                     <path fill-rule="evenodd"
-                                        d="M12.515 2.276a1.5 1.5 0 0 0-1.03 0 11.812 11.812 0 0 0-6.22 4.414A.75.75 0 0 0 5 7.15c0 5.483 3.037 10.38 7.5 13.064a1.5 1.5 0 0 0 1.5 0C18.463 17.53 21.5 12.632 21.5 7.15a.75.75 0 0 0-.265-.46A11.81 11.81 0 0 0 15 2.276Zm-1.896 9.544a.75.75 0 0 0-1.157.94l2.5 3a.75.75 0 0 0 1.152.008l4-4.5a.75.75 0 1 0-1.124-1.002l-3.415 3.842-1.956-2.288Z"
+                                        d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a.75.75 0 000 1.5h.253a.25.25 0 01.244.304l-.459 2.066A1.75 1.75 0 0010.747 15H11a.75.75 0 000-1.5h-.253a.25.25 0 01-.244-.304l.459-2.066A1.75 1.75 0 009.253 9H9z"
                                         clip-rule="evenodd" />
                                 </svg>
                             </div>
@@ -55,7 +57,8 @@
                             class="bg-black/5 dark:bg-white/5 border border-black/5 dark:border-white/10 rounded-2xl p-4 flex flex-col items-center justify-center text-center">
                             <span
                                 class="text-3xl font-black text-gray-900 dark:text-white">{{ $completedSessionsCount }}</span>
-                            <span class="text-xs font-semibold text-gray-500 dark:text-gray-400 mt-1">تمرينة مكتملة</span>
+                            <span class="text-xs font-semibold text-gray-500 dark:text-gray-400 mt-1">تمرينة
+                                مكتملة</span>
                         </div>
 
                         {{-- Reliability Score --}}
