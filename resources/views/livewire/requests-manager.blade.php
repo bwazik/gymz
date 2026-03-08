@@ -46,7 +46,7 @@
                         @if ($request->workoutIntent->gym->logo_path)
                             <img src="{{ Str::startsWith($request->workoutIntent->gym->logo_path, 'http') ? $request->workoutIntent->gym->logo_path : Storage::url($request->workoutIntent->gym->logo_path) }}"
                                 alt="{{ $request->workoutIntent->gym->name }}"
-                                class="w-4 h-4 rounded-sm object-contain mix-blend-multiply dark:mix-blend-normal opacity-90 shrink-0">
+                                class="w-4 h-4 rounded-full object-contain mix-blend-multiply dark:mix-blend-normal opacity-90 shrink-0">
                         @else
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                                 stroke-width="1.5" stroke="currentColor" class="w-4 h-4 text-gymz-accent shrink-0">
@@ -150,7 +150,7 @@
                         @if ($request->workoutIntent->gym->logo_path)
                             <img src="{{ Str::startsWith($request->workoutIntent->gym->logo_path, 'http') ? $request->workoutIntent->gym->logo_path : Storage::url($request->workoutIntent->gym->logo_path) }}"
                                 alt="{{ $request->workoutIntent->gym->name }}"
-                                class="w-4 h-4 rounded-sm object-contain mix-blend-multiply dark:mix-blend-normal opacity-90 shrink-0">
+                                class="w-5 h-5 rounded-full object-contain mix-blend-multiply dark:mix-blend-normal opacity-90 shrink-0">
                         @else
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                                 stroke-width="1.5" stroke="currentColor" class="w-4 h-4 text-gymz-accent shrink-0">

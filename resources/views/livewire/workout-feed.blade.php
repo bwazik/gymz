@@ -100,7 +100,7 @@
                     @if ($intent->gym->logo_path)
                         <img src="{{ Str::startsWith($intent->gym->logo_path, 'http') ? $intent->gym->logo_path : Storage::url($intent->gym->logo_path) }}"
                             alt="{{ $intent->gym->name }}"
-                            class="w-4 h-4 rounded-sm object-contain mix-blend-multiply dark:mix-blend-normal opacity-90 shrink-0">
+                            class="w-4 h-4 rounded-full object-contain mix-blend-multiply dark:mix-blend-normal opacity-90 shrink-0">
                     @else
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                             stroke="currentColor" class="w-4 h-4 text-gymz-accent shrink-0">
