@@ -44,7 +44,7 @@
                 <div class="flex flex-wrap items-center gap-2 mb-4 text-sm text-gray-600 dark:text-gray-400">
                     <div class="flex items-center gap-1.5">
                         @if ($request->workoutIntent->gym->logo_path)
-                            <img src="{{ Storage::url($request->workoutIntent->gym->logo_path) }}"
+                            <img src="{{ Str::startsWith($request->workoutIntent->gym->logo_path, 'http') ? $request->workoutIntent->gym->logo_path : Storage::url($request->workoutIntent->gym->logo_path) }}"
                                 alt="{{ $request->workoutIntent->gym->name }}"
                                 class="w-4 h-4 rounded-full object-contain mix-blend-multiply dark:mix-blend-normal opacity-90 shrink-0">
                         @else
@@ -148,7 +148,7 @@
                 <div class="flex flex-wrap items-center gap-2 text-sm text-gray-600 dark:text-gray-400">
                     <div class="flex items-center gap-1.5">
                         @if ($request->workoutIntent->gym->logo_path)
-                            <img src="{{ Storage::url($request->workoutIntent->gym->logo_path) }}"
+                            <img src="{{ Str::startsWith($request->workoutIntent->gym->logo_path, 'http') ? $request->workoutIntent->gym->logo_path : Storage::url($request->workoutIntent->gym->logo_path) }}"
                                 alt="{{ $request->workoutIntent->gym->name }}"
                                 class="w-4 h-4 rounded-full object-contain mix-blend-multiply dark:mix-blend-normal opacity-90 shrink-0">
                         @else

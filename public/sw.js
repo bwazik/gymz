@@ -1,4 +1,4 @@
-const CACHE_NAME = "gymz-cache-v2";
+const CACHE_NAME = "gymz-cache-v4";
 const OFFLINE_URL = "/offline";
 
 // Assets to pre-cache on install
