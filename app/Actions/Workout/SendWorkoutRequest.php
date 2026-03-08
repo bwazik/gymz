@@ -44,7 +44,7 @@ class SendWorkoutRequest
         ]);
 
         $intent->user->notify(new NewWorkoutRequestNotification($workoutRequest));
-        Notification::send(User::where('is_admin', true)->get(), new NewWorkoutRequestAdminNotification($workoutRequest));
+        Notification::send(User::admin()->get(), new NewWorkoutRequestAdminNotification($workoutRequest));
 
         return 'تم إرسال الطلب بنجاح! 💪';
     }

@@ -43,7 +43,7 @@ class CancelSentWorkoutRequest
             if ($request->status === RequestStatus::Pending) {
                 $request->delete();
                 $request->workoutIntent->user->notify(new WorkoutRequestWithdrawnNotification($request));
-                Notification::send(User::where('is_admin', true)->get(), new WorkoutRequestWithdrawnAdminNotification($request));
+                Notification::send(User::admin()->get(), new WorkoutRequestWithdrawnAdminNotification($request));
                 return 'تم سحب الطلب بنجاح';
             }
 
@@ -67,7 +67,7 @@ class CancelSentWorkoutRequest
                 $request->delete();
 
                 $request->workoutIntent->user->notify(new ConfirmedSessionCancelledByGuestNotification($request));
-                Notification::send(User::where('is_admin', true)->get(), new ConfirmedSessionCancelledByGuestAdminNotification($request));
+                Notification::send(User::admin()->get(), new ConfirmedSessionCancelledByGuestAdminNotification($request));
                 return 'تم إلغاء الانضمام وخصم 5% من الموثوقية لأن الطلب كان مقبول.';
             }
 

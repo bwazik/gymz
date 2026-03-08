@@ -48,7 +48,7 @@ class MarkMissedSessions extends Command
             /** @var \App\Models\WorkoutSession $session */
             $session->update(['status' => SessionStatus::Missed]);
 
-            Notification::send(User::where('is_admin', true)->get(), new SessionMissedAdminNotification($session));
+            Notification::send(User::admin()->get(), new SessionMissedAdminNotification($session));
 
             // Notify BOTH users that the session was marked as Missed
             foreach ([$session->user_a_id, $session->user_b_id] as $userId) {

@@ -121,7 +121,7 @@ class GamificationService
             );
 
             $newbie->notify(new WelcomeBonusNotification(10));
-            Notification::send(User::where('is_admin', true)->get(), new WelcomeBonusAdminNotification(10, $newbie->name));
+            Notification::send(User::admin()->get(), new WelcomeBonusAdminNotification(10, $newbie->name));
 
             // Reward Referrer
             $this->awardGlutes(

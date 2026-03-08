@@ -47,7 +47,7 @@ class VerifySessionToken
                 }
             }
 
-            Notification::send(User::where('is_admin', true)->get(), new SessionStartedAdminNotification($session));
+            Notification::send(User::admin()->get(), new SessionStartedAdminNotification($session));
         });
     }
 }

@@ -23,8 +23,8 @@ class WorkoutRequestRejectedAdminNotification extends Notification
     public function toDatabase($notifiable): array
     {
         return FilamentNotification::make()
-            ->title('Workout Request Rejected')
-            ->body("{$this->workoutRequest->workoutIntent->user->name} rejected {$this->workoutRequest->sender->name}'s workout request.")
+            ->title('رفض طلب انضمام ❌')
+            ->body("الچيماوي {$this->workoutRequest->workoutIntent->user->name} رفض انضمام {$this->workoutRequest->sender->name} للتمرينة.")
             ->icon('heroicon-o-x-circle')
             ->iconColor('danger')
             ->getDatabaseMessage();

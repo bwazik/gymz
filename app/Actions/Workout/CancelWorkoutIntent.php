@@ -43,7 +43,7 @@ class CancelWorkoutIntent
                 if ($guest = User::find($session->user_b_id)) {
                     $guest->notify(new SessionCancelledByHostNotification($intent));
                 }
-                Notification::send(User::where('is_admin', true)->get(), new SessionCancelledByHostAdminNotification($intent));
+                Notification::send(User::admin()->get(), new SessionCancelledByHostAdminNotification($intent));
 
                 $this->gamificationService->deductReliability($intent->user_id, 5);
                 $message = 'تم إلغاء التمرينة وخصم 5% من الموثوقية لإلغاء اتفاق مؤكد.';

@@ -58,7 +58,7 @@ class EndWorkoutSession
                 }
             }
 
-            Notification::send(User::where('is_admin', true)->get(), new SessionCompletedRewardAdminNotification($session));
+            Notification::send(User::admin()->get(), new SessionCompletedRewardAdminNotification($session));
 
             // Proof of Sweat: If this is their very first completed session, trigger referral rewards
             foreach ([$session->user_a_id, $session->user_b_id] as $userId) {

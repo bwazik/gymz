@@ -23,8 +23,8 @@ class WorkoutRequestWithdrawnAdminNotification extends Notification
     public function toDatabase($notifiable): array
     {
         return FilamentNotification::make()
-            ->title('Workout Request Withdrawn')
-            ->body("{$this->workoutRequest->sender->name} withdrew their workout request to {$this->workoutRequest->workoutIntent->user->name}.")
+            ->title('سحب طلب انضمام 🔙')
+            ->body("الچيماوي {$this->workoutRequest->sender->name} سحب طلب انضمامه لتمرينة {$this->workoutRequest->workoutIntent->user->name}.")
             ->icon('heroicon-o-arrow-left-on-rectangle')
             ->iconColor('warning')
             ->getDatabaseMessage();

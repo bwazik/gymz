@@ -170,4 +170,9 @@ class User extends Authenticatable implements FilamentUser
     {
         return $this->is_admin;
     }
+
+    public function scopeAdmin(Builder $query): void
+    {
+        $query->where('is_admin', true);
+    }
 }

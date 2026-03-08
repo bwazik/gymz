@@ -23,8 +23,8 @@ class ReferralJoinedAdminNotification extends Notification
     public function toDatabase($notifiable): array
     {
         return FilamentNotification::make()
-            ->title('New Referral Signup')
-            ->body("User {$this->newUser->name} joined using {$this->referrer->name}'s referral code.")
+            ->title('تسجيل عن طريق الإحالة 🔗')
+            ->body("الچيماوي {$this->newUser->name} سجل باستخدام كود الإحالة الخاص بـ {$this->referrer->name}.")
             ->icon('heroicon-o-user-plus')
             ->iconColor('success')
             ->getDatabaseMessage();

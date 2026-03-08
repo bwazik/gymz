@@ -22,8 +22,8 @@ class WelcomeBonusAdminNotification extends Notification
     public function toDatabase($notifiable): array
     {
         return FilamentNotification::make()
-            ->title('Newbie Welcome Bonus')
-            ->body("{$this->userName} just earned a welcome bonus of {$this->glutesAmount} Glutes.")
+            ->title('بونص الترحيب 🎁')
+            ->body("الچيماوي {$this->userName} حصل على بونص ترحيب {$this->glutesAmount} جروتز.")
             ->icon('heroicon-o-gift')
             ->iconColor('primary')
             ->getDatabaseMessage();

@@ -53,7 +53,7 @@ class GoogleAuthController extends Controller
                 if ($referredBy) {
                     if ($referrerUser = User::find($referredBy)) {
                         $referrerUser->notify(new ReferralJoinedNotification($user));
-                        Notification::send(User::where('is_admin', true)->get(), new ReferralJoinedAdminNotification($user, $referrerUser));
+                        Notification::send(User::admin()->get(), new ReferralJoinedAdminNotification($user, $referrerUser));
                     }
                 }
             } elseif (!$user->google_id) {

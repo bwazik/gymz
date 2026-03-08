@@ -55,8 +55,8 @@ class ReportSessionNoShow
                 $reporterUser->notify(new SessionNoShowReportedNotification($session));
             }
 
-            Notification::send(User::where('is_admin', true)->get(), new SessionNoShowPenaltyAdminNotification($session, $absentUserId));
-            Notification::send(User::where('is_admin', true)->get(), new SessionNoShowReportedAdminNotification($session, $reporterId));
+            Notification::send(User::admin()->get(), new SessionNoShowPenaltyAdminNotification($session, $absentUserId));
+            Notification::send(User::admin()->get(), new SessionNoShowReportedAdminNotification($session, $reporterId));
         });
     }
 }

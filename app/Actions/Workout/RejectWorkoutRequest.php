@@ -26,6 +26,6 @@ class RejectWorkoutRequest
         $request->update(['status' => RequestStatus::Rejected]);
 
         $request->sender->notify(new WorkoutRequestRejectedNotification($request));
-        Notification::send(User::where('is_admin', true)->get(), new WorkoutRequestRejectedAdminNotification($request));
+        Notification::send(User::admin()->get(), new WorkoutRequestRejectedAdminNotification($request));
     }
 }

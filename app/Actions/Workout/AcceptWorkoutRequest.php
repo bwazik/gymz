@@ -52,7 +52,7 @@ class AcceptWorkoutRequest
 
             // Notify GUEST that their request was accepted
             $request->sender->notify(new WorkoutRequestAcceptedNotification($request));
-            Notification::send(User::where('is_admin', true)->get(), new WorkoutRequestAcceptedAdminNotification($request));
+            Notification::send(User::admin()->get(), new WorkoutRequestAcceptedAdminNotification($request));
         });
     }
 }

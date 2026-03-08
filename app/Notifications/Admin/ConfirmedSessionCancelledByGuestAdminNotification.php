@@ -23,8 +23,8 @@ class ConfirmedSessionCancelledByGuestAdminNotification extends Notification
     public function toDatabase($notifiable): array
     {
         return FilamentNotification::make()
-            ->title('Confirmed Session Cancelled (Guest)')
-            ->body("Guest {$this->workoutRequest->sender->name} cancelled a confirmed session with {$this->workoutRequest->workoutIntent->user->name}.")
+            ->title('إلغاء تمرينة مؤكدة (من الضيف) ⚠️')
+            ->body("الچيماوي {$this->workoutRequest->sender->name} ألغى تمرينة مؤكدة مع {$this->workoutRequest->workoutIntent->user->name}.")
             ->icon('heroicon-o-x-mark')
             ->iconColor('danger')
             ->getDatabaseMessage();
