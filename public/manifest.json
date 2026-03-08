@@ -4,8 +4,8 @@
     "description": "The ultimate social fitness app for Gym-goers in Egypt.",
     "start_url": "/",
     "display": "standalone",
-    "background_color": "#0f172a",
-    "theme_color": "#0f172a",
+    "background_color": "#19191b",
+    "theme_color": "#19191b",
     "orientation": "portrait",
     "icons": [
         {

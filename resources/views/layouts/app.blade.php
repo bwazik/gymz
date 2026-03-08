@@ -10,10 +10,15 @@
 
     <!-- PWA -->
     <link rel="manifest" href="/manifest.json">
+
+    <link rel="icon" type="image/png" href="{{ asset('icons/favicon.png/favicon-96x96.png') }}" sizes="96x96" />
+    <link rel="icon" type="image/svg+xml" href="{{ asset('icons/favicon.png/favicon.svg') }}" />
+    <link rel="shortcut icon" href="{{ asset('icons/favicon.png/favicon.ico') }}" />
+    <meta name="apple-mobile-web-app-title" content="GymZ" />
     <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="apple-mobile-web-app-title" content="GymZ">
-    <link rel="apple-touch-icon" href="/icons/icon-192x192.png">
+    <link rel="apple-touch-icon" href="{{ asset('icons/icon-192x192.png') }}">
 
     <title>{{ config('app.name', 'GymZ') }}</title>
 
