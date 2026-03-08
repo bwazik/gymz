@@ -36,11 +36,15 @@ class WorkoutSession extends Model
         'user_a_id',
         'user_b_id',
         'qr_token',
+        'user_a_status',
+        'user_b_status',
         'scanned_at',
         'status',
     ];
 
     protected $casts = [
+        'user_a_status' => 'array',
+        'user_b_status' => 'array',
         'scanned_at' => 'datetime',
         'status' => SessionStatus::class,
     ];

@@ -46,6 +46,11 @@
                 @endif
             </div>
 
+            {{-- Meet-up Beacon (Scheduled Only) --}}
+            @if ($session->status === \App\Enums\SessionStatus::Scheduled)
+                <x-session.beacon :session="$session" :isRoleA="$isRoleA" />
+            @endif
+
             {{-- Scheduled: QR / Scanner --}}
             @if ($session->status === \App\Enums\SessionStatus::Scheduled)
                 @if ($isRoleA)

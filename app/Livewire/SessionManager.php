@@ -4,6 +4,7 @@ namespace App\Livewire;
 
 use App\Actions\Workout\EndWorkoutSession;
 use App\Actions\Workout\ReportSessionNoShow;
+use App\Actions\Workout\UpdateSessionBeacon;
 use App\Actions\Workout\VerifySessionToken;
 use App\Enums\SessionStatus;
 use App\Models\WorkoutSession;
@@ -53,6 +54,23 @@ class SessionManager extends Component
             unset($this->activeSessions);
             $this->dispatch('token-verified');
             $this->toastSuccess('تم التحقق بنجاح! 🔥 يلا بينا');
+        } catch (Exception $e) {
+            $this->toastError($e->getMessage());
+        }
+    }
+    public function updateBeacon(int $sessionId, string $color, string $location, UpdateSessionBeacon $action): void
+    {
+        if ($this->isRateLimited('update-beacon', 5)) {
+            $this->toastError('انتظر قليلاً قبل التحديث مرة أخرى');
+            return;
+        }
+
+        $session = WorkoutSession::findOrFail($sessionId);
+
+        try {
+            $action->execute($session, Auth::id(), $color, $location);
+            unset($this->activeSessions); // refresh computed property
+            $this->toastSuccess('تم تحديث حالتك بنجاح 📍');
         } catch (Exception $e) {
             $this->toastError($e->getMessage());
         }
