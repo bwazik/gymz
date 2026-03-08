@@ -82,7 +82,7 @@
                 <path stroke-linecap="round" stroke-linejoin="round"
                     d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z" />
             </svg>
-            رادار المقابلة (حالتي)
+            حالة المقابلة (حالتي)
         </h3>
 
         {{-- Color Picker --}}
@@ -118,9 +118,9 @@
 
         {{-- Update Button --}}
         <button type="button" @click="update()" :disabled="!selectedColor || !selectedLocation || isUpdating"
-            class="w-full py-3 rounded-xl font-bold text-sm flex items-center justify-center gap-2 transition-all active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed"
+            class="w-full py-3.5 rounded-2xl font-bold text-sm flex items-center justify-center gap-2 transition-all active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed"
             :class="(!selectedColor || !selectedLocation) ? 'bg-black/5 dark:bg-white/5 text-gray-400' :
-            'bg-gray-900 dark:bg-white text-white dark:text-black shadow-md shadow-gray-900/10'">
+            'bg-gymz-accent text-white shadow-md shadow-gymz-accent/20'">
             <svg x-show="isUpdating" class="animate-spin -ml-1 mr-2 h-4 w-4" xmlns="http://www.w3.org/2000/svg"
                 fill="none" viewBox="0 0 24 24">
                 <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4">
