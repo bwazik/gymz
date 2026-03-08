@@ -6,13 +6,9 @@ window.requestFCMToken = async () => {
     try {
         const permission = await Notification.requestPermission();
         if (permission === "granted") {
-            const registration =
-                (await navigator.serviceWorker.getRegistration("/sw.js")) ||
-                (await navigator.serviceWorker.register("/sw.js"));
             const currentToken = await getToken(messaging, {
                 vapidKey:
                     "BKFeCsepkOWdHzCNLFaxstLYrxLAIiCtrwjCnfxaiZF2gIILBxSM_0atcuxlwADrqkHM0joLMNRHQ5KVQ2ugpyM",
-                serviceWorkerRegistration: registration,
             });
 
             if (currentToken) {
