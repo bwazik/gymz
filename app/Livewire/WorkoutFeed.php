@@ -5,6 +5,7 @@ namespace App\Livewire;
 use App\Actions\Workout\SendWorkoutRequest;
 use App\Models\User;
 use App\Models\Gym;
+use App\Models\WorkoutCategory;
 use App\Models\WorkoutIntent;
 use App\Models\WorkoutRequest;
 use App\Models\WorkoutTarget;
@@ -19,6 +20,7 @@ class WorkoutFeed extends Component
     use WithToast, WithRateLimiting;
 
     public ?int $gymFilter = null;
+    public ?int $categoryFilter = null;
     public ?int $targetFilter = null;
     #[On('intent-created')]
     public function refreshFeed(): void
@@ -41,6 +43,11 @@ class WorkoutFeed extends Component
         }
     }
 
+    public function resetFilters(): void
+    {
+        $this->reset(['gymFilter', 'categoryFilter', 'targetFilter']);
+    }
+
     public function render()
     {
         $user = Auth::user();
@@ -49,6 +56,7 @@ class WorkoutFeed extends Component
             'intents' => $this->getUpcomingIntents($user),
             'sentRequestIntentIds' => $this->getSentRequestIntentIds($user),
             'targets' => WorkoutTarget::all(),
+            'categories' => WorkoutCategory::orderBy('name')->get(),
             'gyms' => Gym::active()->orderBy('name')->get(),
         ]);
     }
@@ -62,6 +70,13 @@ class WorkoutFeed extends Component
         // Target Filter
         $query->when($this->targetFilter, function ($q) {
             $q->where('workout_target_id', $this->targetFilter);
+        });
+
+        // Category Filter
+        $query->when($this->categoryFilter, function ($q) {
+            $q->whereHas('workoutTarget', function ($sub) {
+                $sub->where('workout_category_id', $this->categoryFilter);
+            });
         });
 
         // Gym Filter

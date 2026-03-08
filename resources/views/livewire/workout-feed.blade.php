@@ -11,35 +11,28 @@
         </div>
     </div>
 
-    {{-- Smart Fillters Bar --}}
-    <div class="mb-6 flex gap-2 overflow-x-auto pb-2 snap-x snap-mandatory pt-1 scroll-smooth [&::-webkit-scrollbar]:hidden"
-        style="scrollbar-width: none;">
-        {{-- Target Filters --}}
-        <button wire:click="$set('targetFilter', null)"
-            class="shrink-0 snap-start px-4 py-2 rounded-full text-sm font-bold transition-all border {{ $targetFilter === null ? 'bg-gymz-accent text-white border-transparent shadow-[0_4px_15px_rgba(255,45,85,0.2)]' : 'bg-white/50 dark:bg-[#1c1c1e]/50 text-gray-600 dark:text-gray-300 border-black/5 dark:border-white/10 hover:bg-black/5 dark:hover:bg-white/5' }}">
-            كل التمرين
+    {{-- Filter Trigger Button --}}
+    @php
+        $activeFiltersCount = collect([$gymFilter, $categoryFilter, $targetFilter])
+            ->filter()
+            ->count();
+    @endphp
+    <div class="mb-5 flex justify-end">
+        <button x-data x-on:click.prevent="$dispatch('open-modal', 'feed-filters')"
+            class="relative flex items-center gap-2 px-4 py-2 bg-white/70 dark:bg-[#1c1c1e]/70 backdrop-blur-xl border border-black/5 dark:border-white/10 rounded-2xl shadow-sm text-sm font-bold text-gray-700 dark:text-gray-300 active:scale-95 transition-all">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
+                stroke="currentColor" class="w-4 h-4 text-gymz-accent">
+                <path stroke-linecap="round" stroke-linejoin="round"
+                    d="M12 3c2.755 0 5.455.232 8.083.678.533.09.917.556.917 1.096v1.044a2.25 2.25 0 01-.659 1.591l-5.432 5.432a2.25 2.25 0 00-.659 1.591v2.927a2.25 2.25 0 01-1.244 2.013L9.75 21v-6.568a2.25 2.25 0 00-.659-1.591L3.659 7.409A2.25 2.25 0 013 5.818V4.774c0-.54.384-1.006.917-1.096A48.32 48.32 0 0112 3z" />
+            </svg>
+            فلترة التمارين
+            @if ($activeFiltersCount > 0)
+                <span
+                    class="absolute -top-1 -right-1 flex h-4 w-4 items-center justify-center rounded-full bg-red-500 text-[9px] font-bold text-white shadow-sm ring-2 ring-white dark:ring-[#1c1c1e]">
+                    {{ $activeFiltersCount }}
+                </span>
+            @endif
         </button>
-        @foreach ($targets as $target)
-            <button wire:click="$set('targetFilter', {{ $target->id }})"
-                class="shrink-0 snap-start px-4 py-2 rounded-full text-sm font-bold transition-all border {{ $targetFilter === $target->id ? 'bg-gymz-accent text-white border-transparent shadow-[0_4px_15px_rgba(255,45,85,0.2)]' : 'bg-white/50 dark:bg-[#1c1c1e]/50 text-gray-600 dark:text-gray-300 border-black/5 dark:border-white/10 hover:bg-black/5 dark:hover:bg-white/5' }}">
-                {{ $target->name }}
-            </button>
-        @endforeach
-
-        <div class="shrink-0 w-px h-6 bg-black/10 dark:bg-white/10 my-auto mx-1"></div>
-
-        {{-- Gym Filters --}}
-        <button wire:click="$set('gymFilter', null)"
-            class="shrink-0 snap-start px-4 py-2 rounded-full text-sm font-bold transition-all border {{ $gymFilter === null ? 'bg-gymz-accent text-white border-transparent shadow-[0_4px_15px_rgba(255,45,85,0.2)]' : 'bg-white/50 dark:bg-[#1c1c1e]/50 text-gray-600 dark:text-gray-300 border-black/5 dark:border-white/10 hover:bg-black/5 dark:hover:bg-white/5' }}">
-            كل الفروع
-        </button>
-        @foreach ($gyms as $gym)
-            <button wire:click="$set('gymFilter', {{ $gym->id }})"
-                class="shrink-0 snap-start px-4 py-2 rounded-full text-sm font-bold transition-all border {{ $gymFilter === $gym->id ? 'bg-gymz-accent text-white border-transparent shadow-[0_4px_15px_rgba(255,45,85,0.2)]' : 'bg-white/50 dark:bg-[#1c1c1e]/50 text-gray-600 dark:text-gray-300 border-black/5 dark:border-white/10 hover:bg-black/5 dark:hover:bg-white/5' }}">
-                {{ $gym->name }}
-            </button>
-        @endforeach
-
     </div>
 
     @forelse ($intents as $intent)
@@ -174,4 +167,86 @@
     @endforelse
 
     <livewire:create-intent />
+
+    {{-- Filters Bottom Sheet Modal --}}
+    <x-modal name="feed-filters" maxWidth="md">
+        <div
+            class="bg-white/90 dark:bg-[#1c1c1e]/90 backdrop-blur-3xl rounded-3xl overflow-hidden border border-black/5 dark:border-white/10">
+            {{-- Header --}}
+            <div
+                class="px-6 py-4 border-b border-black/5 dark:border-white/10 flex items-center justify-between sticky top-0 bg-white/50 dark:bg-[#1c1c1e]/50 backdrop-blur-md z-10">
+                <h3 class="font-bold text-gray-900 dark:text-white text-lg">تخصيص الفلاتر</h3>
+                <button type="button" wire:click="resetFilters"
+                    class="text-xs font-bold text-red-500 hover:text-red-600 transition-colors">مسح الكل</button>
+            </div>
+
+            {{-- Filter Content --}}
+            <div class="p-6 space-y-8 max-h-[70vh] overflow-y-auto">
+                {{-- Gyms --}}
+                <div>
+                    <h4 class="text-xs font-bold text-gray-500 dark:text-gray-400 mb-3 uppercase tracking-wider">الفرع
+                    </h4>
+                    <div class="flex flex-wrap gap-2">
+                        <button type="button" wire:click="$set('gymFilter', null)"
+                            class="px-4 py-2 rounded-xl text-sm font-bold transition-all border {{ $gymFilter === null ? 'bg-gymz-accent text-white border-transparent' : 'bg-black/5 dark:bg-white/5 text-gray-700 dark:text-gray-300 border-transparent hover:bg-black/10 dark:hover:bg-white/10' }}">
+                            الكل
+                        </button>
+                        @foreach ($gyms as $gym)
+                            <button type="button" wire:click="$set('gymFilter', {{ $gym->id }})"
+                                class="px-4 py-2 rounded-xl text-sm font-bold transition-all border {{ $gymFilter === $gym->id ? 'bg-gymz-accent text-white border-transparent shadow-sm' : 'bg-black/5 dark:bg-white/5 text-gray-700 dark:text-gray-300 border-transparent hover:bg-black/10 dark:hover:bg-white/10' }}">
+                                {{ $gym->name }}
+                            </button>
+                        @endforeach
+                    </div>
+                </div>
+
+                {{-- Categories --}}
+                <div>
+                    <h4 class="text-xs font-bold text-gray-500 dark:text-gray-400 mb-3 uppercase tracking-wider">نوع
+                        التمرين</h4>
+                    <div class="flex flex-wrap gap-2">
+                        <button type="button" wire:click="$set('categoryFilter', null)"
+                            class="px-4 py-2 rounded-xl text-sm font-bold transition-all border {{ $categoryFilter === null ? 'bg-gymz-accent text-white border-transparent' : 'bg-black/5 dark:bg-white/5 text-gray-700 dark:text-gray-300 border-transparent hover:bg-black/10 dark:hover:bg-white/10' }}">
+                            الكل
+                        </button>
+                        @foreach ($categories as $category)
+                            <button type="button" wire:click="$set('categoryFilter', {{ $category->id }})"
+                                class="px-4 py-2 rounded-xl text-sm font-bold transition-all border {{ $categoryFilter === $category->id ? 'bg-gymz-accent text-white border-transparent shadow-sm' : 'bg-black/5 dark:bg-white/5 text-gray-700 dark:text-gray-300 border-transparent hover:bg-black/10 dark:hover:bg-white/10' }}">
+                                {{ $category->name }}
+                            </button>
+                        @endforeach
+                    </div>
+                </div>
+
+                {{-- Targets --}}
+                <div>
+                    <h4 class="text-xs font-bold text-gray-500 dark:text-gray-400 mb-3 uppercase tracking-wider">العضلة
+                        المطلوبة</h4>
+                    <div class="flex flex-wrap gap-2">
+                        <button type="button" wire:click="$set('targetFilter', null)"
+                            class="px-4 py-2 rounded-xl text-sm font-bold transition-all border {{ $targetFilter === null ? 'bg-gymz-accent text-white border-transparent' : 'bg-black/5 dark:bg-white/5 text-gray-700 dark:text-gray-300 border-transparent hover:bg-black/10 dark:hover:bg-white/10' }}">
+                            الكل
+                        </button>
+                        @foreach ($targets as $target)
+                            {{-- Hide target if Category is selected and target doesn't belong to it --}}
+                            @if (!$categoryFilter || $target->workout_category_id === $categoryFilter)
+                                <button type="button" wire:click="$set('targetFilter', {{ $target->id }})"
+                                    class="px-4 py-2 rounded-xl text-sm font-bold transition-all border {{ $targetFilter === $target->id ? 'bg-gymz-accent text-white border-transparent shadow-sm' : 'bg-black/5 dark:bg-white/5 text-gray-700 dark:text-gray-300 border-transparent hover:bg-black/10 dark:hover:bg-white/10' }}">
+                                    {{ $target->name }}
+                                </button>
+                            @endif
+                        @endforeach
+                    </div>
+                </div>
+            </div>
+
+            {{-- Footer Action --}}
+            <div class="p-4 border-t border-black/5 dark:border-white/10 bg-black/5 dark:bg-white/5 mt-auto">
+                <button x-data x-on:click.prevent="$dispatch('close')" type="button"
+                    class="w-full py-4 rounded-2xl bg-gray-900 dark:bg-white text-white dark:text-black font-bold text-[17px] active:scale-95 transition-all shadow-lg shadow-gray-900/10">
+                    عرض النتائج
+                </button>
+            </div>
+        </div>
+    </x-modal>
 </div>
