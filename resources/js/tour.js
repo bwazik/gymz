@@ -33,7 +33,7 @@ document.addEventListener("DOMContentLoaded", () => {
         tour.addStep({
             id: "create",
             title: "إضافة التمارين ⚡",
-            text: '<p class="text-gray-500 dark:text-gray-400 text-sm">من هنا تقدر تنزل تمرينتك وتتحدى وحوش الجيم ينزلوا معاك!</p>',
+            text: '<p class="text-gray-500 dark:text-gray-400 text-sm">من هنا تقدر تنزل تمرينة جديدة وتحدد الجيم والوقت والهدف العضلي عشان أي حد يقدر ينضم ليك.</p>',
             attachTo: {
                 element: "#tour-create-btn",
                 on: "top",
@@ -50,8 +50,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
         tour.addStep({
             id: "feed",
-            title: "تمارين منطقتك 🗺️",
-            text: '<p class="text-gray-500 dark:text-gray-400 text-sm">هنا بتظهر التمارين وتقدر تشوف تمرينات الأبطال التانيين وتنضم ليهم.</p>',
+            title: "التمارين القريبة منك 🗺️",
+            text: '<p class="text-gray-500 dark:text-gray-400 text-sm">هنا بتظهر التمارين اللي اتنشرت في منطقتك وتقدر تبعت طلب انضمام لأي تمرينة.</p>',
             attachTo: {
                 element: "#tour-feed",
                 on: "bottom",
@@ -69,7 +69,7 @@ document.addEventListener("DOMContentLoaded", () => {
         tour.addStep({
             id: "requests",
             title: "طلبات التمرين 🤝",
-            text: '<p class="text-gray-500 dark:text-gray-400 text-sm">في الصفحة دي هتشوف طلبات التمرين اللي بعتها واللي اتبعتتلك عشان تقبلها أو ترفضها.</p>',
+            text: '<p class="text-gray-500 dark:text-gray-400 text-sm">هنا بتشوف طلبات التمارين اللي وصلتك أو اللي بعتها لتمارين تانية.</p>',
             attachTo: {
                 element: "#tour-nav-requests",
                 on: "top",
