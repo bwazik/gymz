@@ -116,6 +116,7 @@ class GamificationService
                 10,
                 "بونص ترحيب: أول تمرينة مع GymZ 🏋🏽"
             );
+            // TODO :: NOTIFICATION - Notify $newbie that they received 10 Glutes welcome bonus
 
             // Reward Referrer
             $this->awardGlutes(

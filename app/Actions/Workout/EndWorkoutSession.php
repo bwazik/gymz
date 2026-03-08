@@ -50,7 +50,7 @@ class EndWorkoutSession
                 $this->gamificationService->addReliability($userId, 3);
             }
 
-            // TODO: [NOTIFICATION] - Notify BOTH users of the reward - 10 Glutes & Reliability increase
+            // TODO :: NOTIFICATION - Notify BOTH users of the reward - 10 Glutes & Reliability increase
 
             // Proof of Sweat: If this is their very first completed session, trigger referral rewards
             foreach ([$session->user_a_id, $session->user_b_id] as $userId) {
