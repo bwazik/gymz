@@ -50,11 +50,12 @@ class SessionNoShowPenaltyNotification extends Notification
 
     protected function getIcon(): string
     {
-        return 'alert-triangle';
+        return 'heroicon-o-exclamation-triangle';
     }
-    protected function getIconBg(): string
+
+    protected function getIconColor(): string
     {
-        return 'bg-gymz-red';
+        return 'danger';
     }
     protected function getActionUrl(): string
     {

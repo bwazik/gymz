@@ -47,11 +47,12 @@ class ReferralJoinedNotification extends Notification
     }
     protected function getIcon(): string
     {
-        return 'user-plus';
+        return 'heroicon-o-user-plus';
     }
-    protected function getIconBg(): string
+
+    protected function getIconColor(): string
     {
-        return 'bg-gymz-accent';
+        return 'success';
     }
     protected function getActionUrl(): string
     {

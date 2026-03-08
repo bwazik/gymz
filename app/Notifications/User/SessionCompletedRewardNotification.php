@@ -50,11 +50,12 @@ class SessionCompletedRewardNotification extends Notification
 
     protected function getIcon(): string
     {
-        return 'award';
+        return 'heroicon-o-check-badge';
     }
-    protected function getIconBg(): string
+
+    protected function getIconColor(): string
     {
-        return 'bg-gymz-green';
+        return 'success';
     }
     protected function getActionUrl(): string
     {

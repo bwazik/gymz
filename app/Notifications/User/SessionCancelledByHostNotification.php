@@ -50,11 +50,12 @@ class SessionCancelledByHostNotification extends Notification
 
     protected function getIcon(): string
     {
-        return 'x-circle';
+        return 'heroicon-o-x-mark';
     }
-    protected function getIconBg(): string
+
+    protected function getIconColor(): string
     {
-        return 'bg-gymz-red';
+        return 'danger';
     }
     protected function getActionUrl(): string
     {

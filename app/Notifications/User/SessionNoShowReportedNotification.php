@@ -50,11 +50,12 @@ class SessionNoShowReportedNotification extends Notification
 
     protected function getIcon(): string
     {
-        return 'clipboard-check';
+        return 'heroicon-o-flag';
     }
-    protected function getIconBg(): string
+
+    protected function getIconColor(): string
     {
-        return 'bg-gymz-accent';
+        return 'info';
     }
     protected function getActionUrl(): string
     {

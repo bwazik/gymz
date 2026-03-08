@@ -50,11 +50,12 @@ class NewWorkoutRequestNotification extends Notification
 
     protected function getIcon(): string
     {
-        return 'user-plus';
+        return 'heroicon-o-hand-raised';
     }
-    protected function getIconBg(): string
+
+    protected function getIconColor(): string
     {
-        return 'bg-gymz-accent';
+        return 'info';
     }
     protected function getActionUrl(): string
     {

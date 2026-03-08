@@ -50,11 +50,12 @@ class WorkoutRequestAcceptedNotification extends Notification
 
     protected function getIcon(): string
     {
-        return 'check-circle';
+        return 'heroicon-o-check-circle';
     }
-    protected function getIconBg(): string
+
+    protected function getIconColor(): string
     {
-        return 'bg-gymz-green';
+        return 'success';
     }
     protected function getActionUrl(): string
     {
