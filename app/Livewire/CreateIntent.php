@@ -53,6 +53,12 @@ class CreateIntent extends Component
 
     public function save(CreateWorkoutIntent $action): void
     {
+        if (Auth::guest()) {
+            $this->toastError('لازم تسجل دخول الأول عشان تقدر تنزل تمرينتك!');
+            $this->redirectRoute('login', navigate: true);
+            return;
+        }
+
         if ($this->isRateLimited('create-intent', 3)) {
             return;
         }
