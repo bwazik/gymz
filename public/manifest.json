@@ -1,6 +1,7 @@
 {
     "name": "GymZ - Find Your Spotter",
     "short_name": "GymZ",
+    "gcm_sender_id": "103953800507",
     "description": "The ultimate social fitness app for Gym-goers in Egypt.",
     "start_url": "/",
     "display": "standalone",
