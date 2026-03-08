@@ -12,7 +12,7 @@ return new class extends Migration {
             $table->date('dob')->nullable()->after('gender');
             $table->tinyInteger('level')->default(0)->after('dob');
             $table->integer('glutes_balance')->default(0)->after('level');
-            $table->integer('reliability_score')->default(100)->after('glutes_balance');
+            $table->integer('reliability_score')->default(70)->after('glutes_balance');
             $table->string('image_path')->nullable()->after('reliability_score');
             $table->softDeletes();
         });

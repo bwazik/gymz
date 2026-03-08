@@ -85,6 +85,32 @@
     <!-- Bottom Navigation -->
     <x-bottom-nav />
 
+    <!-- PWA Install Prompt -->
+    <div x-data="pwaPrompt">
+        <x-modal name="pwa-install" maxWidth="sm">
+            <div class="p-6 text-center space-y-4">
+                <div
+                    class="mx-auto w-20 h-20 bg-gray-100 rounded-[2rem] shadow-sm flex items-center justify-center p-2 mb-4 dark:bg-white/10">
+                    <img src="/icons/icon-192x192.png" alt="GymZ App Icon"
+                        class="w-full h-full object-contain rounded-[1.25rem]">
+                </div>
+                <h2 class="text-xl font-bold dark:text-white">نزل تطبيق GymZ 📱</h2>
+                <p class="text-gray-500 text-sm">تجربة أسرع، إشعارات حية، ومساحة أقل من 1 ميجا!</p>
+
+                <div class="mt-6 flex flex-col gap-3">
+                    <button @click="installPwa()"
+                        class="w-full bg-gymz-accent text-white font-bold rounded-2xl py-3.5 active:scale-95 transition-all outline-none focus:ring-4 focus:ring-gymz-accent/30">
+                        تثبيت
+                    </button>
+                    <button @click="dismissPwa()"
+                        class="w-full text-gray-500 font-bold rounded-2xl py-3.5 active:scale-95 transition-all outline-none hover:bg-black/5 dark:hover:bg-white/5 focus:bg-black/5 dark:focus:bg-white/5">
+                        ليس الآن
+                    </button>
+                </div>
+            </div>
+        </x-modal>
+    </div>
+
     {{-- Session Toasts --}}
     @if (session()->has('toast'))
         <script>
@@ -123,6 +149,48 @@
             Alpine.store('nav', {
                 hidden: false
             });
+
+            Alpine.data('pwaPrompt', () => ({
+                deferredPrompt: null,
+                init() {
+                    window.addEventListener('beforeinstallprompt', (e) => {
+                        e.preventDefault();
+                        this.deferredPrompt = e;
+
+                        const dismissedAt = localStorage.getItem('gymz_pwa_dismissed');
+                        const now = new Date().getTime();
+                        const threeDays = 3 * 24 * 60 * 60 * 1000;
+
+                        if (!dismissedAt || (now - dismissedAt > threeDays)) {
+                            setTimeout(() => {
+                                window.dispatchEvent(new CustomEvent('open-modal', {
+                                    detail: 'pwa-install'
+                                }));
+                            }, 2000);
+                        }
+                    });
+                },
+                installPwa() {
+                    if (this.deferredPrompt) {
+                        this.deferredPrompt.prompt();
+                        this.deferredPrompt.userChoice.then((choiceResult) => {
+                            if (choiceResult.outcome === 'accepted') {
+                                console.log('User accepted the install prompt');
+                            }
+                            this.deferredPrompt = null;
+                            window.dispatchEvent(new CustomEvent('close-modal', {
+                                detail: 'pwa-install'
+                            }));
+                        });
+                    }
+                },
+                dismissPwa() {
+                    localStorage.setItem('gymz_pwa_dismissed', new Date().getTime());
+                    window.dispatchEvent(new CustomEvent('close-modal', {
+                        detail: 'pwa-install'
+                    }));
+                }
+            }));
         });
         // Listen at the document level — these fire regardless of component re-renders
         document.addEventListener('hide-bottom-nav', () => {

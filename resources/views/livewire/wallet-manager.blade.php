@@ -1,7 +1,7 @@
 <div class="min-h-screen p-6 pb-24" x-data x-init="$dispatch('hide-bottom-nav')" @destroyed.window="$dispatch('show-bottom-nav')">
     {{-- Header --}}
     <header class="mb-6 flex items-center justify-between">
-        <h1 class="text-2xl font-black text-gray-900 dark:text-white">المحفظة</h1>
+        <h1 class="text-2xl font-black text-gray-900 dark:text-white">الجلوتس</h1>
         <button wire:navigate href="{{ route('profile') }}" @click="$dispatch('show-bottom-nav')"
             class="text-gray-500 dark:text-gray-400 p-2 -mr-2 bg-black/5 dark:bg-white/5 rounded-full hover:bg-black/10 transition-colors">
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5"
