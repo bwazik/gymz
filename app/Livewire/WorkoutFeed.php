@@ -4,6 +4,7 @@ namespace App\Livewire;
 
 use App\Actions\Workout\SendWorkoutRequest;
 use App\Models\User;
+use App\Models\Gym;
 use App\Models\WorkoutIntent;
 use App\Models\WorkoutRequest;
 use App\Models\WorkoutTarget;
@@ -17,7 +18,7 @@ class WorkoutFeed extends Component
 {
     use WithToast, WithRateLimiting;
 
-    public string $dateFilter = 'all';
+    public ?int $gymFilter = null;
     public ?int $targetFilter = null;
     #[On('intent-created')]
     public function refreshFeed(): void
@@ -48,6 +49,7 @@ class WorkoutFeed extends Component
             'intents' => $this->getUpcomingIntents($user),
             'sentRequestIntentIds' => $this->getSentRequestIntentIds($user),
             'targets' => WorkoutTarget::all(),
+            'gyms' => Gym::active()->orderBy('name')->get(),
         ]);
     }
 
@@ -62,11 +64,9 @@ class WorkoutFeed extends Component
             $q->where('workout_target_id', $this->targetFilter);
         });
 
-        // Date Filter
-        $query->when($this->dateFilter === 'today', function ($q) {
-            $q->whereDate('start_time', today());
-        })->when($this->dateFilter === 'tomorrow', function ($q) {
-            $q->whereDate('start_time', today()->addDay());
+        // Gym Filter
+        $query->when($this->gymFilter, function ($q) {
+            $q->where('gym_id', $this->gymFilter);
         });
 
         if ($user && $user->gender) {

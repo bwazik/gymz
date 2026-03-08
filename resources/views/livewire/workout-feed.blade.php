@@ -14,22 +14,6 @@
     {{-- Smart Fillters Bar --}}
     <div class="mb-6 flex gap-2 overflow-x-auto pb-2 snap-x snap-mandatory pt-1 scroll-smooth [&::-webkit-scrollbar]:hidden"
         style="scrollbar-width: none;">
-        {{-- Date Filters --}}
-        <button wire:click="$set('dateFilter', 'all')"
-            class="shrink-0 snap-start px-4 py-2 rounded-full text-sm font-bold transition-all border {{ $dateFilter === 'all' ? 'bg-gymz-accent text-white border-transparent shadow-[0_4px_15px_rgba(255,45,85,0.2)]' : 'bg-white/50 dark:bg-[#1c1c1e]/50 text-gray-600 dark:text-gray-300 border-black/5 dark:border-white/10 hover:bg-black/5 dark:hover:bg-white/5' }}">
-            الكل
-        </button>
-        <button wire:click="$set('dateFilter', 'today')"
-            class="shrink-0 snap-start px-4 py-2 rounded-full text-sm font-bold transition-all border {{ $dateFilter === 'today' ? 'bg-gymz-accent text-white border-transparent shadow-[0_4px_15px_rgba(255,45,85,0.2)]' : 'bg-white/50 dark:bg-[#1c1c1e]/50 text-gray-600 dark:text-gray-300 border-black/5 dark:border-white/10 hover:bg-black/5 dark:hover:bg-white/5' }}">
-            النهاردة
-        </button>
-        <button wire:click="$set('dateFilter', 'tomorrow')"
-            class="shrink-0 snap-start px-4 py-2 rounded-full text-sm font-bold transition-all border {{ $dateFilter === 'tomorrow' ? 'bg-gymz-accent text-white border-transparent shadow-[0_4px_15px_rgba(255,45,85,0.2)]' : 'bg-white/50 dark:bg-[#1c1c1e]/50 text-gray-600 dark:text-gray-300 border-black/5 dark:border-white/10 hover:bg-black/5 dark:hover:bg-white/5' }}">
-            بكرة
-        </button>
-
-        <div class="shrink-0 w-px h-6 bg-black/10 dark:bg-white/10 my-auto mx-1"></div>
-
         {{-- Target Filters --}}
         <button wire:click="$set('targetFilter', null)"
             class="shrink-0 snap-start px-4 py-2 rounded-full text-sm font-bold transition-all border {{ $targetFilter === null ? 'bg-gymz-accent text-white border-transparent shadow-[0_4px_15px_rgba(255,45,85,0.2)]' : 'bg-white/50 dark:bg-[#1c1c1e]/50 text-gray-600 dark:text-gray-300 border-black/5 dark:border-white/10 hover:bg-black/5 dark:hover:bg-white/5' }}">
@@ -41,6 +25,21 @@
                 {{ $target->name }}
             </button>
         @endforeach
+
+        <div class="shrink-0 w-px h-6 bg-black/10 dark:bg-white/10 my-auto mx-1"></div>
+
+        {{-- Gym Filters --}}
+        <button wire:click="$set('gymFilter', null)"
+            class="shrink-0 snap-start px-4 py-2 rounded-full text-sm font-bold transition-all border {{ $gymFilter === null ? 'bg-gymz-accent text-white border-transparent shadow-[0_4px_15px_rgba(255,45,85,0.2)]' : 'bg-white/50 dark:bg-[#1c1c1e]/50 text-gray-600 dark:text-gray-300 border-black/5 dark:border-white/10 hover:bg-black/5 dark:hover:bg-white/5' }}">
+            كل الفروع
+        </button>
+        @foreach ($gyms as $gym)
+            <button wire:click="$set('gymFilter', {{ $gym->id }})"
+                class="shrink-0 snap-start px-4 py-2 rounded-full text-sm font-bold transition-all border {{ $gymFilter === $gym->id ? 'bg-gymz-accent text-white border-transparent shadow-[0_4px_15px_rgba(255,45,85,0.2)]' : 'bg-white/50 dark:bg-[#1c1c1e]/50 text-gray-600 dark:text-gray-300 border-black/5 dark:border-white/10 hover:bg-black/5 dark:hover:bg-white/5' }}">
+                {{ $gym->name }}
+            </button>
+        @endforeach
+
     </div>
 
     @forelse ($intents as $intent)
