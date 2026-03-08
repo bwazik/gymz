@@ -5,11 +5,14 @@ namespace App\Actions\Workout;
 use App\Enums\SessionStatus;
 use App\Models\User;
 use App\Models\WorkoutSession;
+use App\Notifications\Admin\SessionNoShowPenaltyAdminNotification;
+use App\Notifications\Admin\SessionNoShowReportedAdminNotification;
 use App\Notifications\User\SessionNoShowPenaltyNotification;
 use App\Notifications\User\SessionNoShowReportedNotification;
 use App\Services\GamificationService;
 use Exception;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Notification;
 
 class ReportSessionNoShow
 {
@@ -51,6 +54,9 @@ class ReportSessionNoShow
             if ($reporterUser = User::find($reporterId)) {
                 $reporterUser->notify(new SessionNoShowReportedNotification($session));
             }
+
+            Notification::send(User::where('is_admin', true)->get(), new SessionNoShowPenaltyAdminNotification($session, $absentUserId));
+            Notification::send(User::where('is_admin', true)->get(), new SessionNoShowReportedAdminNotification($session, $reporterId));
         });
     }
 }

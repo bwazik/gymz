@@ -5,10 +5,12 @@ namespace App\Actions\Workout;
 use App\Enums\SessionStatus;
 use App\Models\User;
 use App\Models\WorkoutSession;
+use App\Notifications\Admin\SessionCompletedRewardAdminNotification;
 use App\Notifications\User\SessionCompletedRewardNotification;
 use App\Services\GamificationService;
 use Exception;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Notification;
 
 class EndWorkoutSession
 {
@@ -55,6 +57,8 @@ class EndWorkoutSession
                     $user->notify(new SessionCompletedRewardNotification($session));
                 }
             }
+
+            Notification::send(User::where('is_admin', true)->get(), new SessionCompletedRewardAdminNotification($session));
 
             // Proof of Sweat: If this is their very first completed session, trigger referral rewards
             foreach ([$session->user_a_id, $session->user_b_id] as $userId) {

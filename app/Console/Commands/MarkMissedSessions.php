@@ -5,8 +5,10 @@ namespace App\Console\Commands;
 use App\Enums\SessionStatus;
 use App\Models\User;
 use App\Models\WorkoutSession;
+use App\Notifications\Admin\SessionMissedAdminNotification;
 use App\Notifications\User\SessionMissedNotification;
 use Illuminate\Console\Command;
+use Illuminate\Support\Facades\Notification;
 
 class MarkMissedSessions extends Command
 {
@@ -45,6 +47,8 @@ class MarkMissedSessions extends Command
         foreach ($missedSessions as $session) {
             /** @var \App\Models\WorkoutSession $session */
             $session->update(['status' => SessionStatus::Missed]);
+
+            Notification::send(User::where('is_admin', true)->get(), new SessionMissedAdminNotification($session));
 
             // Notify BOTH users that the session was marked as Missed
             foreach ([$session->user_a_id, $session->user_b_id] as $userId) {

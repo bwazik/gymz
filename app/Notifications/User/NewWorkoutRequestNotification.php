@@ -45,7 +45,7 @@ class NewWorkoutRequestNotification extends Notification
 
     protected function getMessage(): string
     {
-        return "البطل {$this->workoutRequest->sender->name} عايز يتمرن معاك في تمرينة {$this->workoutRequest->workoutIntent->workoutCategory->name}.";
+        return "الجيماوي {$this->workoutRequest->sender->name} عايز يتمرن معاك في تمرينة {$this->workoutRequest->workoutIntent->workoutCategory->name}.";
     }
 
     protected function getIcon(): string

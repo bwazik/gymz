@@ -3,9 +3,12 @@
 namespace App\Actions\Workout;
 
 use App\Enums\RequestStatus;
+use App\Models\User;
 use App\Models\WorkoutRequest;
+use App\Notifications\Admin\WorkoutRequestRejectedAdminNotification;
 use App\Notifications\User\WorkoutRequestRejectedNotification;
 use Exception;
+use Illuminate\Support\Facades\Notification;
 
 class RejectWorkoutRequest
 {
@@ -23,5 +26,6 @@ class RejectWorkoutRequest
         $request->update(['status' => RequestStatus::Rejected]);
 
         $request->sender->notify(new WorkoutRequestRejectedNotification($request));
+        Notification::send(User::where('is_admin', true)->get(), new WorkoutRequestRejectedAdminNotification($request));
     }
 }

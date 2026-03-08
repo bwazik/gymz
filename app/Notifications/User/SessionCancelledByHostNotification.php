@@ -45,7 +45,7 @@ class SessionCancelledByHostNotification extends Notification
 
     protected function getMessage(): string
     {
-        return "البطل {$this->workoutIntent->user->name} لغى تمرينة {$this->workoutIntent->workoutCategory->name}. دور على تمرينة تانية!";
+        return "الجيماوي {$this->workoutIntent->user->name} لغى تمرينة {$this->workoutIntent->workoutCategory->name}. دور على تمرينة تانية!";
     }
 
     protected function getIcon(): string

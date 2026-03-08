@@ -45,7 +45,7 @@ class ConfirmedSessionCancelledByGuestNotification extends Notification
 
     protected function getMessage(): string
     {
-        return "البطل {$this->workoutRequest->sender->name} لغى حضوره لتمرينة {$this->workoutRequest->workoutIntent->workoutCategory->name}. تم إرجاع تمرينتك للعامة عشان وحش تاني يشاركك.";
+        return "الجيماوي {$this->workoutRequest->sender->name} لغى حضوره لتمرينة {$this->workoutRequest->workoutIntent->workoutCategory->name}. تم إرجاع تمرينتك للعامة عشان جيماوي تاني يشاركك.";
     }
 
     protected function getIcon(): string

@@ -5,8 +5,10 @@ namespace App\Services;
 use App\Enums\TransactionType;
 use App\Models\GlutesTransaction;
 use App\Models\User;
+use App\Notifications\Admin\WelcomeBonusAdminNotification;
 use App\Notifications\User\WelcomeBonusNotification;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Notification;
 
 class GamificationService
 {
@@ -119,6 +121,7 @@ class GamificationService
             );
 
             $newbie->notify(new WelcomeBonusNotification(10));
+            Notification::send(User::where('is_admin', true)->get(), new WelcomeBonusAdminNotification(10, $newbie->name));
 
             // Reward Referrer
             $this->awardGlutes(

@@ -45,7 +45,7 @@ class WorkoutRequestWithdrawnNotification extends Notification
 
     protected function getMessage(): string
     {
-        return "البطل {$this->workoutRequest->sender->name} سحب طلبه للتمرينة بتاعتك.";
+        return "الجيماوي {$this->workoutRequest->sender->name} سحب طلبه للتمرينة بتاعتك.";
     }
 
     protected function getIcon(): string

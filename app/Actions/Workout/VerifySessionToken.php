@@ -5,9 +5,11 @@ namespace App\Actions\Workout;
 use App\Enums\SessionStatus;
 use App\Models\User;
 use App\Models\WorkoutSession;
+use App\Notifications\Admin\SessionStartedAdminNotification;
 use App\Notifications\User\SessionStartedNotification;
 use Exception;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Notification;
 
 class VerifySessionToken
 {
@@ -44,6 +46,8 @@ class VerifySessionToken
                     $user->notify(new SessionStartedNotification($session));
                 }
             }
+
+            Notification::send(User::where('is_admin', true)->get(), new SessionStartedAdminNotification($session));
         });
     }
 }

@@ -45,7 +45,7 @@ class SessionNoShowReportedNotification extends Notification
 
     protected function getMessage(): string
     {
-        return "شُكراً لالتزامك! تم تسجيل غياب شريكك وخصم الموثوقية منه. متيأسش، دور على وحش تاني.";
+        return "شُكراً لالتزامك! تم تسجيل غياب شريكك وخصم الموثوقية منه. متيأسش، دور على جيماوي تاني.";
     }
 
     protected function getIcon(): string

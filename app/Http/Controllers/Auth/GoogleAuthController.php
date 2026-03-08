@@ -4,10 +4,12 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
+use App\Notifications\Admin\ReferralJoinedAdminNotification;
 use App\Notifications\User\ReferralJoinedNotification;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Notification;
 use Laravel\Socialite\Facades\Socialite;
 
 class GoogleAuthController extends Controller
@@ -51,6 +53,7 @@ class GoogleAuthController extends Controller
                 if ($referredBy) {
                     if ($referrerUser = User::find($referredBy)) {
                         $referrerUser->notify(new ReferralJoinedNotification($user));
+                        Notification::send(User::where('is_admin', true)->get(), new ReferralJoinedAdminNotification($user, $referrerUser));
                     }
                 }
             } elseif (!$user->google_id) {

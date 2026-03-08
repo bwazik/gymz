@@ -45,7 +45,7 @@ class WorkoutRequestRejectedNotification extends Notification
 
     protected function getMessage(): string
     {
-        return "البطل {$this->workoutRequest->workoutIntent->user->name} اعتذر عن تمرينة {$this->workoutRequest->workoutIntent->workoutCategory->name}. دور على وحش تاني!";
+        return "الجيماوي {$this->workoutRequest->workoutIntent->user->name} اعتذر عن تمرينة {$this->workoutRequest->workoutIntent->workoutCategory->name}. دور على جيماوي تاني!";
     }
 
     protected function getIcon(): string

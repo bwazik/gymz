@@ -5,13 +5,17 @@ namespace App\Actions\Workout;
 use App\Enums\IntentStatus;
 use App\Enums\RequestStatus;
 use App\Enums\SessionStatus;
+use App\Models\User;
 use App\Models\WorkoutRequest;
 use App\Models\WorkoutSession;
+use App\Notifications\Admin\ConfirmedSessionCancelledByGuestAdminNotification;
+use App\Notifications\Admin\WorkoutRequestWithdrawnAdminNotification;
 use App\Notifications\User\ConfirmedSessionCancelledByGuestNotification;
 use App\Notifications\User\WorkoutRequestWithdrawnNotification;
 use App\Services\GamificationService;
 use Exception;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Notification;
 
 class CancelSentWorkoutRequest
 {
@@ -39,6 +43,7 @@ class CancelSentWorkoutRequest
             if ($request->status === RequestStatus::Pending) {
                 $request->delete();
                 $request->workoutIntent->user->notify(new WorkoutRequestWithdrawnNotification($request));
+                Notification::send(User::where('is_admin', true)->get(), new WorkoutRequestWithdrawnAdminNotification($request));
                 return 'تم سحب الطلب بنجاح';
             }
 
@@ -62,6 +67,7 @@ class CancelSentWorkoutRequest
                 $request->delete();
 
                 $request->workoutIntent->user->notify(new ConfirmedSessionCancelledByGuestNotification($request));
+                Notification::send(User::where('is_admin', true)->get(), new ConfirmedSessionCancelledByGuestAdminNotification($request));
                 return 'تم إلغاء الانضمام وخصم 5% من الموثوقية لأن الطلب كان مقبول.';
             }
 

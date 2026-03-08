@@ -5,10 +5,13 @@ namespace App\Actions\Workout;
 use App\Enums\IntentStatus;
 use App\Enums\RequestStatus;
 use App\Enums\SessionStatus;
+use App\Models\User;
 use App\Models\WorkoutRequest;
 use App\Models\WorkoutSession;
+use App\Notifications\Admin\WorkoutRequestAcceptedAdminNotification;
 use App\Notifications\User\WorkoutRequestAcceptedNotification;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Str;
 use Exception;
 
@@ -49,6 +52,7 @@ class AcceptWorkoutRequest
 
             // Notify GUEST that their request was accepted
             $request->sender->notify(new WorkoutRequestAcceptedNotification($request));
+            Notification::send(User::where('is_admin', true)->get(), new WorkoutRequestAcceptedAdminNotification($request));
         });
     }
 }

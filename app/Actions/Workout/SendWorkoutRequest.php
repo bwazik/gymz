@@ -3,11 +3,14 @@
 namespace App\Actions\Workout;
 
 use App\Enums\RequestStatus;
+use App\Models\User;
 use App\Models\WorkoutIntent;
 use App\Models\WorkoutRequest;
+use App\Notifications\Admin\NewWorkoutRequestAdminNotification;
 use App\Notifications\User\NewWorkoutRequestNotification;
 use Exception;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Notification;
 
 class SendWorkoutRequest
 {
@@ -41,6 +44,7 @@ class SendWorkoutRequest
         ]);
 
         $intent->user->notify(new NewWorkoutRequestNotification($workoutRequest));
+        Notification::send(User::where('is_admin', true)->get(), new NewWorkoutRequestAdminNotification($workoutRequest));
 
         return 'تم إرسال الطلب بنجاح! 💪';
     }

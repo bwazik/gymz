@@ -45,7 +45,7 @@ class WorkoutRequestAcceptedNotification extends Notification
 
     protected function getMessage(): string
     {
-        return "البطل {$this->workoutRequest->workoutIntent->user->name} وافق إنكم تتمرنوا سوا. استعد للتمرينة!";
+        return "الجيماوي {$this->workoutRequest->workoutIntent->user->name} وافق إنكم تتمرنوا سوا. استعد للتمرينة!";
     }
 
     protected function getIcon(): string
