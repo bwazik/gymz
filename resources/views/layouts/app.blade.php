@@ -108,6 +108,19 @@
             color: #ffffff !important;
             opacity: 1 !important;
         }
+
+        /* Force Centering on Mobile for Unattached Steps (Welcome Step) */
+        .shepherd-element.shepherd-centered {
+            position: fixed !important;
+            top: 50% !important;
+            left: 50% !important;
+            transform: translate(-50%, -50%) !important;
+            margin: 0 !important;
+            max-width: 90vw !important;
+            /* Prevent cut off on mobile */
+            width: 100% !important;
+            inset: auto !important;
+        }
     </style>
 
     @vite(['resources/css/app.css', 'resources/js/app.js'])
