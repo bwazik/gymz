@@ -114,7 +114,7 @@ class GamificationService
             $this->awardGlutes(
                 $newbie->id,
                 10,
-                "بونص ترحيب: أول تمرينة مع GymZ 🚀"
+                "بونص ترحيب: أول تمرينة مع GymZ 🏋🏽"
             );
 
             // Reward Referrer

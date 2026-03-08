@@ -70,7 +70,7 @@ class SessionManager extends Component
         try {
             $action->execute($session, Auth::id(), $color, $location);
             unset($this->activeSessions); // refresh computed property
-            $this->toastSuccess('تم تحديث حالتك بنجاح 📍');
+            $this->toastSuccess('تم تحديث مكانك بنجاح 📍');
         } catch (Exception $e) {
             $this->toastError($e->getMessage());
         }

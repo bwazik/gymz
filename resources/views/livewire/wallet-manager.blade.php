@@ -29,7 +29,7 @@
                     </svg>
                 </div>
                 <div>
-                    <h3 class="text-base font-bold text-gray-900 dark:text-white">اعزم بطل 🔗</h3>
+                    <h3 class="text-base font-bold text-gray-900 dark:text-white">اعزم جيماوي 🔗</h3>
                     <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">أي حد هيسجل من اللينك بتاعك، هتكسبوا إنتو
                         الاتنين <span class="text-gymz-accent font-bold">10 جلوتس</span> بعد أول تمرينة ليه 🏋🏽</p>
                 </div>

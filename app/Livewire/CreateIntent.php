@@ -10,6 +10,7 @@ use App\Models\WorkoutTarget;
 use App\Traits\Livewire\WithRateLimiting;
 use App\Traits\Livewire\WithToast;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\ValidationException;
 use Livewire\Attributes\On;
 use Livewire\Component;
@@ -75,11 +76,11 @@ class CreateIntent extends Component
         $this->dispatch('intent-created');
         $this->targets = collect();
 
-        // 🚀 Viral Share Hook: Instead of closing, show the share screen
+        // 🏋🏽 Viral Share Hook: Instead of closing, show the share screen
         /** @var \App\Models\User $user */
-        $user = \Illuminate\Support\Facades\Auth::user();
+        $user = Auth::user();
         $this->shareUrl = url('/login?ref=' . $user->referral_code);
-        $this->shareMessage = "أنا نازل تمرين.. مين وحش هيقبل التحدي؟ سجل من هنا وهنكسب إحنا الاتنين نقط!";
+        $this->shareMessage = "أنا نازل الجيم ومحتاج حد يتمرن معايا! 🏋️‍♂️ سجل على GymZ من اللينك بتاعي، وأول ما نخلص تمرينة إحنا الاتنين هناخد نقط (جلوتس) نشتري بيها ريد بول، بروتين بار، أو حتى نخصم من اشتراك الجيم! يلا بينا؟";
 
         $this->showShareScreen = true;
 

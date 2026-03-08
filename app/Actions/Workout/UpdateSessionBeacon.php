@@ -21,12 +21,12 @@ class UpdateSessionBeacon
         // Only allow status updates if the session is scheduled
         // (If it's in progress, they already met)
         if ($session->status !== SessionStatus::Scheduled) {
-            throw new Exception('لا يمكن تحديث حالتك إلا قبل بدء التمرينة.');
+            throw new Exception('مينفعش تحدث مكانك إلا قبل بدء التمرينة.');
         }
 
         // Only allow updates within 15 minutes of the workout start time
         if ($session->workoutIntent->start_time > now()->addMinutes(15)) {
-            throw new Exception('تقدر تحدث الرادار بتاعك قبل التمرينة بـ 15 دقيقة بس.');
+            throw new Exception('تقدر تحدث مكانك قبل التمرينة بـ 15 دقيقة بس.');
         }
 
         $statusData = [

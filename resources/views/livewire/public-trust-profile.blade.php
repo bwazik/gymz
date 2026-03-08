@@ -55,7 +55,7 @@
                             class="bg-black/5 dark:bg-white/5 border border-black/5 dark:border-white/10 rounded-2xl p-4 flex flex-col items-center justify-center text-center">
                             <span
                                 class="text-3xl font-black text-gray-900 dark:text-white">{{ $completedSessionsCount }}</span>
-                            <span class="text-xs font-semibold text-gray-500 dark:text-gray-400 mt-1">تمرين مكتمل</span>
+                            <span class="text-xs font-semibold text-gray-500 dark:text-gray-400 mt-1">تمرينة مكتملة</span>
                         </div>
 
                         {{-- Reliability Score --}}
@@ -94,7 +94,7 @@
                         </div>
                         <button type="button" @click="open = false"
                             class="px-5 py-2 rounded-xl bg-gray-200/50 dark:bg-white/10 text-gray-700 dark:text-white/70 font-bold text-sm active:scale-95 transition-all">
-                            قفل
+                            إغلاق
                         </button>
                     </div>
                 </div>

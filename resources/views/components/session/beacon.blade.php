@@ -32,7 +32,7 @@
                         <path stroke-linecap="round" stroke-linejoin="round"
                             d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1115 0z" />
                     </svg>
-                    حالة الشريك
+                    مكان الشريك
                 </h3>
                 @if ($partnerStatus)
                     <p class="text-sm font-semibold text-gray-900 dark:text-gray-100 flex items-center gap-1.5 mt-2">
@@ -45,7 +45,7 @@
                     <p class="text-[10px] text-gray-500 mt-1.5">حدثت منذ
                         {{ \Carbon\Carbon::parse($partnerStatus['updated_at'])->diffForHumans() }}</p>
                 @else
-                    <p class="text-sm text-gray-500 dark:text-gray-400 mt-1 font-medium italic">شريكك لم يحدد مكانه بعد
+                    <p class="text-sm text-gray-500 dark:text-gray-400 mt-1 font-medium italic">شريكك محددش مكانه لسا
                     </p>
                 @endif
             </div>
@@ -87,7 +87,7 @@
                     <path stroke-linecap="round" stroke-linejoin="round"
                         d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z" />
                 </svg>
-                تحديد مكاني (حالتي)
+                تحديد مكاني
             </h3>
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
                 stroke="currentColor" class="w-4 h-4 transition-transform duration-300"
