@@ -14,7 +14,7 @@
         'bg-gray-500' => 'رصاصي',
     ];
 
-    $locations = ['الاستقبال', 'منطقة الكارديو', 'الأوزان الحرة', 'الأجهزة', 'في الطريق'];
+    $locations = ['الريسيبشن', 'جوا الجيم', 'في الطريق', 'في المواصلات'];
 @endphp
 
 <div class="mb-6 space-y-4">
@@ -36,7 +36,7 @@
                 </h3>
                 @if ($partnerStatus)
                     <p class="text-sm font-semibold text-gray-900 dark:text-gray-100 flex items-center gap-1.5 mt-2">
-                        يرتدي <span
+                        لابس تيشيرت لونه <span
                             class="w-3 h-3 rounded-full inline-block border border-gray-300 {{ $partnerStatus['color'] }}"></span>
                         وموجود في
                         <span
@@ -61,8 +61,9 @@
         </div>
     </div>
 
-    {{-- My Beacon --}}
+    {{-- My Beacon (Collapsible) --}}
     <div x-data="{
+        expanded: false,
         selectedColor: '{{ $myStatus['color'] ?? '' }}',
         selectedLocation: '{{ $myStatus['location'] ?? '' }}',
         isUpdating: false,
@@ -71,67 +72,83 @@
             this.isUpdating = true;
             $wire.updateBeacon({{ $session->id }}, this.selectedColor, this.selectedLocation).then(() => {
                 this.isUpdating = false;
+                this.expanded = false;
             });
         }
     }"
-        class="bg-black/5 dark:bg-white/5 border border-black/5 dark:border-white/10 rounded-2xl p-4">
+        class="bg-black/5 dark:bg-white/5 border border-black/5 dark:border-white/10 rounded-2xl overflow-hidden mt-4">
 
-        <h3 class="text-xs font-bold text-gray-500 dark:text-gray-400 mb-3 flex items-center gap-1.5">
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
-                stroke="currentColor" class="w-3.5 h-3.5">
-                <path stroke-linecap="round" stroke-linejoin="round"
-                    d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z" />
-            </svg>
-            حالة المقابلة (حالتي)
-        </h3>
-
-        {{-- Color Picker --}}
-        <div class="mb-4">
-            <p class="text-[10px] uppercase font-bold text-gray-400 mb-2">لون التيشيرت</p>
-            <div class="flex gap-2 flex-wrap">
-                @foreach ($colors as $bg => $name)
-                    <button type="button" @click="selectedColor = '{{ $bg }}'"
-                        :class="selectedColor === '{{ $bg }}' ?
-                            'ring-2 ring-offset-2 ring-gymz-accent dark:ring-offset-[#1c1c1e] scale-110' :
-                            'opacity-70 grayscale-[50%]'"
-                        class="w-8 h-8 rounded-full {{ $bg }} border border-gray-300 dark:border-gray-600 transition-all active:scale-95 shadow-sm"
-                        title="{{ $name }}">
-                    </button>
-                @endforeach
-            </div>
-        </div>
-
-        {{-- Location Picker --}}
-        <div class="mb-5">
-            <p class="text-[10px] uppercase font-bold text-gray-400 mb-2">مكاني دلوقتي</p>
-            <div class="flex gap-2 flex-wrap">
-                @foreach ($locations as $loc)
-                    <button type="button" @click="selectedLocation = '{{ $loc }}'"
-                        :class="selectedLocation === '{{ $loc }}' ? 'bg-gymz-accent text-white border-transparent' :
-                            'bg-white dark:bg-[#2c2c2e] text-gray-700 dark:text-gray-300 border-black/10 dark:border-white/10 hover:bg-black/5'"
-                        class="px-3 py-1.5 rounded-xl text-xs font-bold border transition-colors shadow-sm">
-                        {{ $loc }}
-                    </button>
-                @endforeach
-            </div>
-        </div>
-
-        {{-- Update Button --}}
-        <div class="mt-4">
-            <x-ios-button @click="update()" x-bind:disabled="!selectedColor || !selectedLocation || isUpdating"
-                x-bind:class="(!selectedColor || !selectedLocation) ? '!bg-black/5 dark:!bg-white/5 !text-gray-400 !shadow-none' : ''"
-                class="w-full">
-                <svg x-show="isUpdating" class="animate-spin -ml-1 mr-2 h-4 w-4" xmlns="http://www.w3.org/2000/svg"
-                    fill="none" viewBox="0 0 24 24">
-                    <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor"
-                        stroke-width="4">
-                    </circle>
-                    <path class="opacity-75" fill="currentColor"
-                        d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z">
-                    </path>
+        {{-- Toggle Button --}}
+        <button @click="expanded = !expanded" type="button"
+            class="w-full p-4 flex items-center justify-between text-gray-500 dark:text-gray-400 hover:bg-black/5 dark:hover:bg-white/5 transition-colors">
+            <h3 class="text-xs font-bold flex items-center gap-1.5 cursor-pointer">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
+                    stroke="currentColor" class="w-3.5 h-3.5">
+                    <path stroke-linecap="round" stroke-linejoin="round"
+                        d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z" />
                 </svg>
-                <span x-text="isUpdating ? 'جاري التحديث...' : 'تحديث مكاني'"></span>
-            </x-ios-button>
+                تحديد مكاني (حالتي)
+            </h3>
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
+                stroke="currentColor" class="w-4 h-4 transition-transform duration-300"
+                :class="expanded ? 'rotate-180' : ''">
+                <path stroke-linecap="round" stroke-linejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" />
+            </svg>
+        </button>
+
+        {{-- Collapsible Form --}}
+        <div x-show="expanded" x-collapse>
+            <div class="px-4 pb-4 border-t border-black/5 dark:border-white/10 pt-4">
+
+                {{-- Color Picker --}}
+                <div class="mb-4">
+                    <p class="text-[10px] uppercase font-bold text-gray-400 mb-2">لون التيشيرت</p>
+                    <div class="flex gap-2 flex-wrap">
+                        @foreach ($colors as $bg => $name)
+                            <button type="button" @click="selectedColor = '{{ $bg }}'"
+                                :class="selectedColor === '{{ $bg }}' ?
+                                    'ring-2 ring-offset-2 ring-gymz-accent dark:ring-offset-[#1c1c1e] scale-110' :
+                                    'opacity-70 grayscale-[50%]'"
+                                class="w-8 h-8 rounded-full {{ $bg }} border border-gray-300 dark:border-gray-600 transition-all active:scale-95 shadow-sm"
+                                title="{{ $name }}">
+                            </button>
+                        @endforeach
+                    </div>
+                </div>
+
+                {{-- Location Picker --}}
+                <div class="mb-5">
+                    <p class="text-[10px] uppercase font-bold text-gray-400 mb-2">مكاني دلوقتي</p>
+                    <div class="flex gap-2 flex-wrap">
+                        @foreach ($locations as $loc)
+                            <button type="button" @click="selectedLocation = '{{ $loc }}'"
+                                :class="selectedLocation === '{{ $loc }}' ?
+                                    'bg-gymz-accent text-white border-transparent' :
+                                    'bg-white dark:bg-[#2c2c2e] text-gray-700 dark:text-gray-300 border-black/10 dark:border-white/10 hover:bg-black/5'"
+                                class="px-3 py-1.5 rounded-xl text-xs font-bold border transition-colors shadow-sm">
+                                {{ $loc }}
+                            </button>
+                        @endforeach
+                    </div>
+                </div>
+
+                {{-- Update Button --}}
+                <div class="mt-4">
+                    <x-ios-button @click="update()" x-bind:disabled="!selectedColor || !selectedLocation || isUpdating"
+                        x-bind:class="(!selectedColor || !selectedLocation) ?
+                        '!bg-black/5 dark:!bg-white/5 !text-gray-400 !shadow-none' : ''"
+                        class="w-full">
+                        <svg x-show="isUpdating" class="animate-spin -ml-1 mr-2 h-4 w-4"
+                            xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor"
+                                stroke-width="4">
+                            </circle>
+                            <path class="opacity-75" fill="currentColor"
+                                d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z">
+                            </path>
+                        </svg>
+                        <span x-text="isUpdating ? 'جاري التحديث...' : 'تحديث مكاني'"></span>
+                    </x-ios-button>
+                </div>
+            </div>
         </div>
-    </div>
-</div>
