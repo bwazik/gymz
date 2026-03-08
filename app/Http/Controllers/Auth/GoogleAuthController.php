@@ -46,6 +46,10 @@ class GoogleAuthController extends Controller
                     'image_path' => $googleUser->getAvatar(),
                     'referred_by' => $referredBy,
                 ]);
+
+                if ($referredBy) {
+                    // TODO :: NOTIFICATION - Notify $referrer that $user just joined using their link, but remind them they both need to workout to get the 10 Glutes!
+                }
             } elseif (!$user->google_id) {
                 // Link account if they previously signed up without Google (or if we import users)
                 $user->update([
