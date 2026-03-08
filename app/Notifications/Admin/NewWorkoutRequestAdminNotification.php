@@ -23,7 +23,7 @@ class NewWorkoutRequestAdminNotification extends Notification
     public function toDatabase($notifiable): array
     {
         return FilamentNotification::make()
-            ->title('طلب انضمام لتمرينة 🏋🏽')
+            ->title('طلب انضمام لتمرينة')
             ->body("الچيماوي {$this->workoutRequest->sender->name} طلب الانضمام لتمرينة {$this->workoutRequest->workoutIntent->user->name}.")
             ->icon('heroicon-o-hand-raised')
             ->iconColor('info')

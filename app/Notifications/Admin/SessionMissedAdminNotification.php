@@ -23,7 +23,7 @@ class SessionMissedAdminNotification extends Notification
     public function toDatabase($notifiable): array
     {
         return FilamentNotification::make()
-            ->title('تمرينة ضائعة (غياب) ⏰')
+            ->title('تمرينة ضائعة (غياب)')
             ->body("التمرينة بين چيماوي ID {$this->session->user_a_id} و چيماوي ID {$this->session->user_b_id} انتهت بدون حضور الطرفين.")
             ->icon('heroicon-o-clock')
             ->iconColor('warning')

@@ -22,7 +22,7 @@ class WelcomeBonusAdminNotification extends Notification
     public function toDatabase($notifiable): array
     {
         return FilamentNotification::make()
-            ->title('بونص الترحيب 🎁')
+            ->title('بونص الترحيب')
             ->body("الچيماوي {$this->userName} حصل على بونص ترحيب {$this->glutesAmount} جروتز.")
             ->icon('heroicon-o-gift')
             ->iconColor('primary')

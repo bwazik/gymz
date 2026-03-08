@@ -23,7 +23,7 @@ class SessionNoShowPenaltyAdminNotification extends Notification
     public function toDatabase($notifiable): array
     {
         return FilamentNotification::make()
-            ->title('تطبيق عقوبة غياب 🔻')
+            ->title('تطبيق عقوبة غياب')
             ->body("الچيماوي رقم {$this->absentUserId} حصل على عقوبة خصم موثوقية بسبب عدم حضوره التمرينة المجدولة.")
             ->icon('heroicon-o-exclamation-triangle')
             ->iconColor('danger')

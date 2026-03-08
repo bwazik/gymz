@@ -23,7 +23,7 @@ class WorkoutRequestAcceptedAdminNotification extends Notification
     public function toDatabase($notifiable): array
     {
         return FilamentNotification::make()
-            ->title('قبول طلب انضمام ✅')
+            ->title('قبول طلب انضمام')
             ->body("الچيماوي {$this->workoutRequest->workoutIntent->user->name} وافق على انضمام {$this->workoutRequest->sender->name} للتمرينة.")
             ->icon('heroicon-o-check-circle')
             ->iconColor('success')

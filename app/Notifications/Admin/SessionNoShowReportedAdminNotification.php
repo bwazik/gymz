@@ -23,7 +23,7 @@ class SessionNoShowReportedAdminNotification extends Notification
     public function toDatabase($notifiable): array
     {
         return FilamentNotification::make()
-            ->title('تم التبليغ عن غياب 🚩')
+            ->title('تم التبليغ عن غياب')
             ->body("الچيماوي رقم {$this->reporterId} قام بالتبليغ عن غياب الطرف الآخر في التمرينة رقم #{$this->session->id}.")
             ->icon('heroicon-o-flag')
             ->iconColor('info')

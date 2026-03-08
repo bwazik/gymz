@@ -23,7 +23,7 @@ class SessionStartedAdminNotification extends Notification
     public function toDatabase($notifiable): array
     {
         return FilamentNotification::make()
-            ->title('بدء تمرينة ⏱️')
+            ->title('بدء تمرينة')
             ->body("التمرينة بين چيماوي ID {$this->session->user_a_id} و چيماوي ID {$this->session->user_b_id} بدأت رسمياً.")
             ->icon('heroicon-o-play')
             ->iconColor('success')

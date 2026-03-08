@@ -23,7 +23,7 @@ class SessionCancelledByHostAdminNotification extends Notification
     public function toDatabase($notifiable): array
     {
         return FilamentNotification::make()
-            ->title('إلغاء تمرينة (من المضيف) ⚠️')
+            ->title('إلغاء تمرينة (من المضيف)')
             ->body("الچيماوي {$this->workoutIntent->user->name} ألغى تمرينة قام بنشرها.")
             ->icon('heroicon-o-x-mark')
             ->iconColor('danger')
