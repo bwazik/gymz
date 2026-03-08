@@ -1,0 +1,71 @@
+<?php
+
+namespace App\Notifications\Channels;
+
+use Illuminate\Notifications\Notification;
+use Illuminate\Support\Facades\Log;
+use Kreait\Firebase\Contract\Messaging;
+use Kreait\Firebase\Messaging\CloudMessage;
+use Kreait\Firebase\Messaging\Notification as FcmNotification;
+
+class FcmChannel
+{
+    protected Messaging $messaging;
+
+    public function __construct(Messaging $messaging)
+    {
+        $this->messaging = $messaging;
+    }
+
+    /**
+     * Send the given notification.
+     *
+     * @param  mixed  $notifiable
+     * @param  \Illuminate\Notifications\Notification  $notification
+     * @return void
+     */
+    public function send($notifiable, Notification $notification): void
+    {
+        // Check if the user has an FCM token
+        if (!$notifiable->fcm_token) {
+            return;
+        }
+
+        // The notification class must implement a `toFcm` method (or fallback to toDatabase)
+        if (!method_exists($notification, 'toFcm')) {
+            // Fallback logic using standard database structure if toFcm isn't defined explicitly
+            $data = $notification->toDatabase($notifiable);
+
+            $title = $data['title'] ?? 'GymZ';
+            $body = $data['message'] ?? 'You have a new notification';
+            $url = $data['url'] ?? '/';
+            $type = $data['type'] ?? 'info';
+
+        } else {
+            // Alternatively, they can return custom array/object here
+            $data = $notification->toFcm($notifiable);
+            $title = $data['title'];
+            $body = $data['body'];
+            $url = $data['url'] ?? '/';
+            $type = $data['type'] ?? 'info';
+        }
+
+        try {
+            // Construct the push message
+            $message = CloudMessage::new()
+                ->withChangedTarget('token', $notifiable->fcm_token)
+                ->withNotification(FcmNotification::create($title, $body))
+                ->withData([
+                    'url' => $url,
+                    'type' => $type,
+                ]);
+
+            $this->messaging->send($message);
+        } catch (\Exception $e) {
+            Log::error('FCM Push Notification failed: ' . $e->getMessage(), [
+                'user_id' => $notifiable->id,
+                'fcm_token' => $notifiable->fcm_token
+            ]);
+        }
+    }
+}

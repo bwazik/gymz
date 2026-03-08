@@ -39,4 +39,20 @@ Route::middleware(['auth', 'onboarded'])->group(function () {
         $request->user()->update(['fcm_token' => $request->token]);
         return response()->json(['message' => 'Token saved successfully']);
     })->name('fcm.token');
+
+    // TEST: Trigger Push Notification
+    Route::get('/test-push', function (\Illuminate\Http\Request $request) {
+        if (!$request->user()->fcm_token) {
+            return "You don't have an FCM token saved.";
+        }
+
+        $message = \Kreait\Firebase\Messaging\CloudMessage::new()
+            ->withChangedTarget('token', $request->user()->fcm_token)
+            ->withNotification(\Kreait\Firebase\Messaging\Notification::create('GymZ Time! 🏋️‍♂️', 'Your mock push notification has arrived!'))
+            ->withData(['url' => '/', 'type' => 'test']);
+
+        app('firebase.messaging')->send($message);
+
+        return "Push sent to: " . $request->user()->fcm_token;
+    });
 });
