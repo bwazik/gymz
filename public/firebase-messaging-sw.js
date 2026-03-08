@@ -6,7 +6,7 @@ importScripts(
 );
 
 const firebaseConfig = {
-    apiKey: "AIzaSyCYa0KNBT6eh6QIbHrSkePViG97khXVXyk",
+    apiKey: "AIzaSyDhFdsXNsQy5erfcuLwCzJZuH2kcWwRxws",
     authDomain: "gymz-d00e0.firebaseapp.com",
     projectId: "gymz-d00e0",
     storageBucket: "gymz-d00e0.firebasestorage.app",
