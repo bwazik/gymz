@@ -6,9 +6,8 @@ window.requestFCMToken = async () => {
     try {
         const permission = await Notification.requestPermission();
         if (permission === "granted") {
-            const registration = await navigator.serviceWorker.register(
-                "/firebase-messaging-sw.js",
-            );
+            const registration =
+                await navigator.serviceWorker.register("/sw.js");
 
             // Wait until it's active
             await navigator.serviceWorker.ready;
