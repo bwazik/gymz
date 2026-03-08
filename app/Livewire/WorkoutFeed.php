@@ -6,6 +6,7 @@ use App\Actions\Workout\SendWorkoutRequest;
 use App\Models\User;
 use App\Models\WorkoutIntent;
 use App\Models\WorkoutRequest;
+use App\Models\WorkoutTarget;
 use App\Traits\Livewire\WithRateLimiting;
 use App\Traits\Livewire\WithToast;
 use Illuminate\Support\Facades\Auth;
@@ -15,6 +16,9 @@ use Livewire\Component;
 class WorkoutFeed extends Component
 {
     use WithToast, WithRateLimiting;
+
+    public string $dateFilter = 'all';
+    public ?int $targetFilter = null;
     #[On('intent-created')]
     public function refreshFeed(): void
     {
@@ -43,6 +47,7 @@ class WorkoutFeed extends Component
         return view('livewire.workout-feed', [
             'intents' => $this->getUpcomingIntents($user),
             'sentRequestIntentIds' => $this->getSentRequestIntentIds($user),
+            'targets' => WorkoutTarget::all(),
         ]);
     }
 
@@ -51,6 +56,18 @@ class WorkoutFeed extends Component
         $query = WorkoutIntent::with(['user', 'gym', 'workoutTarget'])
             ->active()
             ->upcoming();
+
+        // Target Filter
+        $query->when($this->targetFilter, function ($q) {
+            $q->where('workout_target_id', $this->targetFilter);
+        });
+
+        // Date Filter
+        $query->when($this->dateFilter === 'today', function ($q) {
+            $q->whereDate('start_time', today());
+        })->when($this->dateFilter === 'tomorrow', function ($q) {
+            $q->whereDate('start_time', today()->addDay());
+        });
 
         if ($user && $user->gender) {
             $query->whereHas('user', function ($q) use ($user) {

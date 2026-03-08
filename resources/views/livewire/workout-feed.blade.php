@@ -11,6 +11,38 @@
         </div>
     </div>
 
+    {{-- Smart Fillters Bar --}}
+    <div class="mb-6 flex gap-2 overflow-x-auto pb-2 snap-x snap-mandatory pt-1 scroll-smooth [&::-webkit-scrollbar]:hidden"
+        style="scrollbar-width: none;">
+        {{-- Date Filters --}}
+        <button wire:click="$set('dateFilter', 'all')"
+            class="shrink-0 snap-start px-4 py-2 rounded-full text-sm font-bold transition-all border {{ $dateFilter === 'all' ? 'bg-gymz-accent text-white border-transparent shadow-[0_4px_15px_rgba(255,45,85,0.2)]' : 'bg-white/50 dark:bg-[#1c1c1e]/50 text-gray-600 dark:text-gray-300 border-black/5 dark:border-white/10 hover:bg-black/5 dark:hover:bg-white/5' }}">
+            الكل
+        </button>
+        <button wire:click="$set('dateFilter', 'today')"
+            class="shrink-0 snap-start px-4 py-2 rounded-full text-sm font-bold transition-all border {{ $dateFilter === 'today' ? 'bg-gymz-accent text-white border-transparent shadow-[0_4px_15px_rgba(255,45,85,0.2)]' : 'bg-white/50 dark:bg-[#1c1c1e]/50 text-gray-600 dark:text-gray-300 border-black/5 dark:border-white/10 hover:bg-black/5 dark:hover:bg-white/5' }}">
+            النهاردة
+        </button>
+        <button wire:click="$set('dateFilter', 'tomorrow')"
+            class="shrink-0 snap-start px-4 py-2 rounded-full text-sm font-bold transition-all border {{ $dateFilter === 'tomorrow' ? 'bg-gymz-accent text-white border-transparent shadow-[0_4px_15px_rgba(255,45,85,0.2)]' : 'bg-white/50 dark:bg-[#1c1c1e]/50 text-gray-600 dark:text-gray-300 border-black/5 dark:border-white/10 hover:bg-black/5 dark:hover:bg-white/5' }}">
+            بكرة
+        </button>
+
+        <div class="shrink-0 w-px h-6 bg-black/10 dark:bg-white/10 my-auto mx-1"></div>
+
+        {{-- Target Filters --}}
+        <button wire:click="$set('targetFilter', null)"
+            class="shrink-0 snap-start px-4 py-2 rounded-full text-sm font-bold transition-all border {{ $targetFilter === null ? 'bg-gymz-accent text-white border-transparent shadow-[0_4px_15px_rgba(255,45,85,0.2)]' : 'bg-white/50 dark:bg-[#1c1c1e]/50 text-gray-600 dark:text-gray-300 border-black/5 dark:border-white/10 hover:bg-black/5 dark:hover:bg-white/5' }}">
+            كل التمرين
+        </button>
+        @foreach ($targets as $target)
+            <button wire:click="$set('targetFilter', {{ $target->id }})"
+                class="shrink-0 snap-start px-4 py-2 rounded-full text-sm font-bold transition-all border {{ $targetFilter === $target->id ? 'bg-gymz-accent text-white border-transparent shadow-[0_4px_15px_rgba(255,45,85,0.2)]' : 'bg-white/50 dark:bg-[#1c1c1e]/50 text-gray-600 dark:text-gray-300 border-black/5 dark:border-white/10 hover:bg-black/5 dark:hover:bg-white/5' }}">
+                {{ $target->name }}
+            </button>
+        @endforeach
+    </div>
+
     @forelse ($intents as $intent)
         {{-- Apple Glass Card --}}
         <x-glass-card class="mb-4">
@@ -119,7 +151,7 @@
         </x-glass-card>
     @empty
         {{-- Empty State --}}
-        <x-glass-card class="p-8 text-center">
+        <x-glass-card class="p-8 text-center" x-data>
             <div
                 class="w-16 h-16 mx-auto mb-4 rounded-full bg-gray-100 dark:bg-white/5 flex items-center justify-center">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
@@ -128,8 +160,17 @@
                         d="M15.182 16.318A4.486 4.486 0 0012.016 15a4.486 4.486 0 00-3.198 1.318M21 12a9 9 0 11-18 0 9 9 0 0118 0zM9.75 9.75c0 .414-.168.75-.375.75S9 10.164 9 9.75 9.168 9 9.375 9s.375.336.375.75zm-.375 0h.008v.015h-.008V9.75zm5.625 0c0 .414-.168.75-.375.75s-.375-.336-.375-.75.168-.75.375-.75.375.336.375.75zm-.375 0h.008v.015h-.008V9.75z" />
                 </svg>
             </div>
-            <h3 class="text-gray-700 dark:text-white/70 font-medium mb-1">مفيش حد لسه نزل تمرين</h3>
-            <p class="text-sm text-gray-500 dark:text-gray-400">نزل تمرين و خلي الناس تيجي تتمرن معاك</p>
+            <h3 class="text-gray-700 dark:text-white/70 font-medium mb-1">مفيش تمارين بالمواصفات دي دلوقتي</h3>
+            <p class="text-sm text-gray-500 dark:text-gray-400 mb-6">خليك إنت المبادر ونزل تمرينة! 💪</p>
+
+            <button @click="$dispatchTo('create-intent', 'open-modal')"
+                class="px-6 py-3 rounded-2xl bg-gymz-accent text-white font-bold text-sm shadow-lg shadow-gymz-accent/20 active:scale-95 transition-all w-full flex justify-center items-center gap-2">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5"
+                    stroke="currentColor" class="w-5 h-5">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+                </svg>
+                نزل تمرينة
+            </button>
         </x-glass-card>
     @endforelse
 

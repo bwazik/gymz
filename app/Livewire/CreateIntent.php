@@ -11,6 +11,7 @@ use App\Traits\Livewire\WithRateLimiting;
 use App\Traits\Livewire\WithToast;
 use Illuminate\Support\Collection;
 use Illuminate\Validation\ValidationException;
+use Livewire\Attributes\On;
 use Livewire\Component;
 
 class CreateIntent extends Component
@@ -22,6 +23,12 @@ class CreateIntent extends Component
     public Collection $gyms;
     public Collection $categories;
     public Collection $targets;
+
+    #[On('open-modal')]
+    public function openModal(): void
+    {
+        $this->showModal = true;
+    }
 
     public function mount(): void
     {
