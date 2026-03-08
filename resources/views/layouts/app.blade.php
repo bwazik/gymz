@@ -109,17 +109,10 @@
             opacity: 1 !important;
         }
 
-        /* Force Centering on Mobile for Unattached Steps (Welcome Step) */
         .shepherd-element.shepherd-centered {
             position: fixed !important;
-            top: 50% !important;
-            left: 50% !important;
-            transform: translate(-50%, -50%) !important;
-            margin: 0 !important;
-            max-width: 90vw !important;
-            /* Prevent cut off on mobile */
-            width: 100% !important;
-            inset: auto !important;
+            top: 35% !important;
+            right: 5% !important;
         }
     </style>
 
@@ -349,6 +342,11 @@
                     id: 'welcome',
                     title: 'أهلاً بيك في GymZ 🏋🏽',
                     text: '<p class="text-gray-500 dark:text-gray-400 text-sm">خلينا ناخد جولة سريعة في 10 ثواني عشان تعرف إزاي تستخدم الأبلكيشن.</p>',
+                    attachTo: {
+                        element: 'body',
+                        on: 'center'
+                    },
+                    classes: 'shepherd-centered bg-white/70 dark:bg-[#1c1c1e]/70 backdrop-blur-3xl border border-black/5 dark:border-white/10 shadow-2xl text-gray-900 dark:text-white',
                     buttons: [{
                         text: 'يلا بينا',
                         classes: 'bg-gymz-accent text-white font-bold rounded-2xl py-3.5 mt-2 w-full transition-all active:scale-95 text-center flex justify-center shadow-md',
