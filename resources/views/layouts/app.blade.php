@@ -35,6 +35,7 @@
 
     <x-toaster />
     <x-ios-alert />
+    <livewire:public-trust-profile />
 
     <main class="w-full max-w-md mx-auto relative min-h-screen pb-32 pt-6 px-4 shadow-2xl bg-white/30 dark:bg-white/5">
         <!-- Header -->

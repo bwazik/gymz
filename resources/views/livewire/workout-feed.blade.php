@@ -55,9 +55,23 @@
             {{-- Header: Avatar + Name --}}
             <div class="flex items-center gap-3 mb-4">
                 @auth
-                    <img src="{{ $intent->user->image_path ? (Str::startsWith($intent->user->image_path, 'http') ? $intent->user->image_path : Storage::url($intent->user->image_path)) : asset('images/default.jpg') }}"
-                        referrerpolicy="no-referrer" alt="{{ $intent->user->name }}"
-                        class="w-11 h-11 rounded-full object-cover border border-black/5 dark:border-white/10">
+                    <button type="button" wire:click="$dispatch('openTrustProfile', { userId: {{ $intent->user_id }} })"
+                        class="relative group focus:outline-none active:scale-95 transition-transform duration-200">
+                        <img src="{{ $intent->user->image_path ? (Str::startsWith($intent->user->image_path, 'http') ? $intent->user->image_path : Storage::url($intent->user->image_path)) : asset('images/default.jpg') }}"
+                            referrerpolicy="no-referrer" alt="{{ $intent->user->name }}"
+                            class="w-11 h-11 rounded-full object-cover border border-black/5 dark:border-white/10 ring-2 ring-transparent group-hover:ring-gymz-accent/50 group-active:ring-gymz-accent ring-offset-2 ring-offset-[#f2f2f7] dark:ring-offset-[#000000] transition-all">
+
+                        {{-- Indicator Badge --}}
+                        <div
+                            class="absolute -bottom-0.5 -right-0.5 bg-white dark:bg-[#1c1c1e] text-gymz-accent rounded-full p-0.5 shadow-sm border border-black/5 dark:border-white/10 flex items-center justify-center">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"
+                                class="w-3.5 h-3.5">
+                                <path fill-rule="evenodd"
+                                    d="M12.515 2.276a1.5 1.5 0 0 0-1.03 0 11.812 11.812 0 0 0-6.22 4.414A.75.75 0 0 0 5 7.15c0 5.483 3.037 10.38 7.5 13.064a1.5 1.5 0 0 0 1.5 0C18.463 17.53 21.5 12.632 21.5 7.15a.75.75 0 0 0-.265-.46A11.81 11.81 0 0 0 15 2.276Zm-1.896 9.544a.75.75 0 0 0-1.157.94l2.5 3a.75.75 0 0 0 1.152.008l4-4.5a.75.75 0 1 0-1.124-1.002l-3.415 3.842-1.956-2.288Z"
+                                    clip-rule="evenodd" />
+                            </svg>
+                        </div>
+                    </button>
                     <div>
                         <p class="font-semibold text-sm text-gray-900 dark:text-white">{{ $intent->user->name }}</p>
                         <p class="text-xs text-gray-500 dark:text-gray-400">{{ $intent->user->level?->getLabel() }}</p>
