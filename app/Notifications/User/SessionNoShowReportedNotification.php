@@ -40,7 +40,7 @@ class SessionNoShowReportedNotification extends Notification
 
     protected function getTitle(): string
     {
-        return 'تم تسجيل الغياب 📝';
+        return 'تم تسجيل الغياب';
     }
 
     protected function getMessage(): string

@@ -40,7 +40,7 @@ class SessionMissedNotification extends Notification
 
     protected function getTitle(): string
     {
-        return 'تمرينة ضاعت! 🕰️';
+        return 'تمرينة ضاعت!';
     }
 
     protected function getMessage(): string

@@ -40,7 +40,7 @@ class NewWorkoutRequestNotification extends Notification
 
     protected function getTitle(): string
     {
-        return 'طلب تمرين جديد 💪';
+        return 'طلب تمرين جديد';
     }
 
     protected function getMessage(): string

@@ -40,7 +40,7 @@ class SessionCompletedRewardNotification extends Notification
 
     protected function getTitle(): string
     {
-        return 'عاش يا بطل! 🏆';
+        return 'عاش يا بطل!';
     }
 
     protected function getMessage(): string

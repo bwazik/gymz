@@ -40,7 +40,7 @@ class ConfirmedSessionCancelledByGuestNotification extends Notification
 
     protected function getTitle(): string
     {
-        return 'تمرينة اتلغت ⚠️';
+        return 'تمرينة اتلغت';
     }
 
     protected function getMessage(): string

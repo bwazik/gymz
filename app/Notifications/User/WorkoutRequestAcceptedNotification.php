@@ -40,7 +40,7 @@ class WorkoutRequestAcceptedNotification extends Notification
 
     protected function getTitle(): string
     {
-        return 'طلبك اتقبل! 🎉';
+        return 'طلبك اتقبل!';
     }
 
     protected function getMessage(): string

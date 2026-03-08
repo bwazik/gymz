@@ -40,7 +40,7 @@ class SessionCancelledByHostNotification extends Notification
 
     protected function getTitle(): string
     {
-        return 'التمرينة اتلغت 😔';
+        return 'التمرينة اتلغت';
     }
 
     protected function getMessage(): string

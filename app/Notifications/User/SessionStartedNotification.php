@@ -40,7 +40,7 @@ class SessionStartedNotification extends Notification
 
     protected function getTitle(): string
     {
-        return 'التمرينة بدأت! 🔥';
+        return 'التمرينة بدأت!';
     }
 
     protected function getMessage(): string

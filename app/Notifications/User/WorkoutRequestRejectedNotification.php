@@ -40,7 +40,7 @@ class WorkoutRequestRejectedNotification extends Notification
 
     protected function getTitle(): string
     {
-        return 'طلب مرفوض ❌';
+        return 'طلب مرفوض';
     }
 
     protected function getMessage(): string

@@ -40,7 +40,7 @@ class WorkoutRequestWithdrawnNotification extends Notification
 
     protected function getTitle(): string
     {
-        return 'طلب ملغي 🚫';
+        return 'طلب ملغي';
     }
 
     protected function getMessage(): string

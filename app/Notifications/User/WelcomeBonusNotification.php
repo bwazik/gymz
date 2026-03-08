@@ -38,7 +38,7 @@ class WelcomeBonusNotification extends Notification
     }
     protected function getTitle(): string
     {
-        return 'هدية ترحيبية 🎁';
+        return 'هدية ترحيبية';
     }
     protected function getMessage(): string
     {

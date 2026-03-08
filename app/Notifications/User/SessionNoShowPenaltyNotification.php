@@ -40,7 +40,7 @@ class SessionNoShowPenaltyNotification extends Notification
 
     protected function getTitle(): string
     {
-        return 'خصم موثوقية 📉';
+        return 'خصم موثوقية';
     }
 
     protected function getMessage(): string

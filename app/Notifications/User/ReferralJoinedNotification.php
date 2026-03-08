@@ -39,7 +39,7 @@ class ReferralJoinedNotification extends Notification
     }
     protected function getTitle(): string
     {
-        return 'جيماوي جديد انضم بسببك! 🚀';
+        return 'جيماوي جديد انضم بسببك!';
     }
     protected function getMessage(): string
     {
