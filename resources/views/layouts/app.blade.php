@@ -336,10 +336,6 @@
                     id: 'welcome',
                     title: 'أهلاً بيك في GymZ 🏋🏽',
                     text: '<p class="text-gray-500 dark:text-gray-400 text-sm">خلينا ناخد جولة سريعة في 10 ثواني عشان تعرف إزاي تستخدم الأبلكيشن.</p>',
-                    attachTo: {
-                        element: 'body',
-                        on: 'center'
-                    },
                     buttons: [{
                         text: 'يلا بينا',
                         classes: 'bg-gymz-accent text-white font-bold rounded-2xl py-3.5 mt-2 w-full transition-all active:scale-95 text-center flex justify-center shadow-md',
