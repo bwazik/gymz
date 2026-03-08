@@ -39,9 +39,9 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="GymZ" />
 
-    <link rel="icon" type="image/png" href="{{ asset('icons/favicon.png/favicon-96x96.png') }}" sizes="96x96" />
-    <link rel="icon" type="image/svg+xml" href="{{ asset('icons/favicon.png/favicon.svg') }}" />
-    <link rel="shortcut icon" href="{{ asset('icons/favicon.png/favicon.ico') }}" />
+    <link rel="icon" type="image/png" href="{{ asset('icons/favicon-96x96.png') }}" sizes="96x96" />
+    <link rel="icon" type="image/svg+xml" href="{{ asset('icons/favicon.svg') }}" />
+    <link rel="shortcut icon" href="{{ asset('icons/favicon.ico') }}" />
     <link rel="apple-touch-icon" href="{{ asset('icons/icon-192x192.png') }}">
 
     <script>
