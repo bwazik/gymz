@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
+use App\Notifications\User\ReferralJoinedNotification;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
@@ -48,7 +49,9 @@ class GoogleAuthController extends Controller
                 ]);
 
                 if ($referredBy) {
-                    // TODO :: NOTIFICATION - Notify $referrer that $user just joined using their link, but remind them they both need to workout to get the 10 Glutes!
+                    if ($referrerUser = User::find($referredBy)) {
+                        $referrerUser->notify(new ReferralJoinedNotification($user));
+                    }
                 }
             } elseif (!$user->google_id) {
                 // Link account if they previously signed up without Google (or if we import users)

@@ -3,7 +3,10 @@
 namespace App\Actions\Workout;
 
 use App\Enums\SessionStatus;
+use App\Models\User;
 use App\Models\WorkoutSession;
+use App\Notifications\User\SessionNoShowPenaltyNotification;
+use App\Notifications\User\SessionNoShowReportedNotification;
 use App\Services\GamificationService;
 use Exception;
 use Illuminate\Support\Facades\DB;
@@ -38,11 +41,16 @@ class ReportSessionNoShow
 
         $absentUserId = ($session->user_a_id === $reporterId) ? $session->user_b_id : $session->user_a_id;
 
-        DB::transaction(function () use ($session, $absentUserId) {
+        DB::transaction(function () use ($session, $absentUserId, $reporterId) {
             $this->gamificationService->deductReliability($absentUserId, 5);
             $session->update(['status' => SessionStatus::Missed]);
 
-            // TODO: [NOTIFICATION] - Notify the ABSENT user about the penalty and the REPORTER that it's processed
+            if ($absentUser = User::find($absentUserId)) {
+                $absentUser->notify(new SessionNoShowPenaltyNotification($session));
+            }
+            if ($reporterUser = User::find($reporterId)) {
+                $reporterUser->notify(new SessionNoShowReportedNotification($session));
+            }
         });
     }
 }

@@ -4,6 +4,7 @@ namespace App\Actions\Workout;
 
 use App\Enums\RequestStatus;
 use App\Models\WorkoutRequest;
+use App\Notifications\User\WorkoutRequestRejectedNotification;
 use Exception;
 
 class RejectWorkoutRequest
@@ -21,6 +22,6 @@ class RejectWorkoutRequest
 
         $request->update(['status' => RequestStatus::Rejected]);
 
-        // TODO: [NOTIFICATION] - Notify GUEST that their request was rejected
+        $request->sender->notify(new WorkoutRequestRejectedNotification($request));
     }
 }

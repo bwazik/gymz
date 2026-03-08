@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Enums\TransactionType;
 use App\Models\GlutesTransaction;
 use App\Models\User;
+use App\Notifications\User\WelcomeBonusNotification;
 use Illuminate\Support\Facades\DB;
 
 class GamificationService
@@ -116,7 +117,8 @@ class GamificationService
                 10,
                 "بونص ترحيب: أول تمرينة مع GymZ 🏋🏽"
             );
-            // TODO :: NOTIFICATION - Notify $newbie that they received 10 Glutes welcome bonus
+
+            $newbie->notify(new WelcomeBonusNotification(10));
 
             // Reward Referrer
             $this->awardGlutes(

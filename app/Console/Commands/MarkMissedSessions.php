@@ -5,6 +5,7 @@ namespace App\Console\Commands;
 use App\Enums\SessionStatus;
 use App\Models\User;
 use App\Models\WorkoutSession;
+use App\Notifications\User\SessionMissedNotification;
 use Illuminate\Console\Command;
 
 class MarkMissedSessions extends Command
@@ -42,18 +43,20 @@ class MarkMissedSessions extends Command
 
         $count = 0;
         foreach ($missedSessions as $session) {
+            /** @var \App\Models\WorkoutSession $session */
             $session->update(['status' => SessionStatus::Missed]);
 
-            // TODO: [NOTIFICATION] - Notify BOTH users that the session was marked as Missed due to no-show
-
-            // Penalize both users for ghosting
+            // Notify BOTH users that the session was marked as Missed
             foreach ([$session->user_a_id, $session->user_b_id] as $userId) {
-                $user = User::find($userId);
-                if ($user) {
+                if ($user = User::find($userId)) {
+                    $user->notify(new SessionMissedNotification($session));
+
+                    // Penalize both users for ghosting
                     $user->reliability_score = max(0, $user->reliability_score - 5);
                     $user->save();
                 }
             }
+
             $count++;
         }
 

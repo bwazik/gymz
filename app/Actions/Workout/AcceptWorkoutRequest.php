@@ -7,6 +7,7 @@ use App\Enums\RequestStatus;
 use App\Enums\SessionStatus;
 use App\Models\WorkoutRequest;
 use App\Models\WorkoutSession;
+use App\Notifications\User\WorkoutRequestAcceptedNotification;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 use Exception;
@@ -46,7 +47,8 @@ class AcceptWorkoutRequest
                 'status' => SessionStatus::Scheduled,
             ]);
 
-            // TODO: [NOTIFICATION] - Notify GUEST that their request was accepted
+            // Notify GUEST that their request was accepted
+            $request->sender->notify(new WorkoutRequestAcceptedNotification($request));
         });
     }
 }

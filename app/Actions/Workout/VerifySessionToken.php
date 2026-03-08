@@ -3,7 +3,9 @@
 namespace App\Actions\Workout;
 
 use App\Enums\SessionStatus;
+use App\Models\User;
 use App\Models\WorkoutSession;
+use App\Notifications\User\SessionStartedNotification;
 use Exception;
 use Illuminate\Support\Facades\DB;
 
@@ -37,7 +39,11 @@ class VerifySessionToken
                 'scanned_at' => now(),
             ]);
 
-            // TODO: [NOTIFICATION] - Notify BOTH users that the session has officially started
+            foreach ([$session->user_a_id, $session->user_b_id] as $userId) {
+                if ($user = User::find($userId)) {
+                    $user->notify(new SessionStartedNotification($session));
+                }
+            }
         });
     }
 }

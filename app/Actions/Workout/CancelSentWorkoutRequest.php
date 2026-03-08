@@ -7,6 +7,8 @@ use App\Enums\RequestStatus;
 use App\Enums\SessionStatus;
 use App\Models\WorkoutRequest;
 use App\Models\WorkoutSession;
+use App\Notifications\User\ConfirmedSessionCancelledByGuestNotification;
+use App\Notifications\User\WorkoutRequestWithdrawnNotification;
 use App\Services\GamificationService;
 use Exception;
 use Illuminate\Support\Facades\DB;
@@ -36,7 +38,7 @@ class CancelSentWorkoutRequest
         return DB::transaction(function () use ($request) {
             if ($request->status === RequestStatus::Pending) {
                 $request->delete();
-                // TODO: [NOTIFICATION] - Notify HOST that the guest withdrew their request
+                $request->workoutIntent->user->notify(new WorkoutRequestWithdrawnNotification($request));
                 return 'تم سحب الطلب بنجاح';
             }
 
@@ -59,7 +61,7 @@ class CancelSentWorkoutRequest
 
                 $request->delete();
 
-                // TODO: [NOTIFICATION] - Notify HOST that the guest cancelled the confirmed session
+                $request->workoutIntent->user->notify(new ConfirmedSessionCancelledByGuestNotification($request));
                 return 'تم إلغاء الانضمام وخصم 5% من الموثوقية لأن الطلب كان مقبول.';
             }
 

@@ -9,7 +9,7 @@
     <meta name="theme-color" content="#f2f2f7" media="(prefers-color-scheme: light)">
     <meta name="theme-color" content="#000000" media="(prefers-color-scheme: dark)">
 
-    <title>{{ config('app.name', 'GymZ') }} | رفيق تمرينك</title>
+    <title>{{ config('app.name', 'GymZ') }} | متتمرنش لوحدك</title>
     <meta name="description"
         content="GymZ هو التطبيق الرياضي الأول في مصر للبحث عن رفقاء التمرين، تتبع إنجازاتك، وكسب مكافآت. Find your perfect gym partner, track workouts, and earn rewards with GymZ.">
     <meta name="keywords"

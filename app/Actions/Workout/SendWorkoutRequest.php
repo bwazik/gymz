@@ -5,6 +5,7 @@ namespace App\Actions\Workout;
 use App\Enums\RequestStatus;
 use App\Models\WorkoutIntent;
 use App\Models\WorkoutRequest;
+use App\Notifications\User\NewWorkoutRequestNotification;
 use Exception;
 use Illuminate\Support\Facades\Auth;
 
@@ -33,13 +34,13 @@ class SendWorkoutRequest
             throw new Exception('بعت طلب قبل كدى');
         }
 
-        WorkoutRequest::create([
+        $workoutRequest = WorkoutRequest::create([
             'intent_id' => $intentId,
             'sender_id' => Auth::id(),
             'status' => RequestStatus::Pending,
         ]);
 
-        // TODO: [NOTIFICATION] - Notify HOST that a new workout request was received
+        $intent->user->notify(new NewWorkoutRequestNotification($workoutRequest));
 
         return 'تم إرسال الطلب بنجاح! 💪';
     }

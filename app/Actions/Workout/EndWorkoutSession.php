@@ -5,6 +5,7 @@ namespace App\Actions\Workout;
 use App\Enums\SessionStatus;
 use App\Models\User;
 use App\Models\WorkoutSession;
+use App\Notifications\User\SessionCompletedRewardNotification;
 use App\Services\GamificationService;
 use Exception;
 use Illuminate\Support\Facades\DB;
@@ -48,9 +49,12 @@ class EndWorkoutSession
 
                 // Increase reliability by 3 (max 100)
                 $this->gamificationService->addReliability($userId, 3);
-            }
 
-            // TODO :: NOTIFICATION - Notify BOTH users of the reward - 10 Glutes & Reliability increase
+                // Notify user
+                if ($user = User::find($userId)) {
+                    $user->notify(new SessionCompletedRewardNotification($session));
+                }
+            }
 
             // Proof of Sweat: If this is their very first completed session, trigger referral rewards
             foreach ([$session->user_a_id, $session->user_b_id] as $userId) {
