@@ -57,7 +57,7 @@
         window.GymZ = {
             isAuthenticated: @json(auth()->check()),
             currentRoute: @json(Route::currentRouteName()),
-            hasCompletedOnboarding: @json(auth()->check() ? auth()->user()->has_completed_onboarding : false)
+            hasCompletedOnboarding: @json(auth()->check() ? auth()->user()->is_onboarded : false)
         };
     </script>
 
