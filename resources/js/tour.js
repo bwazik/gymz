@@ -1,6 +1,6 @@
 import Shepherd from "shepherd.js";
 
-document.addEventListener("DOMContentLoaded", () => {
+function initGymzTour() {
     // Only run tour if user is authenticated, completed onboarding, is on the home feed, and hasn't seen it yet
     const shouldRunTour =
         window.GymZ?.isAuthenticated &&
@@ -8,7 +8,13 @@ document.addEventListener("DOMContentLoaded", () => {
         window.GymZ?.currentRoute === "home" &&
         !localStorage.getItem("gymz_tour_completed");
 
-    if (shouldRunTour) {
+    if (!shouldRunTour) return;
+
+    // Small delay to ensure Livewire DOM is fully injected
+    setTimeout(() => {
+        // Prevent running if the target element hasn't rendered yet
+        if (!document.querySelector("#tour-create-btn")) return;
+
         const tour = new Shepherd.Tour({
             useModalOverlay: true,
             defaultStepOptions: {
@@ -130,10 +136,14 @@ document.addEventListener("DOMContentLoaded", () => {
             ],
         });
 
-        setTimeout(() => {
-            if (!localStorage.getItem("gymz_tour_completed")) {
-                tour.start();
-            }
-        }, 1000);
-    }
-});
+        if (Shepherd.activeTour) {
+            Shepherd.activeTour.cancel();
+        }
+
+        tour.start();
+    }, 1000); // 1s delay to let animations/DOM settle
+}
+
+// Wire it up to both initial load and Livewire's SPA navigation events
+document.addEventListener("DOMContentLoaded", initGymzTour);
+document.addEventListener("livewire:navigated", initGymzTour);
