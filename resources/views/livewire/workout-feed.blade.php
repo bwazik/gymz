@@ -1,6 +1,6 @@
 <div>
     {{-- Section Title --}}
-    <div class="mb-5 mt-4">
+    <div class="mb-5 mt-4" id="tour-feed">
         <span class="text-xs font-bold text-gray-400 dark:text-gray-500 tracking-wider">
             {{ now()->locale('ar')->translatedFormat('l، j F') }}
         </span>

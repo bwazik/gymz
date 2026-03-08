@@ -88,6 +88,19 @@
         .shepherd-arrow:before {
             display: none !important;
         }
+
+        /* Override Shepherd Default Button Styles */
+        .shepherd-button {
+            background-color: #ff2d55 !important;
+            /* gymz-accent */
+            transition: all 0.2s ease !important;
+        }
+
+        .shepherd-button:hover,
+        .shepherd-button:focus {
+            background-color: #ff2d55 !important;
+            opacity: 0.9 !important;
+        }
     </style>
 
     @vite(['resources/css/app.css', 'resources/js/app.js'])
@@ -358,7 +371,7 @@
                     title: 'محفظة الجلوتس 🍑',
                     text: '<p class="text-gray-500 dark:text-gray-400 text-sm">جمع جلوتس من تمارينك، واشتري بيها مكافآت ومكملات من المتجر!</p>',
                     attachTo: {
-                        element: '#tour-wallet-btn',
+                        element: '#tour-nav-profile',
                         on: 'top'
                     },
                     buttons: [{

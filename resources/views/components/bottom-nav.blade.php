@@ -41,7 +41,7 @@
         @php $isActive = request()->routeIs($item['route']); @endphp
 
         <a href="{{ route($item['route']) }}" @auth wire:navigate @endauth data-route="{{ $item['route'] }}"
-            data-active="{{ $isActive ? 'true' : 'false' }}"
+            id="tour-nav-{{ $item['route'] }}" data-active="{{ $isActive ? 'true' : 'false' }}"
             class="flex-1 flex flex-col items-center justify-center py-2 relative z-10 transition-colors duration-200
             {{ $isActive ? 'text-gymz-accent' : 'text-gray-500 dark:text-gray-400' }}">
 

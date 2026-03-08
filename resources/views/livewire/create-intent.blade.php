@@ -1,6 +1,6 @@
 <div>
     {{-- Floating Action Button --}}
-    <button wire:click="$set('showModal', true)"
+    <button wire:click="$set('showModal', true)" id="tour-create-btn"
         class="fixed bottom-[calc(7.5rem+env(safe-area-inset-bottom))] right-6 z-40 w-14 h-14 rounded-full bg-gymz-accent text-white flex items-center justify-center shadow-[0_8px_30px_rgba(255,45,85,0.4)] hover:scale-105 active:scale-95 transition-all duration-300">
         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor"
             class="w-7 h-7">
