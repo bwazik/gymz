@@ -31,13 +31,13 @@
                 <div>
                     <h3 class="text-base font-bold text-gray-900 dark:text-white">اعزم بطل 🔗</h3>
                     <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">أي حد هيسجل من اللينك بتاعك، هتكسبوا إنتو
-                        الاتنين <span class="text-gymz-accent font-bold">50 جلوتس</span> بعد أول تمرينة ليه 🚀</p>
+                        الاتنين <span class="text-gymz-accent font-bold">10 جلوتس</span> بعد أول تمرينة ليه 🏋🏽</p>
                 </div>
             </div>
 
             <div x-data="{ copied: false }"
-                class="mt-4 flex items-center justify-between bg-black/5 dark:bg-white/5 p-3 rounded-2xl border border-black/5 dark:border-white/5">
-                <span class="text-sm font-mono text-gray-700 dark:text-gray-300 truncate mr-2"
+                class="mt-4 flex items-center justify-between gap-4 bg-black/5 dark:bg-white/5 p-3 rounded-2xl border border-black/5 dark:border-white/5">
+                <span class="text-sm font-mono text-gray-700 dark:text-gray-300 truncate"
                     dir="ltr">{{ url('/login?ref=' . Auth::user()->referral_code) }}</span>
                 <button
                     @click="
