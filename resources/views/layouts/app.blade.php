@@ -165,8 +165,15 @@
         document.addEventListener('livewire:navigated', applyDarkMode);
     </script>
 
-    <!-- Global Alpine Store: nav visibility (survives Livewire re-renders) -->
     <script>
+        // Capture the PWA install prompt globally right away so we don't miss it
+        window.deferredPwaPrompt = null;
+        window.addEventListener('beforeinstallprompt', (e) => {
+            e.preventDefault();
+            window.deferredPwaPrompt = e;
+            window.dispatchEvent(new Event('pwa-ready'));
+        });
+
         document.addEventListener('alpine:init', () => {
             Alpine.store('nav', {
                 hidden: false
@@ -175,9 +182,9 @@
             Alpine.data('pwaPrompt', () => ({
                 deferredPrompt: null,
                 init() {
-                    window.addEventListener('beforeinstallprompt', (e) => {
-                        e.preventDefault();
-                        this.deferredPrompt = e;
+                    const handlePrompt = () => {
+                        this.deferredPrompt = window.deferredPwaPrompt;
+                        if (!this.deferredPrompt) return;
 
                         const dismissedAt = localStorage.getItem('gymz_pwa_dismissed');
                         const now = new Date().getTime();
@@ -190,7 +197,15 @@
                                 }));
                             }, 2000);
                         }
-                    });
+                    };
+
+                    // Check immediately if it already fired
+                    if (window.deferredPwaPrompt) {
+                        handlePrompt();
+                    } else {
+                        // Otherwise wait for it
+                        window.addEventListener('pwa-ready', handlePrompt);
+                    }
                 },
                 installPwa() {
                     if (this.deferredPrompt) {
