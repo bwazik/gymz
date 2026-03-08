@@ -1,4 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700&display=swap');
+@import url('https://cdn.jsdelivr.net/npm/shepherd.js@15.2.1/dist/css/shepherd.css');
 
 @tailwind base;
 @tailwind components;
@@ -11,4 +12,73 @@
 
 .animation-delay-4000 {
     animation-delay: 4s;
+}
+
+/* --- Shepherd Tour Overrides --- */
+.shepherd-element {
+    background: transparent !important;
+    font-family: inherit !important;
+    border: none !important;
+    border-radius: 2rem !important;
+    box-shadow: none !important;
+}
+
+.shepherd-has-title .shepherd-content .shepherd-header {
+    background: transparent !important;
+    padding: 1.5rem 1.5rem 0.5rem !important;
+}
+
+.shepherd-text {
+    padding: 0 1.5rem 1.25rem !important;
+    line-height: 1.6 !important;
+}
+
+.shepherd-footer {
+    padding: 0 1.5rem 1.5rem !important;
+    border-bottom-left-radius: 2rem !important;
+    border-bottom-right-radius: 2rem !important;
+}
+
+.shepherd-title {
+    font-size: 1.25rem !important;
+    font-weight: 700 !important;
+    color: #111827 !important;
+    /* gray-900 */
+}
+
+.dark .shepherd-title {
+    color: #ffffff !important;
+}
+
+.shepherd-arrow,
+.shepherd-arrow:before {
+    display: none !important;
+}
+
+/* Override Shepherd Default Button Styles */
+.shepherd-button {
+    background-color: #ff2d55 !important;
+    color: #ffffff !important;
+    transition: all 0.2s ease !important;
+}
+
+.shepherd-button:hover,
+.shepherd-button:focus {
+    background-color: #ff2d55 !important;
+    color: #ffffff !important;
+    opacity: 1 !important;
+}
+
+/* Force Centering on Mobile for Unattached Steps (Welcome Step) */
+.shepherd-element.shepherd-centered {
+    position: fixed !important;
+    top: 50% !important;
+    left: 50% !important;
+    transform: translate(-50%, -50%) !important;
+    margin: 0 !important;
+    max-width: calc(100vw - 2rem) !important;
+    width: 100% !important;
+    /* Reset inline styles that Shepherd tries to inject */
+    right: auto !important;
+    bottom: auto !important;
 }
