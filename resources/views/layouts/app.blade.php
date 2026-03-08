@@ -5,24 +5,45 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
     <meta name="csrf-token" content="{{ csrf_token() }}">
+
     <meta name="theme-color" content="#f2f2f7" media="(prefers-color-scheme: light)">
     <meta name="theme-color" content="#000000" media="(prefers-color-scheme: dark)">
 
-    <!-- PWA -->
+    <title>{{ config('app.name', 'GymZ') }} | رفيق تمرينك</title>
+    <meta name="description"
+        content="GymZ هو التطبيق الرياضي الأول في مصر للبحث عن رفقاء التمرين، تتبع إنجازاتك، وكسب مكافآت. Find your perfect gym partner, track workouts, and earn rewards with GymZ.">
+    <meta name="keywords"
+        content="Gym, Fitness, Workout partner, Egypt gym, GymZ, كمال أجسام, جيم, تمرين, رفيق تمرين, جيمز, لياقة بدنية, فورمة">
+    <meta name="author" content="GymZ Team">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="{{ url()->current() }}">
+
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="{{ url()->current() }}">
+    <meta property="og:title" content="GymZ - Find Your Spotter">
+    <meta property="og:description"
+        content="التطبيق الرياضي الأول في مصر للبحث عن رفقاء التمرين وكسب المكافآت. انضم للوحوش دلوقتي!">
+    <meta property="og:image" content="{{ asset('icons/og-image.png') }}">
+    <meta property="og:locale" content="ar_EG">
+
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:url" content="{{ url()->current() }}">
+    <meta name="twitter:title" content="GymZ - Find Your Spotter">
+    <meta name="twitter:description"
+        content="التطبيق الرياضي الأول في مصر للبحث عن رفقاء التمرين وكسب المكافآت. انضم للوحوش دلوقتي!">
+    <meta name="twitter:image" content="{{ asset('icons/og-image.png') }}">
+
     <link rel="manifest" href="/manifest.json">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="GymZ" />
 
     <link rel="icon" type="image/png" href="{{ asset('icons/favicon.png/favicon-96x96.png') }}" sizes="96x96" />
     <link rel="icon" type="image/svg+xml" href="{{ asset('icons/favicon.png/favicon.svg') }}" />
     <link rel="shortcut icon" href="{{ asset('icons/favicon.png/favicon.ico') }}" />
-    <meta name="apple-mobile-web-app-title" content="GymZ" />
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <link rel="apple-touch-icon" href="{{ asset('icons/icon-192x192.png') }}">
 
-    <title>{{ config('app.name', 'GymZ') }}</title>
-
-    <!-- Prevent FOUC for Dark Mode -->
     <script>
         if (localStorage.getItem('darkMode') === 'true' || (!('darkMode' in localStorage) && window.matchMedia(
                 '(prefers-color-scheme: dark)').matches)) {
@@ -31,6 +52,43 @@
             document.documentElement.classList.remove('dark');
         }
     </script>
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/shepherd.js@17.0.0/dist/css/shepherd.css" />
+    <style>
+        .shepherd-element {
+            background: transparent !important;
+            font-family: inherit !important;
+            border: none !important;
+            border-radius: 2rem !important;
+            box-shadow: none !important;
+        }
+
+        .shepherd-has-title .shepherd-content .shepherd-header {
+            background: transparent !important;
+            padding: 1.5rem 1.5rem 0.5rem !important;
+        }
+
+        .shepherd-text {
+            padding: 0 1.5rem 1.25rem !important;
+            line-height: 1.6 !important;
+        }
+
+        .shepherd-footer {
+            padding: 0 1.5rem 1.5rem !important;
+            border-bottom-left-radius: 2rem !important;
+            border-bottom-right-radius: 2rem !important;
+        }
+
+        .shepherd-title {
+            font-size: 1.25rem !important;
+            font-weight: 700 !important;
+        }
+
+        .shepherd-arrow,
+        .shepherd-arrow:before {
+            display: none !important;
+        }
+    </style>
 
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
@@ -68,9 +126,9 @@
                 </div>
 
                 <div class="p-6 pt-2 pb-[calc(1.5rem+env(safe-area-inset-bottom))] text-center">
-                    <img src="/icons/icon-192x192.png" alt="GymZ Icon"
+                    <img src="{{ asset('icons/icon-192x192.png') }}" alt="GymZ Icon"
                         class="w-20 h-20 mx-auto rounded-3xl shadow-xl border border-black/5 dark:border-white/10 mb-5">
-                    <h3 class="font-bold text-xl text-gray-900 dark:text-white mb-2">نزل تطبيق GymZ 📱</h3>
+                    <h3 class="font-bold text-xl text-gray-900 dark:text-white mb-2">نزل ابلكيشن GymZ 📱</h3>
                     <p class="text-sm text-gray-500 dark:text-gray-400 mb-6 leading-relaxed px-2">
                         تجربة أسرع، إشعارات حية، ومساحة أقل من 1 ميجا!
                     </p>
@@ -93,7 +151,8 @@
         <!-- Header -->
         <header
             class="sticky top-0 z-40 -mx-4 -mt-6 px-5 py-2.5 flex justify-between items-center bg-white/80 dark:bg-[#1c1c1e]/80 backdrop-blur-2xl border-b border-black/5 dark:border-white/10 transition-colors duration-300">
-            <div class="font-black text-2xl tracking-tighter drop-shadow-sm">Gym<span class="text-gymz-accent">Z</span>
+            <div class="font-black text-2xl tracking-tighter drop-shadow-sm">Gym<span
+                    class="text-gymz-accent">Z</span>
             </div>
             <div class="flex items-center gap-3">
                 <!-- Theme Toggle -->
@@ -233,6 +292,89 @@
         });
         document.addEventListener('show-bottom-nav', () => {
             if (window.Alpine) Alpine.store('nav').hidden = false;
+        });
+    </script>
+
+    <!-- Shepherd.js Tour -->
+    <script type="module">
+        import Shepherd from 'https://cdn.jsdelivr.net/npm/shepherd.js@17.0.0/dist/js/shepherd.mjs';
+
+        document.addEventListener('DOMContentLoaded', () => {
+            if (!localStorage.getItem('gymz_tour_completed')) {
+                const tour = new Shepherd.Tour({
+                    useModalOverlay: true,
+                    defaultStepOptions: {
+                        classes: 'bg-white/90 dark:bg-[#1c1c1e]/90 backdrop-blur-3xl border border-black/5 dark:border-white/10 shadow-2xl text-gray-900 dark:text-white',
+                        scrollTo: true,
+                        cancelIcon: {
+                            enabled: false
+                        }
+                    }
+                });
+
+                tour.addStep({
+                    id: 'welcome',
+                    title: 'أهلاً بيك في GymZ 🏋🏽',
+                    text: '<p class="text-gray-500 dark:text-gray-400 text-sm">خلينا ناخد جولة سريعة في 10 ثواني عشان تعرف إزاي تستخدم الأبلكيشن.</p>',
+                    buttons: [{
+                        text: 'يلا بينا',
+                        classes: 'bg-gymz-accent text-white font-bold rounded-2xl py-3.5 mt-2 w-full transition-all active:scale-95 text-center flex justify-center shadow-md',
+                        action: tour.next
+                    }]
+                });
+
+                tour.addStep({
+                    id: 'create',
+                    title: 'اصنع التحدي ⚡',
+                    text: '<p class="text-gray-500 dark:text-gray-400 text-sm">من هنا تقدر تنزل تمرينتك وتتحدى وحوش الجيم ينزلوا معاك!</p>',
+                    attachTo: {
+                        element: '#tour-create-btn',
+                        on: 'top'
+                    },
+                    buttons: [{
+                        text: 'التالي',
+                        classes: 'bg-gymz-accent text-white font-bold rounded-2xl py-3.5 mt-2 w-full transition-all active:scale-95 text-center flex justify-center shadow-md',
+                        action: tour.next
+                    }]
+                });
+
+                tour.addStep({
+                    id: 'feed',
+                    title: 'اكتشف الأبطال 🗺️',
+                    text: '<p class="text-gray-500 dark:text-gray-400 text-sm">هنا هتلاقي تمرينات منطقتك.. اختار تمرينة تناسبك ودوس انضمام.</p>',
+                    attachTo: {
+                        element: '#tour-feed',
+                        on: 'bottom'
+                    },
+                    buttons: [{
+                        text: 'التالي',
+                        classes: 'bg-gymz-accent text-white font-bold rounded-2xl py-3.5 mt-2 w-full transition-all active:scale-95 text-center flex justify-center shadow-md',
+                        action: tour.next
+                    }]
+                });
+
+                tour.addStep({
+                    id: 'wallet',
+                    title: 'محفظة الجلوتس 🍑',
+                    text: '<p class="text-gray-500 dark:text-gray-400 text-sm">جمع جلوتس من تمارينك، واشتري بيها مكافآت ومكملات من المتجر!</p>',
+                    attachTo: {
+                        element: '#tour-wallet-btn',
+                        on: 'top'
+                    },
+                    buttons: [{
+                        text: 'ابدأ الرحلة 🚀',
+                        classes: 'bg-gymz-accent text-white font-bold rounded-2xl py-3.5 mt-2 w-full transition-all active:scale-95 text-center flex justify-center shadow-md',
+                        action: () => {
+                            localStorage.setItem('gymz_tour_completed', 'true');
+                            tour.complete();
+                        }
+                    }]
+                });
+
+                setTimeout(() => {
+                    tour.start();
+                }, 1000);
+            }
         });
     </script>
 </body>
