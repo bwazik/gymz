@@ -4,7 +4,6 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use App\Enums\Gender;
-use App\Enums\SessionStatus;
 use App\Enums\UserLevel;
 use App\Observers\UserObserver;
 use Filament\Models\Contracts\FilamentUser;
@@ -118,12 +117,6 @@ class User extends Authenticatable implements FilamentUser
     public function workoutRequests(): HasMany
     {
         return $this->hasMany(WorkoutRequest::class, 'sender_id');
-    }
-
-    public function inActiveSession(): bool
-    {
-        return $this->workoutSessionsAsUserA()->where('status', SessionStatus::InProgress)->exists()
-            || $this->workoutSessionsAsUserB()->where('status', SessionStatus::InProgress)->exists();
     }
 
     /**
