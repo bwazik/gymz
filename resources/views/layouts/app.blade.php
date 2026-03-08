@@ -82,7 +82,12 @@
         .shepherd-title {
             font-size: 1.25rem !important;
             font-weight: 700 !important;
-            color: inherit !important;
+            color: #111827 !important;
+            /* gray-900 */
+        }
+
+        .dark .shepherd-title {
+            color: #ffffff !important;
         }
 
         .shepherd-arrow,
@@ -93,14 +98,15 @@
         /* Override Shepherd Default Button Styles */
         .shepherd-button {
             background-color: #ff2d55 !important;
-            /* gymz-accent */
+            color: #ffffff !important;
             transition: all 0.2s ease !important;
         }
 
         .shepherd-button:hover,
         .shepherd-button:focus {
             background-color: #ff2d55 !important;
-            opacity: 0.9 !important;
+            color: #ffffff !important;
+            opacity: 1 !important;
         }
     </style>
 
@@ -330,6 +336,10 @@
                     id: 'welcome',
                     title: 'أهلاً بيك في GymZ 🏋🏽',
                     text: '<p class="text-gray-500 dark:text-gray-400 text-sm">خلينا ناخد جولة سريعة في 10 ثواني عشان تعرف إزاي تستخدم الأبلكيشن.</p>',
+                    attachTo: {
+                        element: 'body',
+                        on: 'center'
+                    },
                     buttons: [{
                         text: 'يلا بينا',
                         classes: 'bg-gymz-accent text-white font-bold rounded-2xl py-3.5 mt-2 w-full transition-all active:scale-95 text-center flex justify-center shadow-md',
