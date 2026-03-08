@@ -37,6 +37,54 @@
     <x-ios-alert />
     <livewire:public-trust-profile />
 
+    <!-- PWA Install Modal -->
+    <div x-data="pwaPrompt">
+        {{-- Modal Overlay --}}
+        <div x-data="{ open: false }"
+            x-on:open-modal.window="$event.detail == 'pwa-install' ? (open = true, $dispatch('hide-bottom-nav')) : null"
+            x-on:close-modal.window="$event.detail == 'pwa-install' ? (open = false, $dispatch('show-bottom-nav')) : null"
+            x-show="open" style="display: none;" x-transition:enter="transition ease-out duration-300"
+            x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100"
+            x-transition:leave="transition ease-out duration-300" x-transition:leave-start="opacity-100"
+            x-transition:leave-end="opacity-0"
+            class="fixed inset-0 z-[60] bg-black/40 backdrop-blur-md flex items-end justify-center"
+            @click.self="dismissPwa()">
+
+            {{-- Bottom Sheet Modal --}}
+            <div x-show="open" x-transition:enter="transition ease-out duration-300"
+                x-transition:enter-start="translate-y-full" x-transition:enter-end="translate-y-0"
+                x-transition:leave="transition ease-out duration-300" x-transition:leave-start="translate-y-0"
+                x-transition:leave-end="translate-y-full"
+                class="bg-white/80 dark:bg-[#1c1c1e]/80 backdrop-blur-3xl border-t border-white/50 dark:border-white/10 rounded-t-[2rem] w-full max-w-md shadow-2xl relative"
+                @click.stop>
+
+                {{-- Drag Handle --}}
+                <div class="flex justify-center pt-4 pb-2">
+                    <div class="w-10 h-1 rounded-full bg-gray-300 dark:bg-white/20"></div>
+                </div>
+
+                <div class="p-6 pt-2 pb-[calc(1.5rem+env(safe-area-inset-bottom))] text-center">
+                    <img src="/icons/icon-192x192.png" alt="GymZ Icon"
+                        class="w-20 h-20 mx-auto rounded-3xl shadow-xl border border-black/5 dark:border-white/10 mb-5">
+                    <h3 class="font-bold text-xl text-gray-900 dark:text-white mb-2">نزل تطبيق GymZ 📱</h3>
+                    <p class="text-sm text-gray-500 dark:text-gray-400 mb-6 leading-relaxed px-2">
+                        تجربة أسرع، إشعارات حية، ومساحة أقل من 1 ميجا!
+                    </p>
+                    <div class="flex flex-col gap-3">
+                        <button @click="installPwa()"
+                            class="w-full py-3.5 rounded-2xl bg-gymz-accent text-white font-bold text-sm active:scale-95 transition-all shadow-md">
+                            تثبيت
+                        </button>
+                        <button @click="dismissPwa()"
+                            class="w-full py-3.5 rounded-2xl bg-black/5 dark:bg-white/10 text-gray-700 dark:text-white/70 font-bold text-sm active:scale-95 transition-all">
+                            ليس الآن
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <main class="w-full max-w-md mx-auto relative min-h-screen pb-32 pt-6 px-4 shadow-2xl bg-white/30 dark:bg-white/5">
         <!-- Header -->
         <header
@@ -84,32 +132,6 @@
 
     <!-- Bottom Navigation -->
     <x-bottom-nav />
-
-    <!-- PWA Install Prompt -->
-    <div x-data="pwaPrompt">
-        <x-modal name="pwa-install" maxWidth="sm">
-            <div class="p-6 text-center space-y-4">
-                <div
-                    class="mx-auto w-20 h-20 bg-gray-100 rounded-[2rem] shadow-sm flex items-center justify-center p-2 mb-4 dark:bg-white/10">
-                    <img src="/icons/icon-192x192.png" alt="GymZ App Icon"
-                        class="w-full h-full object-contain rounded-[1.25rem]">
-                </div>
-                <h2 class="text-xl font-bold dark:text-white">نزل تطبيق GymZ 📱</h2>
-                <p class="text-gray-500 text-sm">تجربة أسرع، إشعارات حية، ومساحة أقل من 1 ميجا!</p>
-
-                <div class="mt-6 flex flex-col gap-3">
-                    <button @click="installPwa()"
-                        class="w-full bg-gymz-accent text-white font-bold rounded-2xl py-3.5 active:scale-95 transition-all outline-none focus:ring-4 focus:ring-gymz-accent/30">
-                        تثبيت
-                    </button>
-                    <button @click="dismissPwa()"
-                        class="w-full text-gray-500 font-bold rounded-2xl py-3.5 active:scale-95 transition-all outline-none hover:bg-black/5 dark:hover:bg-white/5 focus:bg-black/5 dark:focus:bg-white/5">
-                        ليس الآن
-                    </button>
-                </div>
-            </div>
-        </x-modal>
-    </div>
 
     {{-- Session Toasts --}}
     @if (session()->has('toast'))
