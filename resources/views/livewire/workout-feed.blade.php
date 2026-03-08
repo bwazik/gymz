@@ -93,10 +93,18 @@
                 </div>
 
                 {{-- Workout Target --}}
-                <span
-                    class="inline-flex items-center px-3 py-1 rounded-full text-[11px] font-bold bg-gymz-accent/10 text-gymz-accent dark:bg-gymz-accent/15">
-                    {{ $intent->workoutTarget->name }}
-                </span>
+                <div
+                    class="flex items-center gap-1.5 px-3 py-1 rounded-full text-[11px] font-bold bg-gymz-accent/10 text-gymz-accent dark:bg-gymz-accent/15">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
+                        stroke="currentColor" class="w-3.5 h-3.5 shrink-0 opacity-70">
+                        <path stroke-linecap="round" stroke-linejoin="round"
+                            d="M15.362 5.214A8.252 8.252 0 0112 21 8.25 8.25 0 016.038 7.048 8.287 8.287 0 009 9.6a8.983 8.983 0 013.361-6.867 8.21 8.21 0 003 2.48z" />
+                        <path stroke-linecap="round" stroke-linejoin="round"
+                            d="M12 18a3.75 3.75 0 00.495-7.467 5.99 5.99 0 00-1.925 3.546 5.974 5.974 0 01-2.133-1A3.75 3.75 0 0012 18z" />
+                    </svg>
+                    <span class="truncate max-w-[120px]">{{ $intent->workoutTarget->workoutCategory->name }} -
+                        {{ $intent->workoutTarget->name }}</span>
+                </div>
             </div>
 
             {{-- Footer: Time + Guest Badge + Action --}}
@@ -154,15 +162,6 @@
             </div>
             <h3 class="text-gray-700 dark:text-white/70 font-medium mb-1">مفيش تمارين بالمواصفات دي دلوقتي</h3>
             <p class="text-sm text-gray-500 dark:text-gray-400 mb-6">خليك إنت المبادر ونزل تمرينة! 💪</p>
-
-            <button @click="$dispatchTo('create-intent', 'open-modal')"
-                class="px-6 py-3 rounded-2xl bg-gymz-accent text-white font-bold text-sm shadow-lg shadow-gymz-accent/20 active:scale-95 transition-all w-full flex justify-center items-center gap-2">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5"
-                    stroke="currentColor" class="w-5 h-5">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
-                </svg>
-                نزل تمرينة
-            </button>
         </x-glass-card>
     @endforelse
 
@@ -201,7 +200,7 @@
             <div class="overflow-y-auto space-y-6 pb-4">
                 {{-- Gyms --}}
                 <div>
-                    <h4 class="text-[11px] font-bold text-gray-400 mb-2.5 uppercase tracking-wider">الفرع</h4>
+                    <h4 class="text-[11px] font-bold text-gray-400 mb-2.5 uppercase tracking-wider">الجيمات</h4>
                     <div class="flex flex-wrap gap-2">
                         <button type="button" wire:click="$set('gymFilter', null)"
                             class="px-4 py-2 rounded-xl text-xs font-bold transition-all border {{ $gymFilter === null ? 'bg-gymz-accent text-white border-transparent shadow-sm' : 'bg-black/5 dark:bg-white/5 text-gray-600 dark:text-gray-300 border-transparent hover:bg-black/10 dark:hover:bg-white/10' }}">
@@ -235,7 +234,7 @@
 
                 {{-- Targets --}}
                 <div>
-                    <h4 class="text-[11px] font-bold text-gray-400 mb-2.5 uppercase tracking-wider">العضلة المطلوبة
+                    <h4 class="text-[11px] font-bold text-gray-400 mb-2.5 uppercase tracking-wider">الهدف العضلي
                     </h4>
                     <div class="flex flex-wrap gap-2">
                         <button type="button" wire:click="$set('targetFilter', null)"

@@ -12,8 +12,12 @@
     <div
         class="bg-white/70 dark:bg-[#1c1c1e]/70 backdrop-blur-3xl border border-black/5 dark:border-white/10 rounded-2xl p-4 mb-3 flex items-center justify-between">
         <div class="flex flex-col">
-            <span
-                class="font-bold text-sm text-gray-900 dark:text-white">{{ $myIntent->workoutTarget?->name ?? 'تمرينة عامة' }}</span>
+            @php
+                $targetName = $myIntent->workoutTarget?->name ?? 'تمرينة عامة';
+                $categoryName = $myIntent->workoutTarget?->workoutCategory?->name;
+                $fullTarget = $categoryName ? "{$categoryName} - {$targetName}" : $targetName;
+            @endphp
+            <span class="font-bold text-sm text-gray-900 dark:text-white">{{ $fullTarget }}</span>
             <span class="text-xs text-gray-500 dark:text-gray-400">
                 {{ $myIntent->gym?->name ?? 'أي جيم' }} • {{ $myIntent->start_time->format('g:i A') }}
             </span>

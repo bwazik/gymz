@@ -130,11 +130,15 @@ class ProfileManager extends Component
             ->workoutIntents()
             ->where('start_time', '<', now())
             ->doesntHave('workoutSession')
-            ->with(['gym', 'workoutTarget'])
+            ->with(['gym', 'workoutTarget.workoutCategory'])
             ->get()
             ->map(function ($intent) {
+                $targetName = $intent->workoutTarget?->name ?? 'تمرينة عامة';
+                $categoryName = $intent->workoutTarget?->workoutCategory?->name;
+                $fullTarget = $categoryName ? "{$categoryName} - {$targetName}" : $targetName;
+
                 return (object) [
-                    'target_name' => $intent->workoutTarget?->name ?? 'تمرينة عامة',
+                    'target_name' => $fullTarget,
                     'gym_name' => $intent->gym?->name ?? 'أي جيم',
                     'start_time' => $intent->start_time,
                     'badge_status' => 'no_show_host',
@@ -142,7 +146,7 @@ class ProfileManager extends Component
             });
 
         // 2. Sessions where user is involved, safely loading soft-deleted intents
-        $sessions = WorkoutSession::with(['workoutIntent' => fn($q) => $q->withTrashed()->with(['gym', 'workoutTarget'])])
+        $sessions = WorkoutSession::with(['workoutIntent' => fn($q) => $q->withTrashed()->with(['gym', 'workoutTarget.workoutCategory'])])
             ->where(function ($q) use ($userId) {
                 $q->where('user_a_id', $userId)->orWhere('user_b_id', $userId);
             })
@@ -152,10 +156,14 @@ class ProfileManager extends Component
             ->get()
             ->map(function ($session) {
                 $intent = $session->workoutIntent;
+                $targetName = $intent?->workoutTarget?->name ?? 'تمرينة عامة';
+                $categoryName = $intent?->workoutTarget?->workoutCategory?->name;
+                $fullTarget = $categoryName ? "{$categoryName} - {$targetName}" : $targetName;
+
                 return (object) [
-                    'target_name' => $intent->workoutTarget?->name ?? 'تمرينة عامة',
-                    'gym_name' => $intent->gym?->name ?? 'أي جيم',
-                    'start_time' => $intent->start_time,
+                    'target_name' => $fullTarget,
+                    'gym_name' => $intent?->gym?->name ?? 'أي جيم',
+                    'start_time' => $intent?->start_time,
                     'badge_status' => $session->status,
                 ];
             });
