@@ -53,9 +53,9 @@ class WorkoutRequestAcceptedNotification extends Notification
         return 'heroicon-o-check-circle';
     }
 
-    protected function getIconColor(): string
+    protected function getIconBg(): string
     {
-        return 'success';
+        return 'bg-gymz-accent';
     }
     protected function getActionUrl(): string
     {

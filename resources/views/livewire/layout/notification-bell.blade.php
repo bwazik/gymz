@@ -66,7 +66,7 @@
                             }
                         @endphp
                         <div
-                            class="shrink-0 rounded-full p-2 {{ isset($data['icon_bg']) && !empty($data['icon_bg']) ? 'bg-' . $data['icon_bg'] : 'bg-gymz-accent' }} {{ isset($data['icon_color']) && !empty($data['icon_color']) ? 'text-' . $data['icon_color'] : 'text-white' }}">
+                            class="shrink-0 rounded-full p-2 {{ isset($data['icon_bg']) && !empty($data['icon_bg']) ? $data['icon_bg'] : 'bg-gymz-accent' }} text-white">
                             <x-dynamic-component :component="$iconTag" class="w-5 h-5" />
                         </div>
                     @else

@@ -50,11 +50,11 @@ class WorkoutRequestRejectedNotification extends Notification
 
     protected function getIcon(): string
     {
-        return 'x-circle';
+        return 'heroicon-o-x-circle';
     }
     protected function getIconBg(): string
     {
-        return 'bg-gray-500';
+        return 'bg-gymz-accent';
     }
     protected function getActionUrl(): string
     {

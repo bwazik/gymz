@@ -53,9 +53,9 @@ class SessionMissedNotification extends Notification
         return 'heroicon-o-clock';
     }
 
-    protected function getIconColor(): string
+    protected function getIconBg(): string
     {
-        return 'warning';
+        return 'bg-gymz-accent';
     }
     protected function getActionUrl(): string
     {

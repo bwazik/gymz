@@ -50,11 +50,11 @@ class WorkoutRequestWithdrawnNotification extends Notification
 
     protected function getIcon(): string
     {
-        return 'arrow-left';
+        return 'heroicon-o-arrow-left-on-rectangle';
     }
     protected function getIconBg(): string
     {
-        return 'bg-gray-500';
+        return 'bg-gymz-accent';
     }
     protected function getActionUrl(): string
     {

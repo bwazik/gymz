@@ -53,9 +53,9 @@ class SessionStartedNotification extends Notification
         return 'heroicon-o-play';
     }
 
-    protected function getIconColor(): string
+    protected function getIconBg(): string
     {
-        return 'success';
+        return 'bg-gymz-accent';
     }
     protected function getActionUrl(): string
     {

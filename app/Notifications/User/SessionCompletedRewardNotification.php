@@ -53,9 +53,9 @@ class SessionCompletedRewardNotification extends Notification
         return 'heroicon-o-check-badge';
     }
 
-    protected function getIconColor(): string
+    protected function getIconBg(): string
     {
-        return 'success';
+        return 'bg-gymz-accent';
     }
     protected function getActionUrl(): string
     {

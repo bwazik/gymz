@@ -53,9 +53,9 @@ class SessionNoShowPenaltyNotification extends Notification
         return 'heroicon-o-exclamation-triangle';
     }
 
-    protected function getIconColor(): string
+    protected function getIconBg(): string
     {
-        return 'danger';
+        return 'bg-gymz-accent';
     }
     protected function getActionUrl(): string
     {

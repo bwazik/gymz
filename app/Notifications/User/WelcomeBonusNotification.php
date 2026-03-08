@@ -46,7 +46,7 @@ class WelcomeBonusNotification extends Notification
     }
     protected function getIcon(): string
     {
-        return 'gift';
+        return 'heroicon-o-gift';
     }
     protected function getIconBg(): string
     {

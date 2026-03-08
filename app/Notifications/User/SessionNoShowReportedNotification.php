@@ -53,9 +53,9 @@ class SessionNoShowReportedNotification extends Notification
         return 'heroicon-o-flag';
     }
 
-    protected function getIconColor(): string
+    protected function getIconBg(): string
     {
-        return 'info';
+        return 'bg-gymz-accent';
     }
     protected function getActionUrl(): string
     {

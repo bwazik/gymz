@@ -53,9 +53,9 @@ class NewWorkoutRequestNotification extends Notification
         return 'heroicon-o-hand-raised';
     }
 
-    protected function getIconColor(): string
+    protected function getIconBg(): string
     {
-        return 'info';
+        return 'bg-gymz-accent';
     }
     protected function getActionUrl(): string
     {
