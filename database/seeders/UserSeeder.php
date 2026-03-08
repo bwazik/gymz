@@ -23,6 +23,8 @@ class UserSeeder extends Seeder
             'is_admin' => true,
         ]);
 
-        User::factory(10)->create();
+        if (!app()->environment('production')) {
+            User::factory(10)->create();
+        }
     }
 }

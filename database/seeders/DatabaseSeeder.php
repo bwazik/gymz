@@ -14,12 +14,17 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        $this->call([
+        $seeders = [
             CitySeeder::class,
             GymSeeder::class,
             WorkoutCategorySeeder::class,
             UserSeeder::class,
-            WorkoutIntentSeeder::class,
-        ]);
+        ];
+
+        if (!app()->environment('production')) {
+            $seeders[] = WorkoutIntentSeeder::class;
+        }
+
+        $this->call($seeders);
     }
 }
