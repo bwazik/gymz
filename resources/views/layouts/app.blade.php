@@ -45,10 +45,9 @@
     <!-- PWA Install Modal -->
     <div x-data="pwaPrompt">
         {{-- Modal Overlay --}}
-        <div x-data="{ open: false }"
-            x-on:open-modal.window="$event.detail == 'pwa-install' ? (open = true, $dispatch('hide-bottom-nav')) : null"
-            x-on:close-modal.window="$event.detail == 'pwa-install' ? (open = false, $dispatch('show-bottom-nav')) : null"
-            x-show="open" style="display: none;" x-transition:enter="transition ease-out duration-300"
+        <div x-data="{ open: false }" x-on:open-pwa-modal.window="open = true; $dispatch('hide-bottom-nav')"
+            x-on:close-pwa-modal.window="open = false; $dispatch('show-bottom-nav')" x-show="open"
+            style="display: none;" x-transition:enter="transition ease-out duration-300"
             x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100"
             x-transition:leave="transition ease-out duration-300" x-transition:leave-start="opacity-100"
             x-transition:leave-end="opacity-0"
@@ -197,9 +196,7 @@
 
                         if (!dismissedAt || (now - dismissedAt > threeDays)) {
                             setTimeout(() => {
-                                window.dispatchEvent(new CustomEvent('open-modal', {
-                                    detail: 'pwa-install'
-                                }));
+                                window.dispatchEvent(new CustomEvent('open-pwa-modal'));
                             }, 2000);
                         }
                     };
@@ -220,17 +217,13 @@
                                 console.log('User accepted the install prompt');
                             }
                             this.deferredPrompt = null;
-                            window.dispatchEvent(new CustomEvent('close-modal', {
-                                detail: 'pwa-install'
-                            }));
+                            window.dispatchEvent(new CustomEvent('close-pwa-modal'));
                         });
                     }
                 },
                 dismissPwa() {
                     localStorage.setItem('gymz_pwa_dismissed', new Date().getTime());
-                    window.dispatchEvent(new CustomEvent('close-modal', {
-                        detail: 'pwa-install'
-                    }));
+                    window.dispatchEvent(new CustomEvent('close-pwa-modal'));
                 }
             }));
         });
