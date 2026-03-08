@@ -53,7 +53,7 @@
         }
     </script>
 
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/shepherd.js@17.0.0/dist/css/shepherd.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/shepherd.js@15.2.1/dist/css/shepherd.css" />
     <style>
         .shepherd-element {
             background: transparent !important;
@@ -297,7 +297,7 @@
 
     <!-- Shepherd.js Tour -->
     <script type="module">
-        import Shepherd from 'https://cdn.jsdelivr.net/npm/shepherd.js@17.0.0/dist/js/shepherd.mjs';
+        import Shepherd from 'https://cdn.jsdelivr.net/npm/shepherd.js@15.2.1/dist/js/shepherd.mjs';
 
         document.addEventListener('DOMContentLoaded', () => {
             if (!localStorage.getItem('gymz_tour_completed')) {
