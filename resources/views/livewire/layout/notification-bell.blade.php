@@ -56,9 +56,18 @@
                     class="flex items-start gap-3 p-4 border-b border-black/5 dark:border-white/10 cursor-pointer transition-colors {{ $isUnread ? 'bg-black/5 dark:bg-white/5 hover:bg-black/10 dark:hover:bg-white/10' : 'hover:bg-black/5 dark:hover:bg-white/5' }}">
 
                     @if (isset($data['icon']) && !empty($data['icon']))
+                        @php
+                            // Ensure the icon resolves to a valid Blade Heroicon component name
+                            $iconString = $data['icon'];
+                            if (str_starts_with($iconString, 'heroicon-')) {
+                                $iconTag = $iconString;
+                            } else {
+                                $iconTag = 'heroicon-o-' . $iconString;
+                            }
+                        @endphp
                         <div
                             class="shrink-0 rounded-full p-2 {{ isset($data['icon_bg']) && !empty($data['icon_bg']) ? 'bg-' . $data['icon_bg'] : 'bg-gymz-accent' }} {{ isset($data['icon_color']) && !empty($data['icon_color']) ? 'text-' . $data['icon_color'] : 'text-white' }}">
-                            <x-dynamic-component :component="$data['icon']" class="w-5 h-5" />
+                            <x-dynamic-component :component="$iconTag" class="w-5 h-5" />
                         </div>
                     @else
                         <div class="shrink-0 rounded-full p-2 bg-gymz-accent/10 text-gymz-accent">
