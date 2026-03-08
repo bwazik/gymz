@@ -22,6 +22,8 @@ class WorkoutFeed extends Component
     public ?int $gymFilter = null;
     public ?int $categoryFilter = null;
     public ?int $targetFilter = null;
+    public bool $showFiltersModal = false;
+
     #[On('intent-created')]
     public function refreshFeed(): void
     {
