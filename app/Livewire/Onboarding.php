@@ -7,10 +7,12 @@ use App\Actions\User\UpdateProfilePhoto;
 use App\Enums\Gender;
 use App\Enums\UserLevel;
 use App\Models\User;
+use App\Notifications\Admin\NewUserOnboardedAdminNotification;
 use App\Rules\PhoneNumber;
 use App\Traits\Livewire\WithRateLimiting;
 use App\Traits\Livewire\WithToast;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Notification;
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\Rules\Enum;
 use Illuminate\Validation\ValidationException;
@@ -79,6 +81,8 @@ class Onboarding extends Component
             $this->toastError(collect($e->errors())->flatten()->first());
             throw $e;
         }
+
+        Notification::send(User::admin()->get(), new NewUserOnboardedAdminNotification($user));
 
         session()->flash('toast', [
             'message' => 'أهلاً بيك في GymZ! 🏋🏽',
