@@ -10,6 +10,8 @@ class NotificationBell extends Component
 {
     public $unreadCount = 0;
     public $notifications = [];
+    public $loadedCount = 15;
+    public $hasMore = false;
 
     public function mount()
     {
@@ -19,23 +21,52 @@ class NotificationBell extends Component
     #[On('notifications-updated')]
     public function refreshUnreadCount()
     {
-        if (Auth::check()) {
-            $this->unreadCount = Auth::user()->unreadNotifications()->count();
+        /** @var \App\Models\User|null $user */
+        $user = Auth::user();
+
+        if ($user) {
+            $this->unreadCount = $user->unreadNotifications()->count();
         }
     }
 
     public function loadNotifications()
     {
-        if (Auth::check()) {
+        /** @var \App\Models\User|null $user */
+        $user = Auth::user();
+
+        if ($user) {
+            $total = $user->notifications()->count();
             // Convert to array to avoid Livewire hydration issues with nested model JSON casts
-            $this->notifications = Auth::user()->notifications()->take(15)->get()->toArray();
+            $this->notifications = $user->notifications()->take($this->loadedCount)->get()->toArray();
+            $this->hasMore = $total > $this->loadedCount;
+        }
+    }
+
+    public function loadMore()
+    {
+        $this->loadedCount += 15;
+        $this->loadNotifications();
+    }
+
+    public function markAllAsRead()
+    {
+        /** @var \App\Models\User|null $user */
+        $user = Auth::user();
+
+        if ($user) {
+            $user->unreadNotifications->markAsRead();
+            $this->unreadCount = 0;
+            $this->loadNotifications();
         }
     }
 
     public function markAsRead($notificationId)
     {
-        if (Auth::check()) {
-            $notification = Auth::user()->notifications()->find($notificationId);
+        /** @var \App\Models\User|null $user */
+        $user = Auth::user();
+
+        if ($user) {
+            $notification = $user->notifications()->find($notificationId);
             if ($notification && is_null($notification->read_at)) {
                 $notification->markAsRead();
                 $this->unreadCount = max(0, $this->unreadCount - 1);

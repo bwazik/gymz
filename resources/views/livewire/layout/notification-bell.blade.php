@@ -22,12 +22,18 @@
         class="absolute left-0 mt-2 w-80 bg-white/70 dark:bg-[#1c1c1e]/70 backdrop-blur-3xl border border-black/5 dark:border-white/10 rounded-3xl shadow-lg z-50 overflow-hidden"
         style="display: none;" dir="rtl">
 
-        <div class="p-4 border-b border-black/5 dark:border-white/10">
+        <div class="p-4 border-b border-black/5 dark:border-white/10 flex justify-between items-center">
             <h3 class="text-lg font-bold text-gray-900 dark:text-white">الإشعارات</h3>
+            @if ($unreadCount > 0)
+                <button wire:click.stop="markAllAsRead"
+                    class="text-xs text-gymz-accent font-medium hover:underline focus:outline-none">
+                    تحديد الكل كمقروء
+                </button>
+            @endif
         </div>
 
         <!-- Loading State -->
-        <div wire:loading wire:target="loadNotifications" class="p-6 text-center w-full">
+        <div wire:loading wire:target="loadNotifications, markAllAsRead" class="p-6 text-center w-full">
             <svg class="animate-spin h-6 w-6 text-gymz-accent mx-auto" xmlns="http://www.w3.org/2000/svg" fill="none"
                 viewBox="0 0 24 24">
                 <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4">
@@ -40,7 +46,7 @@
         </div>
 
         <!-- The List -->
-        <div wire:loading.remove wire:target="loadNotifications" class="max-h-96 overflow-y-auto">
+        <div wire:loading.remove wire:target="loadNotifications, markAllAsRead" class="max-h-96 overflow-y-auto">
             @forelse($notifications as $notification)
                 @php
                     $isUnread = is_null($notification['read_at']);
@@ -89,6 +95,16 @@
                     <p class="text-sm font-medium text-gray-500 dark:text-gray-400">لا توجد إشعارات حالياً</p>
                 </div>
             @endforelse
+
+            @if ($hasMore)
+                <div class="p-3 border-t border-black/5 dark:border-white/10 text-center bg-gray-50 dark:bg-black/10">
+                    <button wire:click.stop="loadMore"
+                        class="text-sm text-gymz-accent font-medium hover:underline focus:outline-none">
+                        <span wire:loading.remove wire:target="loadMore">عرض المزيد</span>
+                        <span wire:loading wire:target="loadMore">جاري التحميل...</span>
+                    </button>
+                </div>
+            @endif
         </div>
     </div>
 </div>
