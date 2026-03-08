@@ -43,13 +43,19 @@
                 {{-- Intent Details --}}
                 <div class="flex flex-wrap items-center gap-2 mb-4 text-sm text-gray-600 dark:text-gray-400">
                     <div class="flex items-center gap-1.5">
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                            stroke="currentColor" class="w-4 h-4 text-gymz-accent shrink-0">
-                            <path stroke-linecap="round" stroke-linejoin="round"
-                                d="M15 10.5a3 3 0 11-6 0 3 3 0 016 0z" />
-                            <path stroke-linecap="round" stroke-linejoin="round"
-                                d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1115 0z" />
-                        </svg>
+                        @if ($request->workoutIntent->gym->logo_path)
+                            <img src="{{ Str::startsWith($request->workoutIntent->gym->logo_path, 'http') ? $request->workoutIntent->gym->logo_path : Storage::url($request->workoutIntent->gym->logo_path) }}"
+                                alt="{{ $request->workoutIntent->gym->name }}"
+                                class="w-4 h-4 rounded-sm object-contain mix-blend-multiply dark:mix-blend-normal opacity-90 shrink-0">
+                        @else
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                stroke-width="1.5" stroke="currentColor" class="w-4 h-4 text-gymz-accent shrink-0">
+                                <path stroke-linecap="round" stroke-linejoin="round"
+                                    d="M15 10.5a3 3 0 11-6 0 3 3 0 016 0z" />
+                                <path stroke-linecap="round" stroke-linejoin="round"
+                                    d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1115 0z" />
+                            </svg>
+                        @endif
                         <span>{{ $request->workoutIntent->gym->name }}</span>
                     </div>
                     <span class="text-gray-300 dark:text-white/20">·</span>
@@ -141,13 +147,19 @@
                 {{-- Intent Details --}}
                 <div class="flex flex-wrap items-center gap-2 text-sm text-gray-600 dark:text-gray-400">
                     <div class="flex items-center gap-1.5">
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                            stroke="currentColor" class="w-4 h-4 text-gymz-accent shrink-0">
-                            <path stroke-linecap="round" stroke-linejoin="round"
-                                d="M15 10.5a3 3 0 11-6 0 3 3 0 016 0z" />
-                            <path stroke-linecap="round" stroke-linejoin="round"
-                                d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1115 0z" />
-                        </svg>
+                        @if ($request->workoutIntent->gym->logo_path)
+                            <img src="{{ Str::startsWith($request->workoutIntent->gym->logo_path, 'http') ? $request->workoutIntent->gym->logo_path : Storage::url($request->workoutIntent->gym->logo_path) }}"
+                                alt="{{ $request->workoutIntent->gym->name }}"
+                                class="w-4 h-4 rounded-sm object-contain mix-blend-multiply dark:mix-blend-normal opacity-90 shrink-0">
+                        @else
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                stroke-width="1.5" stroke="currentColor" class="w-4 h-4 text-gymz-accent shrink-0">
+                                <path stroke-linecap="round" stroke-linejoin="round"
+                                    d="M15 10.5a3 3 0 11-6 0 3 3 0 016 0z" />
+                                <path stroke-linecap="round" stroke-linejoin="round"
+                                    d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1115 0z" />
+                            </svg>
+                        @endif
                         <span>{{ $request->workoutIntent->gym->name }}</span>
                     </div>
                     <span class="text-gray-300 dark:text-white/20">·</span>
