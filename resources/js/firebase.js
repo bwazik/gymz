@@ -2,13 +2,13 @@ import { initializeApp } from "firebase/app";
 import { getMessaging } from "firebase/messaging";
 
 const firebaseConfig = {
-    apiKey: "AIzaSyDhFdsXNsQy5erfcuLwCzJZuH2kcWwRxws",
-    authDomain: "gymz-d00e0.firebaseapp.com",
-    projectId: "gymz-d00e0",
-    storageBucket: "gymz-d00e0.firebasestorage.app",
-    messagingSenderId: "923646912477",
-    appId: "1:923646912477:web:75faa50fa6518274c27834",
-    measurementId: "G-DRP43LBB2B",
+    apiKey: "AIzaSyCFhC22GzeDFhg8Y7P8FAZi9kQ6zY54GzM",
+    authDomain: "gymz-489420.firebaseapp.com",
+    projectId: "gymz-489420",
+    storageBucket: "gymz-489420.firebasestorage.app",
+    messagingSenderId: "1093509789268",
+    appId: "1:1093509789268:web:a48af1b3bd29eac45adfc1",
+    measurementId: "G-4XKXQ1VZK1"
 };
 
 // Initialize Firebase
