@@ -10,18 +10,27 @@
         <livewire:profile-manager />
 
         {{-- Push Notifications Toggle --}}
-        <div class="px-4" x-data="{
+        <div x-data="{
             isEnabled: Notification.permission === 'granted',
             isSupported: 'Notification' in window,
             async toggle() {
-                if (Notification.permission === 'granted') {
+                if (Notification.permission === 'granted' && !this.isEnabled) {
                     this.isEnabled = true;
-                    alert('لإيقاف الإشعارات، يجب تغيير الإعدادات من إعدادات المتصفح أو النظام مباشرة.');
+                    $dispatch('toast', {
+                        message: 'لإيقاف الإشعارات، يجب تغيير الإعدادات من إعدادات المتصفح أو النظام مباشرة.',
+                        type: 'error'
+                    });
                     return;
                 }
         
-                const success = await window.requestFCMToken();
-                this.isEnabled = success;
+                // If they are toggling ON
+                if (this.isEnabled) {
+                    const success = await window.requestFCMToken();
+                    this.isEnabled = success;
+                    if (success) {
+                        $dispatch('toast', { message: 'تم تفعيل الإشعارات بنجاح!', type: 'success' });
+                    }
+                }
             }
         }">
             <header class="mb-4 mt-8 text-center">
@@ -32,8 +41,9 @@
 
             <x-ios-input-group class="p-4">
                 <template x-if="isSupported">
-                    <x-ios-toggle label="إشعارات التطبيق" description="استلام كل إشعارات التطبيق الهامة والتمارين"
-                        x-model="isEnabled" @change="toggle()" />
+                    <x-ios-toggle label="إشعارات التطبيق"
+                        description="استلام كل تنبيهات النظام الهامة، تحديثات التمارين، والرسائل" x-model="isEnabled"
+                        @change="toggle()" />
                 </template>
                 <template x-if="!isSupported">
                     <div class="flex items-center justify-between">
