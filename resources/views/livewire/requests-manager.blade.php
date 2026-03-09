@@ -28,9 +28,24 @@
             <x-glass-card class="mb-4">
                 {{-- Sender Info --}}
                 <div class="flex items-center gap-3 mb-3">
-                    <img src="{{ $request->sender->image_path ? (Str::startsWith($request->sender->image_path, 'http') ? $request->sender->image_path : Storage::url($request->sender->image_path)) : asset('images/default.jpg') }}"
-                        referrerpolicy="no-referrer" alt="{{ $request->sender->name }}"
-                        class="w-11 h-11 rounded-full object-cover border border-black/5 dark:border-white/10">
+                    <button type="button"
+                        wire:click="$dispatch('openTrustProfile', { userId: {{ $request->sender_id }} })"
+                        class="relative group focus:outline-none active:scale-95 transition-transform duration-200">
+                        <img src="{{ $request->sender->image_path ? (Str::startsWith($request->sender->image_path, 'http') ? $request->sender->image_path : Storage::url($request->sender->image_path)) : asset('images/default.jpg') }}"
+                            referrerpolicy="no-referrer" alt="{{ $request->sender->name }}"
+                            class="w-11 h-11 rounded-full object-cover border border-black/5 dark:border-white/10 ring-2 ring-gymz-accent/60 group-hover:ring-gymz-accent group-active:ring-gymz-accent ring-offset-2 ring-offset-[#f2f2f7] dark:ring-offset-[#000000] shadow-sm transition-all">
+
+                        {{-- Indicator Badge --}}
+                        <div
+                            class="absolute -bottom-0.5 -right-0.5 bg-white dark:bg-[#1c1c1e] text-gymz-accent rounded-full p-0.5 shadow-sm border border-black/5 dark:border-white/10 flex items-center justify-center">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"
+                                class="w-3.5 h-3.5">
+                                <path fill-rule="evenodd"
+                                    d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a.75.75 0 000 1.5h.253a.25.25 0 01.244.304l-.459 2.066A1.75 1.75 0 0010.747 15H11a.75.75 0 000-1.5h-.253a.25.25 0 01-.244-.304l.459-2.066A1.75 1.75 0 009.253 9H9z"
+                                    clip-rule="evenodd" />
+                            </svg>
+                        </div>
+                    </button>
                     <div class="flex-1">
                         <p class="font-semibold text-sm text-gray-900 dark:text-white">{{ $request->sender->name }}</p>
                         <p class="text-xs text-gray-500 dark:text-gray-400">{{ $request->sender->level?->getLabel() }}
@@ -112,9 +127,24 @@
             <x-glass-card class="mb-4">
                 {{-- Intent Owner Info --}}
                 <div class="flex items-center gap-3 mb-3">
-                    <img src="{{ $request->workoutIntent->user->image_path ? (Str::startsWith($request->workoutIntent->user->image_path, 'http') ? $request->workoutIntent->user->image_path : Storage::url($request->workoutIntent->user->image_path)) : asset('images/default.jpg') }}"
-                        referrerpolicy="no-referrer" alt="{{ $request->workoutIntent->user->name }}"
-                        class="w-11 h-11 rounded-full object-cover border border-black/5 dark:border-white/10">
+                    <button type="button"
+                        wire:click="$dispatch('openTrustProfile', { userId: {{ $request->workoutIntent->user_id }} })"
+                        class="relative group focus:outline-none active:scale-95 transition-transform duration-200">
+                        <img src="{{ $request->workoutIntent->user->image_path ? (Str::startsWith($request->workoutIntent->user->image_path, 'http') ? $request->workoutIntent->user->image_path : Storage::url($request->workoutIntent->user->image_path)) : asset('images/default.jpg') }}"
+                            referrerpolicy="no-referrer" alt="{{ $request->workoutIntent->user->name }}"
+                            class="w-11 h-11 rounded-full object-cover border border-black/5 dark:border-white/10 ring-2 ring-gymz-accent/60 group-hover:ring-gymz-accent group-active:ring-gymz-accent ring-offset-2 ring-offset-[#f2f2f7] dark:ring-offset-[#000000] shadow-sm transition-all">
+
+                        {{-- Indicator Badge --}}
+                        <div
+                            class="absolute -bottom-0.5 -right-0.5 bg-white dark:bg-[#1c1c1e] text-gymz-accent rounded-full p-0.5 shadow-sm border border-black/5 dark:border-white/10 flex items-center justify-center">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"
+                                class="w-3.5 h-3.5">
+                                <path fill-rule="evenodd"
+                                    d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a.75.75 0 000 1.5h.253a.25.25 0 01.244.304l-.459 2.066A1.75 1.75 0 0010.747 15H11a.75.75 0 000-1.5h-.253a.25.25 0 01-.244-.304l.459-2.066A1.75 1.75 0 009.253 9H9z"
+                                    clip-rule="evenodd" />
+                            </svg>
+                        </div>
+                    </button>
                     <div class="flex-1">
                         <p class="font-semibold text-sm text-gray-900 dark:text-white">
                             {{ $request->workoutIntent->user->name }}</p>
