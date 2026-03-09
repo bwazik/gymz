@@ -32,9 +32,16 @@ class FcmChannel
         }
 
         // The notification class must implement a `toFcm` method (or fallback to toDatabase)
+
+        /** @var mixed $mixedNotification */
+        $mixedNotification = $notification;
+
         if (!method_exists($notification, 'toFcm')) {
+            if (!method_exists($notification, 'toDatabase')) {
+                return;
+            }
             // Fallback logic using standard database structure if toFcm isn't defined explicitly
-            $data = $notification->toDatabase($notifiable);
+            $data = $mixedNotification->toDatabase($notifiable);
 
             $title = $data['title'] ?? 'GymZ';
             $body = $data['message'] ?? 'You have a new notification';
@@ -43,7 +50,7 @@ class FcmChannel
 
         } else {
             // Alternatively, they can return custom array/object here
-            $data = $notification->toFcm($notifiable);
+            $data = $mixedNotification->toFcm($notifiable);
             $title = $data['title'];
             $body = $data['body'];
             $url = $data['url'] ?? '/';
