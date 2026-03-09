@@ -148,10 +148,10 @@
                                     d="M14.857 17.082a23.848 23.848 0 0 0 5.454-1.31A8.967 8.967 0 0 1 18 9.75V9A6 6 0 0 0 6 9v.75a8.967 8.967 0 0 1-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 0 1-5.714 0m5.714 0a3 3 0 1 1-5.714 0" />
                             </svg>
                         </div>
-                        <h3 class="font-bold text-xl text-gray-900 dark:text-white mb-2">فعل التنبيهات عشان ميفوتكش
-                            تمرينة! 🔔</h3>
+                        <h3 class="font-bold text-xl text-gray-900 dark:text-white mb-2">خليك أول واحد يعرف كل جديد! 🔔
+                        </h3>
                         <p class="text-sm text-gray-500 dark:text-gray-400 mb-6 leading-relaxed px-2">
-                            هنبهرك بإشعارات فورية لما حد يطلب يتمرن معاك أو يوافق على طلبك.
+                            فعل الإشعارات عشان يوصلك تنبيهات فورية بطلبات التمارين، الرسائل، وأهم تحديثات GymZ.
                         </p>
                         <div class="flex flex-col gap-3">
                             <button @click="enable()"
@@ -324,15 +324,17 @@
 
                                 if (!dismissedAt || (now - dismissedAt > week)) {
                                     window.dispatchEvent(new CustomEvent(
-                                    'open-notification-modal'));
+                                        'open-notification-modal'));
                                 }
                             }
                         }, 5000);
                     },
                     async enable() {
                         const success = await window.requestFCMToken();
+                        // Close modal regardless of token sync success, if the user responded to permission
+                        window.dispatchEvent(new CustomEvent('close-notification-modal'));
+
                         if (success) {
-                            window.dispatchEvent(new CustomEvent('close-notification-modal'));
                             window.dispatchEvent(new CustomEvent('toast', {
                                 detail: {
                                     message: 'تم تفعيل الإشعارات بنجاح!',
