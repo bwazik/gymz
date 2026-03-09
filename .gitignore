@@ -22,7 +22,7 @@
 Homestead.json
 Homestead.yaml
 Thumbs.db
-
 .gemini/
 .github/
 gha-creds-*.json
+storage/app/firebase-credentials.json
