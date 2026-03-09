@@ -53,7 +53,7 @@ class FcmChannel
         try {
             // Construct the push message
             $message = CloudMessage::new()
-                ->withChangedTarget('token', $notifiable->fcm_token)
+                ->withToken($notifiable->fcm_token)
                 ->withNotification(FcmNotification::create($title, $body))
                 ->withData([
                     'url' => $url,

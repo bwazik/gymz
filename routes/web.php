@@ -47,7 +47,7 @@ Route::middleware(['auth', 'onboarded'])->group(function () {
         }
 
         $message = \Kreait\Firebase\Messaging\CloudMessage::new()
-            ->withChangedTarget('token', $request->user()->fcm_token)
+            ->withToken($request->user()->fcm_token)
             ->withNotification(\Kreait\Firebase\Messaging\Notification::create('GymZ Time! 🏋️‍♂️', 'Your mock push notification has arrived!'))
             ->withData(['url' => '/', 'type' => 'test']);
 
