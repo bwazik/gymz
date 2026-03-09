@@ -11,7 +11,7 @@
 
     <title>{{ config('app.name', 'GymZ') }} | متتمرنش لوحدك</title>
     <meta name="description"
-        content="GymZ هو التطبيق الرياضي الأول في مصر للبحث عن رفقاء التمرين، تتبع إنجازاتك، وكسب مكافآت. Find your perfect gym partner, track workouts, and earn rewards with GymZ.">
+        content="بتتمرن لوحدك؟ مع GymZ تلاقي ناس تتمرن معاهم في نفس الجيم. اختار الجيم والتمرينة والمعاد وشوف مين جاي يتمرن النهارده.">
     <meta name="keywords"
         content="Gym, Fitness, Workout partner, Egypt gym, GymZ, كمال أجسام, جيم, تمرين, رفيق تمرين, جيمز, لياقة بدنية, فورمة">
     <meta name="author" content="GymZ Team">
@@ -22,7 +22,7 @@
     <meta property="og:url" content="{{ url()->current() }}">
     <meta property="og:title" content="GymZ - Find Your Spotter">
     <meta property="og:description"
-        content="التطبيق الرياضي الأول في مصر للبحث عن رفقاء التمرين وكسب المكافآت. انضم للوحوش دلوقتي!">
+        content="بتتمرن لوحدك؟ مع GymZ تلاقي ناس تتمرن معاهم في نفس الجيم. اختار الجيم والتمرينة والمعاد وشوف مين جاي يتمرن النهارده.">
     <meta property="og:image" content="{{ asset('icons/og-image.png') }}">
     <meta property="og:locale" content="ar_EG">
 

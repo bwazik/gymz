@@ -31,7 +31,7 @@ messaging.onBackgroundMessage((payload) => {
     self.registration.showNotification(notificationTitle, notificationOptions);
 });
 
-const CACHE_NAME = "gymz-cache-v7";
+const CACHE_NAME = "gymz-cache-v8";
 const OFFLINE_URL = "/offline";
 
 // Assets to pre-cache on install
