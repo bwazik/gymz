@@ -5,6 +5,7 @@ namespace App\Notifications\User;
 use App\Traits\NotificationDataStructure;
 use Illuminate\Bus\Queueable;
 use Illuminate\Notifications\Notification;
+use App\Notifications\Channels\FcmChannel;
 use App\Models\WorkoutSession;
 
 class SessionStartedNotification extends Notification
@@ -17,7 +18,7 @@ class SessionStartedNotification extends Notification
 
     public function via($notifiable): array
     {
-        return ['database', \App\Notifications\Channels\FcmChannel::class];
+        return ['database', FcmChannel::class];
     }
 
     public function toDatabase($notifiable): array
