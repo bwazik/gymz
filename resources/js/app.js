@@ -29,21 +29,24 @@ window.requestFCMToken = async () => {
                     console.log(
                         "Token synchronized with backend successfully.",
                     );
+                    return true;
                 } catch (backendError) {
                     console.error(
                         "Failed to sync token with backend.",
                         backendError,
                     );
+                    return false;
                 }
             } else {
-                console.log(
-                    "No registration token available. Request permission to generate one.",
-                );
+                console.log("No registration token available.");
+                return false;
             }
         } else {
             console.error("Notification permission denied.");
+            return false;
         }
     } catch (error) {
         console.error("An error occurred while retrieving token:", error);
+        return false;
     }
 };
