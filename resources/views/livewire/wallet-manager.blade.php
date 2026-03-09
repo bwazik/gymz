@@ -85,9 +85,8 @@
 
         <div class="space-y-3">
             <x-wallet.reward-teaser title="مشروب طاقة (Red Bull)" description="عشان تفوق قبل التمرينة الجاية" />
-            <x-wallet.reward-teaser title="كيرياتين 30 سكوب" description="عشان تزود قوتك وتحسن أداءك في التمرين" />
-            <x-wallet.reward-teaser title="اشتراك جيم (شهر)" description="اتمرن براحتك في أحسن الجيمات" />
-            <x-wallet.reward-teaser title="تيشيرت كومبريشن" description="(مبيتراحش بيه الدروس)" />
+            <x-wallet.reward-teaser title="خصم علي كيرياتين 30 سكوب" description="عشان تزود قوتك وتحسن أداءك في التمرين" />
+            <x-wallet.reward-teaser title="خصم علي اشتراك جيم" description="اتمرن براحتك في أحسن الجيمات" />
             <x-wallet.reward-teaser title="بروتين بارز" description="سناك بعد التمرين" />
         </div>
     </div>
