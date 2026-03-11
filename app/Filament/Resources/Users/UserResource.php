@@ -8,6 +8,7 @@ use App\Filament\Resources\Users\Pages\EditUser;
 use App\Filament\Resources\Users\Pages\ListUsers;
 use App\Filament\Resources\Users\Pages\ViewUser;
 use App\Filament\Resources\Users\RelationManagers\GlutesTransactionsRelationManager;
+use App\Filament\Resources\Users\RelationManagers\ReferralsRelationManager;
 use App\Filament\Resources\Users\RelationManagers\WorkoutSessionsAsUserARelationManager;
 use App\Filament\Resources\Users\RelationManagers\WorkoutSessionsAsUserBRelationManager;
 use App\Filament\Resources\Users\Schemas\UserForm;
@@ -54,6 +55,7 @@ class UserResource extends Resource
             WorkoutSessionsAsUserBRelationManager::class,
             WorkoutIntentsRelationManager::class,
             GlutesTransactionsRelationManager::class,
+            ReferralsRelationManager::class,
         ];
     }
 

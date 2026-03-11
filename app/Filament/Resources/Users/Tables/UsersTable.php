@@ -46,6 +46,24 @@ class UsersTable
                     ->placeholder('-')
                     ->searchable()
                     ->sortable(),
+                IconColumn::make('is_onboarded')
+                    ->label(__('مسجل حساب'))
+                    ->boolean()
+                    ->sortable(),
+                IconColumn::make('fcm_token')
+                    ->label(__('الإشعارات'))
+                    ->boolean()
+                    ->getStateUsing(fn($record) => $record->fcm_token !== null)
+                    ->sortable(),
+                TextColumn::make('referrer.name')
+                    ->label(__('المُحيل'))
+                    ->placeholder('-')
+                    ->searchable()
+                    ->sortable(),
+                TextColumn::make('referrals_count')
+                    ->counts('referrals')
+                    ->label(__('المُحالين'))
+                    ->sortable(),
                 TextColumn::make('gender')
                     ->label(__('الجنس'))
                     ->badge()
