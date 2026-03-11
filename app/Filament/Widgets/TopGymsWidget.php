@@ -17,8 +17,11 @@ class TopGymsWidget extends BaseWidget
     public function table(Table $table): Table
     {
         return $table
-            ->query(
-                Gym::withCount('workoutIntents')->orderByDesc('workout_intents_count')->limit(5)
+            ->query(fn (\Illuminate\Database\Eloquent\Builder $query) => 
+                Gym::query()
+                    ->withCount('workoutIntents')
+                    ->orderByDesc('workout_intents_count')
+                    ->limit(5)
             )
             ->columns([
                 TextColumn::make('name')

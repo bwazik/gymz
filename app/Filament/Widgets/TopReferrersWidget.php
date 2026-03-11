@@ -11,16 +11,16 @@ use Filament\Tables\Columns\TextColumn;
 
 class TopReferrersWidget extends TableWidget
 {
-    protected int | string | array $columnSpan = 'full';
+    protected int | string | array $columnSpan = 1;
 
     protected static ?string $heading = 'أفضل المُحيلين';
 
-    protected static ?int $sort = 2;
+    protected static ?int $sort = 4;
 
     public function table(Table $table): Table
     {
         return $table
-            ->query(fn (): Builder => 
+            ->query(fn (): Builder =>
                 User::query()
                     ->withCount('referrals')
                     ->having('referrals_count', '>', 0)
