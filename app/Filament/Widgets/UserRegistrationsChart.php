@@ -8,7 +8,7 @@ use Filament\Widgets\ChartWidget;
 
 class UserRegistrationsChart extends ChartWidget
 {
-    protected static ?string $heading = 'تسجيلات المستخدمين';
+    protected ?string $heading = 'تسجيلات المستخدمين';
 
     protected static ?int $sort = 3;
 
