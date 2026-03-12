@@ -37,26 +37,26 @@
                 <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-5">إضافة تمرينة جديدة</h3>
 
                 <form wire:submit="save" class="space-y-4">
-                    {{-- Gym Select --}}
+                    {{-- Category Select --}}
                     <div class="relative z-30">
-                        <label class="block text-xs font-medium text-gray-600 dark:text-white/60 mb-1.5">الجيم</label>
-                        <x-ios-select wire:model="form.gym_id" :options="$gyms->pluck('name', 'id')" placeholder="اختار الجيم..." />
+                        <label class="block text-xs font-medium text-gray-600 dark:text-white/60 mb-1.5">الرياضة / نوع التمرين</label>
+                        <x-ios-select wire:model.live="form.workout_category_id" :options="$categories->pluck('name', 'id')"
+                            placeholder="اختار الرياضة..." />
                     </div>
 
-                    {{-- Category Select --}}
+                    {{-- Gym Select --}}
                     <div class="relative z-20">
-                        <label class="block text-xs font-medium text-gray-600 dark:text-white/60 mb-1.5">نوع
-                            التمرين</label>
-                        <x-ios-select wire:model.live="form.workout_category_id" :options="$categories->pluck('name', 'id')"
-                            placeholder="اختار النوع..." />
+                        <label class="block text-xs font-medium text-gray-600 dark:text-white/60 mb-1.5">المكان / الجيم</label>
+                        <x-ios-select wire:model="form.gym_id" :options="$gyms->pluck('name', 'id')" 
+                            placeholder="{{ $gyms->isEmpty() ? 'اختار الرياضة الأول...' : 'اختار المكان...' }}"
+                            :disabled="$gyms->isEmpty()" />
                     </div>
 
                     {{-- Target Select (dynamic) --}}
                     <div class="relative z-10">
-                        <label class="block text-xs font-medium text-gray-600 dark:text-white/60 mb-1.5">العضلة /
-                            الهدف</label>
+                        <label class="block text-xs font-medium text-gray-600 dark:text-white/60 mb-1.5">الهدف من التمرينة</label>
                         <x-ios-select wire:model="form.workout_target_id" :options="$targets->pluck('name', 'id')"
-                            placeholder="{{ $targets->isEmpty() ? 'اختار النوع الأول...' : 'اختار الهدف...' }}"
+                            placeholder="{{ $targets->isEmpty() ? 'اختار الرياضة الأول...' : 'اختار الهدف...' }}"
                             :disabled="$targets->isEmpty()" />
                     </div>
 

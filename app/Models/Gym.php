@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 /**
@@ -53,6 +54,11 @@ class Gym extends Model
     public function workoutIntents(): HasMany
     {
         return $this->hasMany(WorkoutIntent::class);
+    }
+
+    public function workoutCategories(): BelongsToMany
+    {
+        return $this->belongsToMany(WorkoutCategory::class, 'gym_workout_category')->withTimestamps();
     }
 
     /*

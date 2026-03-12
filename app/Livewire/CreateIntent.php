@@ -37,18 +37,25 @@ class CreateIntent extends Component
 
     public function mount(): void
     {
-        $this->gyms = Gym::where('is_active', true)->orderBy('name')->get();
         $this->categories = WorkoutCategory::orderBy('name')->get();
+        $this->gyms = collect();
         $this->targets = collect();
     }
 
     public function updatedFormWorkoutCategoryId($value): void
     {
-        $this->targets = $value
-            ? WorkoutTarget::where('workout_category_id', $value)->orderBy('name')->get()
-            : collect();
+        if ($value) {
+            $this->targets = WorkoutTarget::where('workout_category_id', $value)->orderBy('name')->get();
+            $this->gyms = Gym::whereHas('workoutCategories', function ($query) use ($value) {
+                $query->where('workout_categories.id', $value); // or 'workout_category_id' if joining, but since it's whereHas it resolves on related table
+            })->active()->orderBy('name')->get();
+        } else {
+            $this->targets = collect();
+            $this->gyms = collect();
+        }
 
         $this->form->workout_target_id = '';
+        $this->form->gym_id = '';
     }
 
     public function save(CreateWorkoutIntent $action): void

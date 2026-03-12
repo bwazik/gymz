@@ -2,8 +2,12 @@
 
 namespace App\Models;
 
+use App\Models\Gym;
+use App\Models\WorkoutIntent;
+use App\Models\WorkoutTarget;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 /**
@@ -38,6 +42,11 @@ class WorkoutCategory extends Model
     public function workoutIntents(): HasMany
     {
         return $this->hasMany(WorkoutIntent::class);
+    }
+
+    public function gyms(): BelongsToMany
+    {
+        return $this->belongsToMany(Gym::class, 'gym_workout_category')->withTimestamps();
     }
 
     /*

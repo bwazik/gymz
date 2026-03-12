@@ -25,6 +25,14 @@ class GymForm
                     ->required()
                     ->maxLength(255)
                     ->minLength(2),
+                Select::make('workoutCategories')
+                    ->relationship('workoutCategories', 'name')
+                    ->multiple()
+                    ->preload()
+                    ->label(__('الرياضات المدعومة'))
+                    ->placeholder(__('اختر الرياضات...'))
+                    ->required()
+                    ->columnSpanFull(),
                 FileUpload::make('logo_path')
                     ->label(__('اللوجو'))
                     ->image()
