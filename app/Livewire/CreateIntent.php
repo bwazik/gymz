@@ -37,7 +37,7 @@ class CreateIntent extends Component
 
     public function mount(): void
     {
-        $this->categories = WorkoutCategory::orderBy('name')->get();
+        $this->categories = WorkoutCategory::oldest()->get();
         $this->gyms = collect();
         $this->targets = collect();
     }

@@ -18,7 +18,6 @@ class DatabaseSeeder extends Seeder
             CitySeeder::class,
             GymSeeder::class,
             WorkoutCategorySeeder::class,
-            GymWorkoutCategorySeeder::class,
             UserSeeder::class,
         ];
 

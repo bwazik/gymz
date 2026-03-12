@@ -7,7 +7,9 @@ use Filament\Actions\CreateAction;
 use Filament\Actions\DeleteAction;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
+use Filament\Forms\Components\TextInput;
 use Filament\Resources\RelationManagers\RelationManager;
+use Filament\Schemas\Schema;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Model;
@@ -19,6 +21,17 @@ class WorkoutTargetsRelationManager extends RelationManager
     public static function getTitle(Model $ownerRecord, string $pageClass): string
     {
         return __('الأهداف العضلية');
+    }
+
+    public function form(Schema $schema): Schema
+    {
+        return $schema
+            ->components([
+                TextInput::make('name')
+                    ->label(__('الاسم'))
+                    ->required()
+                    ->maxLength(255),
+            ]);
     }
 
     public function table(Table $table): Table
