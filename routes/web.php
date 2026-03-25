@@ -6,6 +6,7 @@ use App\Livewire\Onboarding;
 use App\Livewire\RequestsManager;
 use App\Livewire\SessionManager;
 use App\Livewire\WalletManager;
+use App\Livewire\ExploreMap;
 use App\Livewire\WorkoutFeed;
 use Illuminate\Support\Facades\Route;
 
@@ -33,6 +34,7 @@ Route::middleware(['auth', 'onboarded'])->group(function () {
     Route::get('wallet', WalletManager::class)->name('wallet');
     Route::get('requests', RequestsManager::class)->name('requests');
     Route::get('sessions', SessionManager::class)->name('sessions');
+    Route::get('explore', ExploreMap::class)->name('explore');
 
     // FCM Token Registration & Testing
     Route::post('/fcm-token', [PushNotificationController::class, 'updateToken'])->name('fcm.token');

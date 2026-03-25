@@ -22,6 +22,7 @@ class CompleteOnboarding
 
         $user->update([
             'phone' => $data['phone'],
+            'current_city_id' => $data['current_city_id'],
             'gender' => (int) $data['gender'],
             'dob' => $data['dob'],
             'level' => (int) $data['level'],

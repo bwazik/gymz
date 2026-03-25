@@ -32,7 +32,12 @@
         class="w-full flex items-center justify-between rounded-2xl bg-black/5 dark:bg-white/10 text-gray-900 dark:text-white text-sm px-4 py-3.5 focus:outline-none focus:ring-2 focus:ring-gymz-accent/50 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
         :class="open ? 'ring-2 ring-gymz-accent/50 bg-white dark:bg-[#3a3a3c]' : ''"
     >
-        <span class="truncate" x-text="getLabel($root)" :class="!value ? 'text-gray-400 dark:text-white/40' : 'font-medium'"></span>
+        <div class="flex items-center gap-2 truncate">
+            @if(isset($icon))
+                <span class="shrink-0">{{ $icon }}</span>
+            @endif
+            <span class="truncate" x-text="getLabel($root)" :class="!value ? 'text-gray-400 dark:text-white/40' : 'font-medium'"></span>
+        </div>
 
         <svg class="w-4 h-4 text-gray-400 transition-transform duration-200 shrink-0" :class="open ? 'rotate-180' : ''" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />

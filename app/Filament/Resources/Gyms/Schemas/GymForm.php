@@ -33,6 +33,18 @@ class GymForm
                     ->placeholder(__('اختر الرياضات...'))
                     ->required()
                     ->columnSpanFull(),
+                TextInput::make('latitude')
+                    ->label(__('خط العرض'))
+                    ->numeric()
+                    ->minValue(-90)
+                    ->maxValue(90)
+                    ->step(0.00000001),
+                TextInput::make('longitude')
+                    ->label(__('خط الطول'))
+                    ->numeric()
+                    ->minValue(-180)
+                    ->maxValue(180)
+                    ->step(0.00000001),
                 FileUpload::make('logo_path')
                     ->label(__('اللوجو'))
                     ->image()

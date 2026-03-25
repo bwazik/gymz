@@ -33,11 +33,15 @@ class Gym extends Model
         'city_id',
         'name',
         'is_active',
-        'logo_path'
+        'logo_path',
+        'latitude',
+        'longitude',
     ];
 
     protected $casts = [
         'is_active' => 'boolean',
+        'latitude' => 'decimal:8',
+        'longitude' => 'decimal:8',
     ];
 
     /*

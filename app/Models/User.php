@@ -72,6 +72,7 @@ class User extends Authenticatable implements FilamentUser
         'referral_code',
         'referred_by',
         'fcm_token',
+        'current_city_id',
     ];
 
     /**
@@ -113,6 +114,11 @@ class User extends Authenticatable implements FilamentUser
     public function workoutIntents(): HasMany
     {
         return $this->hasMany(WorkoutIntent::class);
+    }
+
+    public function currentCity(): BelongsTo
+    {
+        return $this->belongsTo(City::class, 'current_city_id');
     }
 
     public function workoutRequests(): HasMany

@@ -6,6 +6,7 @@ use App\Actions\Auth\CompleteOnboarding;
 use App\Actions\User\UpdateProfilePhoto;
 use App\Enums\Gender;
 use App\Enums\UserLevel;
+use App\Models\City;
 use App\Models\User;
 use App\Notifications\Admin\NewUserOnboardedAdminNotification;
 use App\Rules\PhoneNumber;
@@ -24,6 +25,7 @@ class Onboarding extends Component
     use WithToast, WithRateLimiting, WithFileUploads;
 
     public string $phone = '';
+    public string $current_city_id = '';
     public string $gender = '';
     public $dob = '';
     public string $level = '';
@@ -34,6 +36,8 @@ class Onboarding extends Component
         return [
             'phone.unique' => 'رقم الموبايل متسجل قبل كده',
             'phone.required' => 'لازم تكتب رقم موبايلك',
+            'current_city_id.required' => 'لازم تختار مدينتك',
+            'current_city_id.exists' => 'المدينة دي مش موجودة',
             'gender.required' => 'حدد النوع عشان نقدر نوجهك صح',
             'dob.required' => 'تاريخ ميلادك مهم للتوثيق',
             'dob.before' => 'مش معقول تكون اتولدت في المستقبل! 😄',
@@ -60,6 +64,7 @@ class Onboarding extends Component
         try {
             $this->validate([
                 'phone' => ['required', 'string', 'max:255', new PhoneNumber(), Rule::unique(User::class)->ignore(Auth::id())],
+                'current_city_id' => ['required', 'exists:cities,id'],
                 'gender' => ['required', new Enum(Gender::class)],
                 'dob' => ['required', 'date', 'before:today'],
                 'level' => ['required', new Enum(UserLevel::class)],
@@ -71,6 +76,7 @@ class Onboarding extends Component
 
             $action->execute($user, [
                 'phone' => $this->phone,
+                'current_city_id' => $this->current_city_id,
                 'gender' => $this->gender,
                 'dob' => $this->dob,
                 'level' => $this->level,
@@ -94,6 +100,8 @@ class Onboarding extends Component
 
     public function render()
     {
-        return view('livewire.onboarding');
+        return view('livewire.onboarding', [
+            'cities' => City::where('is_active', true)->orderBy('name')->get()
+        ]);
     }
 }

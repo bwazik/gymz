@@ -78,6 +78,8 @@
             <div class="font-black text-2xl tracking-tighter drop-shadow-sm">Gym<span class="text-gymz-accent">Z</span>
             </div>
             <div class="flex items-center gap-3">
+                <livewire:city-switcher />
+                
                 <!-- Theme Toggle -->
                 <button x-data="{
                     isDark: document.documentElement.classList.contains('dark'),

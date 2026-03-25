@@ -20,6 +20,12 @@
             </div>
         </div>
 
+        {{-- City --}}
+        <div class="relative z-40">
+            <label class="block text-xs font-medium text-gray-600 dark:text-white/60 mb-1.5">مدينتك</label>
+            <x-ios-select wire:model="current_city_id" :options="$cities->pluck('name', 'id')" placeholder="اختار مدينتك..." required />
+        </div>
+
         {{-- Gender --}}
         <div class="relative z-30">
             <label class="block text-xs font-medium text-gray-600 dark:text-white/60 mb-1.5">النوع</label>

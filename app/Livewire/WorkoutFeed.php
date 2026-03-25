@@ -3,8 +3,8 @@
 namespace App\Livewire;
 
 use App\Actions\Workout\SendWorkoutRequest;
-use App\Models\User;
 use App\Models\Gym;
+use App\Models\User;
 use App\Models\WorkoutCategory;
 use App\Models\WorkoutIntent;
 use App\Models\WorkoutRequest;
@@ -12,6 +12,7 @@ use App\Models\WorkoutTarget;
 use App\Traits\Livewire\WithRateLimiting;
 use App\Traits\Livewire\WithToast;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Session;
 use Livewire\Attributes\On;
 use Livewire\Component;
 
@@ -22,7 +23,22 @@ class WorkoutFeed extends Component
     public ?int $gymFilter = null;
     public ?int $categoryFilter = null;
     public ?int $targetFilter = null;
+    public ?int $currentCityId = null;
     public bool $showFiltersModal = false;
+
+    public function mount(): void
+    {
+        $user = Auth::user();
+        $this->currentCityId = $user?->current_city_id ?? Session::get('current_city_id');
+    }
+
+    #[On('city-updated')]
+    public function updateCity(int $cityId, float $lat, float $lng): void
+    {
+        $this->currentCityId = $cityId;
+        // Resets gym filter if the gym isn't in the new city
+        $this->gymFilter = null;
+    }
 
     #[On('intent-created')]
     public function refreshFeed(): void
@@ -84,6 +100,13 @@ class WorkoutFeed extends Component
         // Gym Filter
         $query->when($this->gymFilter, function ($q) {
             $q->where('gym_id', $this->gymFilter);
+        });
+
+        // City Filter
+        $query->when($this->currentCityId, function ($q) {
+            $q->whereHas('gym', function ($sub) {
+                $sub->where('city_id', $this->currentCityId);
+            });
         });
 
         if ($user && $user->gender) {

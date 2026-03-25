@@ -17,6 +17,14 @@ class CityForm
                     ->required()
                     ->maxLength(255)
                     ->minLength(2),
+                TextInput::make('latitude')
+                    ->label(__('خط العرض (Latitude)'))
+                    ->numeric()
+                    ->nullable(),
+                TextInput::make('longitude')
+                    ->label(__('خط الطول (Longitude)'))
+                    ->numeric()
+                    ->nullable(),
                 Toggle::make('is_active')
                     ->label(__('الحالة'))
                     ->required()

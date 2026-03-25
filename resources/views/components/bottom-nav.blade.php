@@ -11,6 +11,11 @@
             'icon' => 'M4 6h16a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2zm0 2l8 5 8-5', // Bell icon
         ],
         [
+            'route' => 'explore',
+            'label' => 'الخريطة',
+            'icon' => 'M15 10.5a3 3 0 11-6 0 3 3 0 016 0zM19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1115 0z', // Map-pin icon
+        ],
+        [
             'route' => 'sessions',
             'label' => 'التمارين',
             'icon' => 'M3 10h2v4H3zM19 10h2v4h-2zM6 7h3v10H6zM15 7h3v10h-3zM9 11h6v2H9z', // Bolt/Lightning icon

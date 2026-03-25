@@ -42,6 +42,12 @@ class GymsTable
                     ->onColor('success')
                     ->offColor('danger')
                     ->sortable(),
+                TextColumn::make('latitude')
+                    ->label(__('خط العرض'))
+                    ->toggleable(isToggledHiddenByDefault: true),
+                TextColumn::make('longitude')
+                    ->label(__('خط الطول'))
+                    ->toggleable(isToggledHiddenByDefault: true),
                 TextColumn::make('created_at')
                     ->label(__('تاريخ الإضافة'))
                     ->isoDateTime()
