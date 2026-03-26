@@ -88,7 +88,7 @@
             <div class="overflow-y-auto space-y-6 pb-4">
                 {{-- Categories --}}
                 <div>
-                    <h4 class="text-[11px] font-bold text-gray-400 mb-2.5 uppercase tracking-wider">نوع التمرين</h4>
+                    <h4 class="text-[11px] font-bold text-gray-400 mb-2.5 uppercase tracking-wider">الرياضة / نوع التمرين</h4>
                     <div class="flex flex-wrap gap-2">
                         <button type="button" wire:click="$set('categoryFilter', null)"
                             class="px-4 py-2 rounded-xl text-xs font-bold transition-all border {{ $categoryFilter === null ? 'bg-gymz-accent text-white border-transparent shadow-sm' : 'bg-black/5 dark:bg-white/5 text-gray-600 dark:text-gray-300 border-transparent hover:bg-black/10 dark:hover:bg-white/10' }}">
@@ -105,7 +105,7 @@
 
                 {{-- Gyms --}}
                 <div>
-                    <h4 class="text-[11px] font-bold text-gray-400 mb-2.5 uppercase tracking-wider">الجيمات</h4>
+                    <h4 class="text-[11px] font-bold text-gray-400 mb-2.5 uppercase tracking-wider">المكان / الجيم</h4>
                     <div class="flex flex-wrap gap-2">
                         <button type="button" wire:click="$set('gymFilter', null)"
                             class="px-4 py-2 rounded-xl text-xs font-bold transition-all border {{ $gymFilter === null ? 'bg-gymz-accent text-white border-transparent shadow-sm' : 'bg-black/5 dark:bg-white/5 text-gray-600 dark:text-gray-300 border-transparent hover:bg-black/10 dark:hover:bg-white/10' }}">
@@ -122,8 +122,7 @@
 
                 {{-- Targets --}}
                 <div>
-                    <h4 class="text-[11px] font-bold text-gray-400 mb-2.5 uppercase tracking-wider">الهدف العضلي
-                    </h4>
+                    <h4 class="text-[11px] font-bold text-gray-400 mb-2.5 uppercase tracking-wider">الهدف من التمرينة</h4>
                     <div class="flex flex-wrap gap-2">
                         <button type="button" wire:click="$set('targetFilter', null)"
                             class="px-4 py-2 rounded-xl text-xs font-bold transition-all border {{ $targetFilter === null ? 'bg-gymz-accent text-white border-transparent shadow-sm' : 'bg-black/5 dark:bg-white/5 text-gray-600 dark:text-gray-300 border-transparent hover:bg-black/10 dark:hover:bg-white/10' }}">

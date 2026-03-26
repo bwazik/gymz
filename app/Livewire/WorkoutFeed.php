@@ -66,16 +66,29 @@ class WorkoutFeed extends Component
         $this->reset(['gymFilter', 'categoryFilter', 'targetFilter']);
     }
 
+    public function updatedCategoryFilter($value): void
+    {
+        $this->gymFilter = null;
+        $this->targetFilter = null;
+    }
+
     public function render()
     {
         $user = Auth::user();
+
+        $gymsQuery = Gym::active()->orderBy('name');
+        if ($this->categoryFilter) {
+            $gymsQuery->whereHas('workoutCategories', function ($query) {
+                $query->where('workout_categories.id', $this->categoryFilter);
+            });
+        }
 
         return view('livewire.workout-feed', [
             'intents' => $this->getUpcomingIntents($user),
             'sentRequestIntentIds' => $this->getSentRequestIntentIds($user),
             'targets' => WorkoutTarget::all(),
             'categories' => WorkoutCategory::orderBy('name')->get(),
-            'gyms' => Gym::active()->orderBy('name')->get(),
+            'gyms' => $gymsQuery->get(),
         ]);
     }
 
