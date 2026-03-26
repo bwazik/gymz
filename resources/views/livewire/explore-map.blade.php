@@ -284,9 +284,17 @@
                     const observer = new MutationObserver(() => {
                         const nowDark = document.documentElement.classList.contains('dark');
                         if (nowDark && this.map.hasLayer(lightTiles)) {
+                            this.map.stop();
+                            this.markers.forEach(m => {
+                                if (m.getTooltip()) m.closeTooltip();
+                            });
                             this.map.removeLayer(lightTiles);
                             darkTiles.addTo(this.map);
                         } else if (!nowDark && this.map.hasLayer(darkTiles)) {
+                            this.map.stop();
+                            this.markers.forEach(m => {
+                                if (m.getTooltip()) m.closeTooltip();
+                            });
                             this.map.removeLayer(darkTiles);
                             lightTiles.addTo(this.map);
                         }
@@ -373,21 +381,43 @@
                     // This covers the race condition where a tooltip is unbound mid-zoom and
                     // Leaflet's requestAnimationFrame callback still fires _animateZoom/_updatePosition.
                     if (!L.Tooltip.prototype._gymzPatched) {
-                        const proto = L.Tooltip.prototype;
-
-                        const origUpdate = proto._updatePosition;
-                        proto._updatePosition = function() {
+                        // Tooltip null-map guard
+                        const tProto = L.Tooltip.prototype;
+                        const origUpdate = tProto._updatePosition;
+                        tProto._updatePosition = function() {
                             if (!this._map) return;
                             origUpdate.call(this);
                         };
-
-                        const origAnimate = proto._animateZoom;
-                        proto._animateZoom = function(e) {
+                        const origAnimate = tProto._animateZoom;
+                        tProto._animateZoom = function(e) {
                             if (!this._map) return;
                             origAnimate.call(this, e);
                         };
+                        tProto._gymzPatched = true;
+                    }
 
-                        proto._gymzPatched = true;
+                    if (!L.GridLayer.prototype._gymzPatched2) {
+                        const gProto = L.GridLayer.prototype;
+
+                        const origSetView = gProto._setView;
+                        gProto._setView = function(center, zoom, noPrune, noUpdate) {
+                            if (!this._map) return;
+                            origSetView.call(this, center, zoom, noPrune, noUpdate);
+                        };
+
+                        const origResetView = gProto._resetView;
+                        gProto._resetView = function() {
+                            if (!this._map) return;
+                            origResetView.call(this);
+                        };
+
+                        const origGridAnimate = gProto._animateZoom;
+                        gProto._animateZoom = function(e) {
+                            if (!this._map) return;
+                            origGridAnimate.call(this, e);
+                        };
+
+                        gProto._gymzPatched2 = true;
                     }
                 },
 
