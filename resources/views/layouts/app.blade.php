@@ -79,7 +79,7 @@
             </div>
             <div class="flex-1 min-w-0 flex items-center gap-3">
                 <livewire:city-switcher />
-                
+
                 <!-- Theme Toggle -->
                 <button x-data="{
                     isDark: document.documentElement.classList.contains('dark'),
