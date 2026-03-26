@@ -86,23 +86,6 @@
 
             {{-- Filter Content --}}
             <div class="overflow-y-auto space-y-6 pb-4">
-                {{-- Gyms --}}
-                <div>
-                    <h4 class="text-[11px] font-bold text-gray-400 mb-2.5 uppercase tracking-wider">الجيمات</h4>
-                    <div class="flex flex-wrap gap-2">
-                        <button type="button" wire:click="$set('gymFilter', null)"
-                            class="px-4 py-2 rounded-xl text-xs font-bold transition-all border {{ $gymFilter === null ? 'bg-gymz-accent text-white border-transparent shadow-sm' : 'bg-black/5 dark:bg-white/5 text-gray-600 dark:text-gray-300 border-transparent hover:bg-black/10 dark:hover:bg-white/10' }}">
-                            الكل
-                        </button>
-                        @foreach ($gyms as $gym)
-                            <button type="button" wire:click="$set('gymFilter', {{ $gym->id }})"
-                                class="px-4 py-2 rounded-xl text-xs font-bold transition-all border {{ $gymFilter === $gym->id ? 'bg-gymz-accent text-white border-transparent shadow-sm' : 'bg-black/5 dark:bg-white/5 text-gray-600 dark:text-gray-300 border-transparent hover:bg-black/10 dark:hover:bg-white/10' }}">
-                                {{ $gym->name }}
-                            </button>
-                        @endforeach
-                    </div>
-                </div>
-
                 {{-- Categories --}}
                 <div>
                     <h4 class="text-[11px] font-bold text-gray-400 mb-2.5 uppercase tracking-wider">نوع التمرين</h4>
@@ -115,6 +98,23 @@
                             <button type="button" wire:click="$set('categoryFilter', {{ $category->id }})"
                                 class="px-4 py-2 rounded-xl text-xs font-bold transition-all border {{ $categoryFilter === $category->id ? 'bg-gymz-accent text-white border-transparent shadow-sm' : 'bg-black/5 dark:bg-white/5 text-gray-600 dark:text-gray-300 border-transparent hover:bg-black/10 dark:hover:bg-white/10' }}">
                                 {{ $category->name }}
+                            </button>
+                        @endforeach
+                    </div>
+                </div>
+
+                {{-- Gyms --}}
+                <div>
+                    <h4 class="text-[11px] font-bold text-gray-400 mb-2.5 uppercase tracking-wider">الجيمات</h4>
+                    <div class="flex flex-wrap gap-2">
+                        <button type="button" wire:click="$set('gymFilter', null)"
+                            class="px-4 py-2 rounded-xl text-xs font-bold transition-all border {{ $gymFilter === null ? 'bg-gymz-accent text-white border-transparent shadow-sm' : 'bg-black/5 dark:bg-white/5 text-gray-600 dark:text-gray-300 border-transparent hover:bg-black/10 dark:hover:bg-white/10' }}">
+                            الكل
+                        </button>
+                        @foreach ($gyms as $gym)
+                            <button type="button" wire:click="$set('gymFilter', {{ $gym->id }})"
+                                class="px-4 py-2 rounded-xl text-xs font-bold transition-all border {{ $gymFilter === $gym->id ? 'bg-gymz-accent text-white border-transparent shadow-sm' : 'bg-black/5 dark:bg-white/5 text-gray-600 dark:text-gray-300 border-transparent hover:bg-black/10 dark:hover:bg-white/10' }}">
+                                {{ $gym->name }}
                             </button>
                         @endforeach
                     </div>
