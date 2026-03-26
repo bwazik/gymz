@@ -141,6 +141,11 @@ class ExploreMap extends Component
             ->whereNotNull('latitude')
             ->whereNotNull('longitude')
             ->active()
+            ->when($this->selectedCategoryId, function ($q) {
+                $q->whereHas('workoutCategories', function ($sub) {
+                    $sub->where('workout_categories.id', $this->selectedCategoryId);
+                });
+            })
             ->withCount(['workoutIntents' => function ($query) use ($user) {
                 $query->active()->upcoming();
                 if ($user) {
