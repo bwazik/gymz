@@ -77,7 +77,7 @@
             class="sticky top-0 z-40 -mx-4 -mt-6 px-5 py-2.5 flex justify-between items-center bg-white/80 dark:bg-[#1c1c1e]/80 backdrop-blur-2xl border-b border-black/5 dark:border-white/10 transition-colors duration-300">
             <div class="font-black text-2xl tracking-tighter drop-shadow-sm">Gym<span class="text-gymz-accent">Z</span>
             </div>
-            <div class="flex items-center gap-3">
+            <div class="flex-1 min-w-0 flex items-center gap-3">
                 <livewire:city-switcher />
                 
                 <!-- Theme Toggle -->

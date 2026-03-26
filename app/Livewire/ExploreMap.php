@@ -39,7 +39,6 @@ class ExploreMap extends Component
 
         $gymsMapData = $this->buildGymsMapData($this->getGymsWithIntentCounts());
         $this->dispatch('gyms-updated', gyms: $gymsMapData);
-        $this->dispatch('fly-to-city', lat: $lat, lng: $lng);
     }
 
     public function selectGym(int $gymId): void

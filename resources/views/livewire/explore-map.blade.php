@@ -42,9 +42,20 @@
             }
 
             @keyframes marker-pulse {
-                0%   { transform: translate(-50%, -50%) scale(1);   opacity: 0.7; }
-                70%  { transform: translate(-50%, -50%) scale(2.2); opacity: 0; }
-                100% { transform: translate(-50%, -50%) scale(2.2); opacity: 0; }
+                0% {
+                    transform: translate(-50%, -50%) scale(1);
+                    opacity: 0.7;
+                }
+
+                70% {
+                    transform: translate(-50%, -50%) scale(2.2);
+                    opacity: 0;
+                }
+
+                100% {
+                    transform: translate(-50%, -50%) scale(2.2);
+                    opacity: 0;
+                }
             }
 
             .user-location-dot {
@@ -74,13 +85,11 @@
         </div>
 
         {{-- Sport Category Toggles --}}
-        <div class="absolute top-14 left-1/2 -translate-x-1/2 z-[30]"
-            x-data="{ panelOpen: @entangle('showGymPanel').live }"
-            x-show="!panelOpen"
-            x-transition:leave="transition ease-in duration-200"
-            x-transition:leave-start="opacity-100"
+        <div class="absolute top-14 left-1/2 -translate-x-1/2 z-[30]" x-data="{ panelOpen: @entangle('showGymPanel').live }" x-show="!panelOpen"
+            x-transition:leave="transition ease-in duration-200" x-transition:leave-start="opacity-100"
             x-transition:leave-end="opacity-0">
-            <div class="flex gap-1.5 bg-white/80 dark:bg-[#1c1c1e]/80 backdrop-blur-xl rounded-2xl p-1.5 border border-black/5 dark:border-white/10 shadow-lg">
+            <div
+                class="flex gap-1.5 bg-white/80 dark:bg-[#1c1c1e]/80 backdrop-blur-xl rounded-2xl p-1.5 border border-black/5 dark:border-white/10 shadow-lg">
                 <button type="button" wire:click="filterCategory(null)"
                     class="px-4 py-1.5 rounded-xl text-[11px] font-bold transition-all active:scale-95
                     {{ $selectedCategoryId === null ? 'bg-gymz-accent text-white shadow-md' : 'text-gray-600 dark:text-gray-300 hover:bg-black/5 dark:hover:bg-white/10' }}">
@@ -97,13 +106,11 @@
         </div>
 
         {{-- Map Legend --}}
-        <div class="absolute top-28 right-4 z-[30]"
-            x-data="{ panelOpen: @entangle('showGymPanel').live }"
-            x-show="!panelOpen"
-            x-transition:leave="transition ease-in duration-200"
-            x-transition:leave-start="opacity-100"
+        <div class="absolute top-28 right-4 z-[30]" x-data="{ panelOpen: @entangle('showGymPanel').live }" x-show="!panelOpen"
+            x-transition:leave="transition ease-in duration-200" x-transition:leave-start="opacity-100"
             x-transition:leave-end="opacity-0">
-            <div class="bg-white/80 dark:bg-[#1c1c1e]/80 backdrop-blur-xl rounded-2xl p-3 border border-black/5 dark:border-white/10 shadow-lg">
+            <div
+                class="bg-white/80 dark:bg-[#1c1c1e]/80 backdrop-blur-xl rounded-2xl p-3 border border-black/5 dark:border-white/10 shadow-lg">
                 <p class="text-[10px] font-bold text-gray-500 dark:text-gray-400 mb-2 tracking-wider">نشاط الجيمات</p>
                 <div class="flex flex-col gap-1.5">
                     <div class="flex items-center gap-2">
@@ -141,26 +148,17 @@
     </div>
 
     {{-- Bottom Sheet Panel for Gym Intents --}}
-    <div x-data="{ open: @entangle('showGymPanel').live }"
-        x-show="open"
-        x-init="$watch('open', val => $dispatch(val ? 'hide-bottom-nav' : 'show-bottom-nav'))"
-        style="display: none;"
-        x-transition:enter="transition ease-out duration-300"
-        x-transition:enter-start="opacity-0"
-        x-transition:enter-end="opacity-100"
-        x-transition:leave="transition ease-out duration-300"
-        x-transition:leave-start="opacity-100"
-        x-transition:leave-end="opacity-0"
+    <div x-data="{ open: @entangle('showGymPanel').live }" x-show="open" x-init="$watch('open', val => $dispatch(val ? 'hide-bottom-nav' : 'show-bottom-nav'))" style="display: none;"
+        x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0"
+        x-transition:enter-end="opacity-100" x-transition:leave="transition ease-out duration-300"
+        x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0"
         class="fixed inset-0 z-50 bg-black/40 backdrop-blur-md flex items-end justify-center"
         @click.self="$wire.closePanel()">
 
         {{-- Sheet Body --}}
-        <div x-show="open"
-            x-transition:enter="transition ease-out duration-300"
-            x-transition:enter-start="translate-y-full"
-            x-transition:enter-end="translate-y-0"
-            x-transition:leave="transition ease-out duration-300"
-            x-transition:leave-start="translate-y-0"
+        <div x-show="open" x-transition:enter="transition ease-out duration-300"
+            x-transition:enter-start="translate-y-full" x-transition:enter-end="translate-y-0"
+            x-transition:leave="transition ease-out duration-300" x-transition:leave-start="translate-y-0"
             x-transition:leave-end="translate-y-full"
             class="bg-white/80 dark:bg-[#1c1c1e]/80 backdrop-blur-3xl border-t border-white/50 dark:border-white/10 p-6 rounded-t-[2rem] w-full max-w-md shadow-2xl pb-[calc(1.5rem+env(safe-area-inset-bottom))] flex flex-col max-h-[80vh]"
             @click.stop>
@@ -198,7 +196,8 @@
                     ])
                 @empty
                     <x-glass-card class="p-8 text-center">
-                        <div class="w-16 h-16 mx-auto mb-4 rounded-full bg-gray-100 dark:bg-white/5 flex items-center justify-center">
+                        <div
+                            class="w-16 h-16 mx-auto mb-4 rounded-full bg-gray-100 dark:bg-white/5 flex items-center justify-center">
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                                 stroke-width="1.5" stroke="currentColor"
                                 class="w-8 h-8 text-gray-400 dark:text-white/30">
@@ -206,7 +205,8 @@
                                     d="M15.182 16.318A4.486 4.486 0 0012.016 15a4.486 4.486 0 00-3.198 1.318M21 12a9 9 0 11-18 0 9 9 0 0118 0zM9.75 9.75c0 .414-.168.75-.375.75S9 10.164 9 9.75 9.168 9 9.375 9s.375.336.375.75zm-.375 0h.008v.015h-.008V9.75zm5.625 0c0 .414-.168.75-.375.75s-.375-.336-.375-.75.168-.75.375-.75.375.336.375.75zm-.375 0h.008v.015h-.008V9.75z" />
                             </svg>
                         </div>
-                        <h3 class="text-gray-700 dark:text-white/70 font-medium mb-1">مفيش تمارين في الجيم ده دلوقتي</h3>
+                        <h3 class="text-gray-700 dark:text-white/70 font-medium mb-1">مفيش تمارين في الجيم ده دلوقتي
+                        </h3>
                         <p class="text-sm text-gray-500 dark:text-gray-400">ارجع تاني بعدين أو نزل تمرينتك! 💪</p>
                     </x-glass-card>
                 @endforelse
@@ -237,9 +237,13 @@
                     window.addEventListener('locate-user', () => this.locateUser());
 
                     window.addEventListener('fly-to-city', (e) => {
-                        if (e.detail?.lat && e.detail?.lng) {
-                            this.markers.forEach(m => { if (m.getTooltip()) m.closeTooltip(); });
-                            this.map.flyTo([e.detail.lat, e.detail.lng], 13);
+                        if (!this.map) return;
+                        const { lat, lng } = e.detail;
+                        if (lat && lng) {
+                            setTimeout(() => {
+                                this.markers.forEach(m => { if (m.getTooltip()) m.closeTooltip(); });
+                                this.map.flyTo([lat, lng], 13);
+                            }, 200);
                         }
                     });
                 },
@@ -281,35 +285,47 @@
                             lightTiles.addTo(this.map);
                         }
                     });
-                    observer.observe(document.documentElement, { attributes: true, attributeFilter: ['class'] });
+                    observer.observe(document.documentElement, {
+                        attributes: true,
+                        attributeFilter: ['class']
+                    });
 
-                    L.control.zoom({ position: 'bottomleft' }).addTo(this.map);
+                    L.control.zoom({
+                        position: 'bottomleft'
+                    }).addTo(this.map);
 
                     this.placeMarkers(this.gymsData);
 
                     if (this.gymsData.length > 0) {
                         const bounds = L.latLngBounds(this.gymsData.map(g => [g.lat, g.lng]));
-                        this.map.fitBounds(bounds, { padding: [50, 50], maxZoom: 15 });
+                        this.map.fitBounds(bounds, {
+                            padding: [50, 50],
+                            maxZoom: 15
+                        });
                     }
 
                     this.map.on('locationfound', (e) => {
                         if (this.userMarker) this.map.removeLayer(this.userMarker);
 
                         const markerSize = 40;
+                        const containerSize = markerSize +
+                            20; // match gym marker pattern: 10px overflow each side
+                        const offset = containerSize / 2;
+
                         const icon = L.divIcon({
                             html: `
                                 <div style="
                                     position:relative;
-                                    width:${markerSize}px; height:${markerSize}px;
+                                    width:${containerSize}px; height:${containerSize}px;
                                     display:flex; align-items:center; justify-content:center;
                                 ">
                                     <div style="
                                         position:absolute; top:50%; left:50%;
                                         transform:translate(-50%,-50%);
-                                        width:${markerSize + 8}px; height:${markerSize + 8}px;
+                                        width:${markerSize + 10}px; height:${markerSize + 10}px;
                                         border-radius:50%; background:rgba(59,130,246,0.3);
                                         animation:marker-pulse 2s ease-out infinite;
-                                        pointer-events:none;
+                                        pointer-events:none; z-index:-1;
                                     "></div>
                                     <div style="
                                         width:${markerSize}px; height:${markerSize}px;
@@ -323,14 +339,16 @@
                                 </div>
                             `,
                             className: '',
-                            iconSize: [markerSize, markerSize],
-                            iconAnchor: [markerSize / 2, markerSize / 2],
+                            iconSize: [containerSize, containerSize],
+                            iconAnchor: [offset, offset],
                         });
 
-                        this.userMarker = L.marker(e.latlng, { icon }).addTo(this.map);
+                        this.userMarker = L.marker(e.latlng, {
+                            icon
+                        }).addTo(this.map);
                         this.userMarker.bindTooltip('موقعك', {
                             direction: 'top',
-                            offset: [0, -10],
+                            offset: [0, -(containerSize / 2)],
                             className: 'gymz-tooltip',
                         });
                     });
@@ -339,7 +357,9 @@
 
                     // Close all tooltips before zoom/pan to prevent Leaflet's internal null-map crash
                     this.map.on('zoomstart movestart', () => {
-                        this.markers.forEach(m => { if (m.getTooltip()) m.closeTooltip(); });
+                        this.markers.forEach(m => {
+                            if (m.getTooltip()) m.closeTooltip();
+                        });
                         if (this.userMarker?.getTooltip()) this.userMarker.closeTooltip();
                     });
 
@@ -350,13 +370,13 @@
                         const proto = L.Tooltip.prototype;
 
                         const origUpdate = proto._updatePosition;
-                        proto._updatePosition = function () {
+                        proto._updatePosition = function() {
                             if (!this._map) return;
                             origUpdate.call(this);
                         };
 
                         const origAnimate = proto._animateZoom;
-                        proto._animateZoom = function (e) {
+                        proto._animateZoom = function(e) {
                             if (!this._map) return;
                             origAnimate.call(this, e);
                         };
@@ -366,8 +386,6 @@
                 },
 
                 refreshMarkers(newData) {
-                    this.map.stop();
-
                     this.markers.forEach(m => {
                         try {
                             const tt = m.getTooltip();
@@ -384,8 +402,13 @@
                 },
 
                 locateUser() {
-                    this.markers.forEach(m => { if (m.getTooltip()) m.closeTooltip(); });
-                    this.map.locate({ setView: true, maxZoom: 15 });
+                    this.markers.forEach(m => {
+                        if (m.getTooltip()) m.closeTooltip();
+                    });
+                    this.map.locate({
+                        setView: true,
+                        maxZoom: 15
+                    });
                 },
 
                 placeMarkers(gyms) {
@@ -458,7 +481,9 @@
                             iconAnchor: [offset, offset],
                         });
 
-                        const marker = L.marker([gym.lat, gym.lng], { icon }).addTo(this.map);
+                        const marker = L.marker([gym.lat, gym.lng], {
+                            icon
+                        }).addTo(this.map);
 
                         const wordForm = gym.count > 2 ? 'تمارين' : 'تمرين';
                         const label = gym.count > 0 ? `${gym.name} — ${gym.count} ${wordForm}` : gym.name;
@@ -469,7 +494,11 @@
                             className: 'gymz-tooltip',
                         });
 
-                        marker.on('mouseout', () => { try { marker.closeTooltip(); } catch (e) {} });
+                        marker.on('mouseout', () => {
+                            try {
+                                marker.closeTooltip();
+                            } catch (e) {}
+                        });
                         marker.on('click', () => this.$wire.selectGym(gym.id));
 
                         this.markers.push(marker);
