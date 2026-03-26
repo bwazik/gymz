@@ -1,4 +1,4 @@
-<div class="relative z-[60] flex-1 min-w-0 ml-3">
+<div class="relative z-[60] flex-1 min-w-0">
     <x-ios-select wire:model.live="selectedCityId" :options="$cities->pluck('name', 'id')" placeholder="المدينة...">
         <x-slot:icon>
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4 text-gymz-accent">
