@@ -134,8 +134,8 @@
         </div>
 
         {{-- Locate Me Button --}}
-        <div class="absolute bottom-[calc(13rem+env(safe-area-inset-bottom))] left-4 z-40"
-            style="bottom: calc(13rem + env(safe-area-inset-bottom));">
+        <div class="absolute bottom-[calc(11rem+env(safe-area-inset-bottom))] left-4 z-40"
+            style="bottom: calc(11rem + env(safe-area-inset-bottom));">
             <button type="button" x-data @click="$dispatch('locate-user')"
                 class="w-11 h-11 rounded-full bg-white/80 dark:bg-[#1c1c1e]/80 backdrop-blur-xl border border-black/5 dark:border-white/10 shadow-lg flex items-center justify-center active:scale-90 transition-transform">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
