@@ -127,6 +127,9 @@ class ExploreMap extends Component
             'sentRequestIntentIds' => $sentRequestIntentIds,
             'selectedGym' => $selectedGym,
             'categories' => WorkoutCategory::orderBy('name')->get(),
+            'userPhotoUrl' => $user && $user->image_path
+                ? (str_starts_with($user->image_path, 'http') ? $user->image_path : \Illuminate\Support\Facades\Storage::url($user->image_path))
+                : asset('images/default.jpg'),
         ]);
     }
 
