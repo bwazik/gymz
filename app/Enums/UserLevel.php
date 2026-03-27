@@ -14,9 +14,9 @@ enum UserLevel: int implements HasLabel, HasColor
     public function getLabel(): ?string
     {
         return match ($this) {
-            self::Beginner => __('قطة'),
-            self::Mid => __('أسد'),
-            self::Pro => __('فحل'),
+            self::Beginner => __('مبتدئ'),
+            self::Mid => __('متوسط'),
+            self::Pro => __('محترف'),
         };
     }
 

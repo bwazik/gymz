@@ -36,9 +36,9 @@
         <div class="relative z-20">
             <label class="block text-xs font-medium text-gray-600 dark:text-white/60 mb-1.5">مستواك في الجيم</label>
             <x-ios-select wire:model="level" :options="[
-                \App\Enums\UserLevel::Beginner->value => 'قطة (بتمرن بقالي من 4 شهور ل سنة)',
-                \App\Enums\UserLevel::Mid->value => 'أسد (بتمرن بقالي من سنة ل 3 سنين)',
-                \App\Enums\UserLevel::Pro->value => 'فحل (بتمرن بقالي اكتر من 3 سنين)',
+                \App\Enums\UserLevel::Beginner->value => 'مبتدئ (بتمرن بقالي من 4 شهور ل سنة)',
+                \App\Enums\UserLevel::Mid->value => 'متوسط (بتمرن بقالي من سنة ل 3 سنين)',
+                \App\Enums\UserLevel::Pro->value => 'محترف (بتمرن بقالي اكتر من 3 سنين)',
             ]" placeholder="حدد مستواك..." required />
         </div>
 
